@@ -2,20 +2,23 @@
 import './App.css';
 import { BrowserRouter } from "react-router-dom";
 import RouterList from './routers';
-import GetTouristInfor from './components/dapp/dapp';
+// import GetTouristInfor from './components/dapp/dapp';
 
 
 
 function App() {
   return (
-    <div className="App">
-      <GetTouristInfor />
-    </div>
-    );
-    /* <BrowserRouter>
-      <getTouristInfor></getTouristInfor>
+    // <div className="App">
+    //   <GetTouristInfor />
+    // </div>
+    <BrowserRouter>
+      <RouterList></RouterList>
+    </BrowserRouter>
+  );
+  // /* <BrowserRouter>
+  //   <getTouristInfor></getTouristInfor>
 
-    </BrowserRouter> */
-  
+  // </BrowserRouter> */
+
 }
 export default App;
