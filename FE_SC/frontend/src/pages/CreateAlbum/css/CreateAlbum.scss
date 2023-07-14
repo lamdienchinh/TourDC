@@ -1,0 +1,111 @@
+/* CSS for CreateAlbum component */
+.createalbum {
+    padding-top: 0px;
+    padding-bottom: 100px;
+    & > div {
+        display: flex;
+        flex-direction: column;
+    }
+}
+.createalbum__sort {
+    display: flex;
+    flex-direction: row;
+}
+.createalbum__search {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.createalbum__search__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    background-color: rgb(2, 179, 238);
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+    &:hover {
+        opacity: 0.8;
+        transform: scale(1.1);
+        will-change: transform;
+    }
+}
+.search-icon {
+    color: white;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    &:hover {
+        opacity: 0.8;
+        transform: scale(1.1);
+        will-change: transform;
+    }
+}
+.createalbum__contents {
+    display: flex;
+    flex-direction: row;
+}
+.createalbum__left {
+    width: 80%;
+}
+.trip__infor {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.rating__row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.trips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.trip-box {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.createalbum__right {
+    padding-top: 6rem;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.selected-trip {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.trip-remove-btn {
+    margin-bottom: 10px !important;
+}
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+
+.createalbum-slide {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    height: 18rem;
+    width: 100%;
+    background-image: url("../../../assets/imgs/banner4.jpg");
+    background-size: cover;
+    text-align: center;
+    justify-content: center;
+    font-size: 60px;
+    font-family: Lobster, sans-serif;
+    color: white;
+    margin-bottom: 20px;
+}

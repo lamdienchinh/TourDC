@@ -1,0 +1,47 @@
+.review {
+    // border: 2px solid black;
+    & .review__row1 {
+        display: flex;
+        flex-direction: row;
+        & .review__column1 {
+            width: 80%;
+            & .review__owner {
+                display: flex;
+                flex-direction: row;
+                padding-bottom: 5px;
+                & img {
+                    border-radius: 100%;
+                    height: 50px;
+                    width: 50px;
+                }
+                & .review__name {
+                    display: flex;
+                    align-items: center;
+                    font-size: 18px;
+                    font-weight: 400;
+                    padding-left: 10px;
+                }
+            }
+            & .review__verify {
+                color: #62B966;
+                font-weight: 500;
+                padding-bottom: 5px;
+            }
+        }
+        & .review__column2 {
+            width: 20%;
+        }
+    }
+    & .review__row2 {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        & .review__listimgs {
+            display: flex;
+            flex-direction: row;
+        }
+        & .review__title {
+            font-size: 32px;
+        }
+    }
+}

@@ -1,0 +1,135 @@
+.album {
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 80px;
+    & > div {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+    & .album-wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+    & .album-location {
+        padding-bottom: 30px;
+    }
+    & .col1 {
+        justify-content: center;
+        text-align: center;
+        & > button {
+            margin: 20px;
+        }
+        & h1 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgb(192, 192, 192);
+        }
+    }
+    & .col2 {
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        // border: 1px solid rgb(3, 3, 153);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        // box-shadow: 0 2px 6px rgba(0, 0, 0.5, 0.5);
+    }
+}
+
+.album {
+    display: flex;
+    align-items: flex-start;
+    & .col1 {
+        width: 30%;
+        padding-right: 30px;
+        & h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+    }
+    & .col2 {
+        width: 70%;
+    }
+}
+
+.album__button {
+    /* CSS cho hàng */
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 10rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+        background-color: #0056b3;
+        scale: 1.005;
+    }
+}
+
+.album__item {
+    /* CSS cho album */
+    padding: 20px;
+    border: 2px solid black;
+    margin: 10px;
+}
+
+.album__results {
+    padding: 0px 0px 50px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    & > div {
+        // display: flex;
+        // flex-direction: row;
+        // justify-content: flex-start;
+        width: 100%;
+        display: grid;
+        height: 25rem;
+        grid-template-columns: repeat(2, 1fr); /* Tạo 4 cột có kích thước bằng nhau */
+        grid-gap: 10px;
+        & > div {
+            width: 90%;
+        }
+    }
+    & .album__results--pagination {
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
+    }
+}
+
+.album__button__list {
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.album-filter {
+    margin: 10px 0px 10px 0px !important;
+}
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+
+.album-slide {
+    height: 18rem;
+    width: 100%;
+    background-image: url("../../../assets/imgs/banner_1.jpg");
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    font-family: Lobster, sans-serif;
+    color: white;
+    margin-bottom: 20px;
+}

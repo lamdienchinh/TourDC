@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Domine&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+.header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: ProximaNovaCond-Regular, sans-serif;
+    background-color: white;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    z-index: 5;
+    & > div {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+    }
+    & .header__col1 {
+        width: 10%;
+        font-size: 18px;
+        font-weight: 500;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        & a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-family: Lobster, sans-serif;
+            color: #57b5fa;
+        }
+        & img {
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            max-height: 60px;
+        }
+    }
+    & .header__col2 {
+        width: 90%;
+        gap: 30px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    & .header__ele {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 20px 10px 0px;
+        font-size: 18px;
+        font-weight: 200;
+        cursor: pointer;
+        color: rgb(0, 0, 0);
+    }
+    & .header__link {
+        text-decoration: none;
+        color: black;
+        font-family: Poppins, sans-serif;
+    }
+    & .header__link--selected {
+        color: #57b5fa;
+        text-decoration: none;
+        font-family: Poppins, sans-serif;
+    }
+    & .header__ele--connected {
+        height: 20px;
+        font-family: Poppins, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    & .header__ele--login {
+        height: 20px;
+        padding-right: 60px;
+        font-family: Poppins, sans-serif;
+    }
+}
+.header__avatar {
+}
+.user__camera {
+    grid-area: c1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.camera-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #ffffff;
+    border: none;
+    font-size: 18px;
+    color: #333333;
+    cursor: pointer;
+    font-family: Poppins, sans-serif;
+}
+
+.camera-icon {
+    margin-right: 5px;
+}
+
+.menu-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+// .camera-button:hover {
+//     background-color: #ffffff;
+//     color: #57b5fa;
+// }
+
+// .camera-button:hover .camera-icon {
+//     color: #57b5fa;
+// }

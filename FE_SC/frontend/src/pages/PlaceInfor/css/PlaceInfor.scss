@@ -1,0 +1,164 @@
+@import url("https://fonts.googleapis.com/css2?family=Rokkitt&display=swap");
+
+.placeinfor {
+    padding-top: 60px;
+    width: 100%;
+    & .placeinfor__slide {
+        position: relative;
+        background-size: contain;
+        & > img {
+            width: 100%;
+            object-fit: cover;
+            height: 28rem;
+        }
+    }
+    & .placeinfor__content {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+    & .placeinfor__title {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        color: white;
+        top: 30px;
+        font-size: 160px;
+        font-family: "Rokkitt", serif;
+    }
+    & .placeinfor__suggest {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        position: absolute;
+        bottom: 30px;
+        & > div {
+            width: 20%;
+            display: flex;
+            flex-direction: row;
+            & .placeinfor__suggest--infor {
+                padding-left: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                & div {
+                    font-size: 18px;
+                    font-family: "Rokkitt", serif;
+                    font-weight: 400;
+                    color: white;
+                }
+            }
+        }
+        & img {
+            border-radius: 100%;
+            width: 100px;
+            height: 100px;
+            &:hover {
+                opacity: 0.9;
+                scale: 1.01;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+                cursor: pointer;
+            }
+        }
+    }
+    & .placeinfor__rate {
+        & svg {
+            color: rgb(249, 249, 14);
+            padding: 2px;
+        }
+        & .placeinfor__rate--title {
+            font-size: 28px;
+            font-weight: 500;
+            padding-left: 20px;
+        }
+        & .placeinfor__rate--star {
+            font-size: 2rem;
+            padding-left: 20px;
+        }
+    }
+    & > div {
+        padding: 0;
+    }
+}
+.placeinfor__intro {
+    display: flex;
+    flex-direction: row;
+    & .placeinfor__imgs {
+        width: 30%;
+        padding-top: 20px;
+        display: flex;
+        justify-content: center;
+        padding-left: 0px;
+        & img {
+            height: 400px;
+        }
+    }
+    & .placeinfor__rate {
+        padding: 50px 0px 10px 30px;
+        width: 70%;
+    }
+    & .placeinfor__rate--content {
+        padding-left: 30px;
+    }
+}
+
+.placeinfor__review {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    & > div {
+        padding: 20px;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    & .placeinfor__rv--1 {
+        margin: 0px 10px 0px 0px;
+        border-top: 1px solid rgb(182, 181, 181);
+        font-size: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    & .placeinfor__rv--2 {
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    & .placeinfor__filter {
+        display: flex;
+        justify-content: flex-start;
+        & > div {
+            width: 14%;
+            height: 20px;
+            & > div {
+                height: 20px;
+            }
+        }
+        & #select-label {
+            padding: 10px 0px 10px 0px;
+            font-size: 12px;
+            display: flex;
+        }
+        & #select {
+            height: 20px;
+        }
+    }
+    & .placeinfor__reviewlist {
+        display: flex;
+        justify-content: center;
+        & .placeinfor__review {
+            width: 100%;
+        }
+    }
+}
+.placeinfor__rate--address {
+    padding-left: 20px;
+    font-weight: 400;
+    font-size: 20px;
+    padding-bottom: 30px;
+}

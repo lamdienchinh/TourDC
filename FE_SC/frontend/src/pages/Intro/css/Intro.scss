@@ -1,0 +1,339 @@
+section {
+    height: 50rem;
+    // overflow: auto;
+    // padding-top: 120px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.intro-first {
+    background-image: url("../../../assets/imgs/home_banner.jpg");
+}
+.bg-img {
+    // background: linear-gradient(to right, #eaf3fb, #ecebf6);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
+    width: 100%;
+    & > div {
+        height: 100%;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1rem;
+        width: 100%;
+    }
+    // background: linear-gradient(to right, #b8d9f7, #e7e6f8);
+    // object-fit: cover;
+    // background-image: url("../../../assets/imgs/home-img.jpg");
+    // background-repeat: no-repeat; /* Ngăn ảnh lặp lại */
+    // background-size: cover;
+}
+// .intro-logo {
+//     animation: logoAnimation 3s infinite;
+//     & > img {
+//         max-width: 20rem;
+//     }
+// }
+
+.intro-img1 {
+    z-index: 1;
+    width: 30%;
+    padding-right: 60px;
+    margin-left: 100px;
+    position: relative;
+    top: 100px;
+    & img {
+        width: 100%;
+        height: 700px;
+        object-fit: cover;
+        border-radius: 400px 400px 400px 400px;
+    }
+    animation: imgAnimation 2s ease-in-out infinite;
+}
+.intro-img2 {
+    width: 30%;
+    padding-right: 60px;
+    position: relative;
+    z-index: 1;
+    top: 200px;
+    & img {
+        width: 100%;
+        height: 700px;
+        object-fit: cover;
+        border-radius: 400px 400px 400px 400px;
+    }
+    animation: imgAnimation 2s ease-in-out infinite;
+}
+.intro-content {
+    height: 90%;
+    padding-top: 100px;
+    // padding-left: 80px;
+    // gap: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.intro-content h1 {
+    text-align: center;
+    justify-content: center;
+    font-size: 12rem;
+    margin: 0;
+    color: white;
+}
+.intro-content h6 {
+    text-align: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 200;
+    color: white;
+    margin: 0;
+}
+.intro-tohome {
+    margin-top: 2rem;
+    display: absolute;
+    z-index: 1;
+    width: 30%;
+    color: #fff;
+    background-color: #57cfff;
+    cursor: pointer;
+    font-size: 1rem;
+    border: 1.5px solid #57cfff;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem 0.5em;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s, background-color;
+}
+.intro-tohome:hover {
+    scale: 1.02;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.intro-plane {
+    width: 10%;
+    & > img {
+        max-width: 10rem;
+    }
+}
+.intro-plane {
+    position: absolute;
+    z-index: 0;
+    animation: airplaneAnimation 18s linear infinite;
+    transform-origin: center center;
+}
+
+@keyframes airplaneAnimation {
+    0% {
+        transform: translateX(0) translateY(0%);
+    }
+    25% {
+        transform: translateX(50%) translateY(50%);
+    }
+    50% {
+        transform: translateX(100%) translateY(0%);
+    }
+    75% {
+        transform: translateX(50%) translateY(100%);
+    }
+    100% {
+        transform: translateX(0%) translateY(50%);
+    }
+}
+@keyframes imgAnimation {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-16px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.intro-two {
+    background-image: url("../../../assets/imgs/background-img.png");
+}
+.intro-two-overlay {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding-top: 2rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    & > div {
+        padding: 0px;
+    }
+}
+.intro-two__title {
+    & h1 {
+        font-size: 4rem;
+    }
+    & h4 {
+        font-weight: 300;
+        font-size: 1.4rem;
+    }
+}
+
+.intro-two-places {
+    padding-top: 0px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.popular-place {
+    border-radius: 20px;
+    height: 26rem;
+    width: 100%;
+    background-size: cover;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pp1 {
+    background-image: url("../../../assets/imgs/place1.png");
+}
+
+.pp2 {
+    background-image: url("../../../assets/imgs/place2.jpg");
+}
+
+.pp3 {
+    background-image: url("../../../assets/imgs/place3.jpg");
+}
+
+.pp4 {
+    background-image: url("../../../assets/imgs/place4.jpg");
+}
+
+.pp1,
+.pp2,
+.pp3,
+.pp4 {
+    color: rgb(255, 255, 255);
+    & h1 {
+        padding-top: 80px;
+        margin: 0;
+        font-size: 25px;
+        font-weight: 700;
+    }
+    & .pp-text-overlay {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #00000045;
+        border-radius: 20px;
+    }
+}
+
+.intro-three {
+    background-image: url("https://travel.nicdark.com/travel-agency-wordpress-theme/wp-content/uploads/sites/9/2023/05/i-parallax-09-destination-03.jpeg");
+}
+.intro-three-overlay {
+    color: white;
+    background-color: transparent;
+    background-image: linear-gradient(163deg, #000000ed 0%, #434a541f 100%);
+    width: 100%;
+    height: 100%;
+    & h1 {
+        font-size: 50px;
+        font-weight: 700;
+        line-height: 1.2em;
+    }
+    & > div {
+        padding: 0;
+    }
+    // transition: background-color 0.3s, border-radius 0.3s, opacity 0.3s;
+}
+.intro-three-content {
+    width: 40%;
+    padding: 80px 0px 50px 0px;
+}
+
+.intro-three-slides {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.review-wrapper {
+    background-color: #70c1fb;
+    border-width: 0px 0px 0px 0px;
+    border-radius: 15px;
+    padding: 50px 50px 50px 50px;
+    display: grid;
+    grid:
+        "content content content content content content"
+        "avatar name name name name name"
+        "avatar place place place place place"
+        "time time time time time time";
+}
+.review-content {
+    grid-area: content;
+    padding-bottom: 30px;
+    font-size: 25px;
+    font-style: normal;
+}
+.review-avatar {
+    grid-area: avatar;
+    padding-bottom: 20px;
+}
+.review-name {
+    grid-area: name;
+    font-size: 20px;
+    font-weight: 800;
+}
+.review-place {
+    grid-area: place;
+    font-size: 14px;
+}
+.review-time {
+    grid-area: time;
+    font-size: 14px;
+}
+
+.slick-slider .slick-slide {
+    padding: 0 15px;
+}
+.intro-name {
+    font-family: Anton, sans-serif;
+}
+
+.intro-description {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    padding-bottom: 20px;
+    & > div {
+        width: 25%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    & .intro-description-1 {
+        padding-left: 20px;
+        font-size: 4rem;
+        color: white;
+    }
+    & .intro-description-2 {
+        padding-left: 5px;
+        font-size: 1.8rem;
+        font-weight: 300;
+        color: rgb(216, 213, 213);
+    }
+}
+
+.intro-des {
+    border-left: 2px solid rgb(111, 109, 109);
+}
