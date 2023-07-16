@@ -4,7 +4,57 @@ import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
 
 
-function GetTouristInfor() {
+export function ConnectWallet (){
+  const [currentAccount, setCurrentAccount] = useState('');
+
+  useEffect(() => {
+    const loadWeb3 = async () => {
+      if (window.ethereum) {
+        // Sử dụng Web3.js để kết nối với MetaMask
+        const web3 = new Web3(window.ethereum);
+        try {
+          // Yêu cầu quyền truy cập tài khoản MetaMask
+          await window.ethereum.enable();
+          // Lấy danh sách tài khoản MetaMask hiện có
+          const accounts = await web3.eth.getAccounts();
+          // Lưu địa chỉ tài khoản đầu tiên vào state
+          setCurrentAccount(accounts[0]);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    const handleAccountsChanged = (accounts) => {
+      if (accounts.length > 0) {
+        // Cập nhật địa chỉ ví khi người dùng chuyển tài khoản trên MetaMask
+        setCurrentAccount(accounts[0]);
+      } else {
+        // Người dùng đã đăng xuất khỏi MetaMask
+        setCurrentAccount('');
+      }
+    };
+
+    loadWeb3();
+
+    // Đăng ký sự kiện "accountsChanged" để lắng nghe thay đổi tài khoản
+    window.ethereum.on('accountsChanged', handleAccountsChanged);
+
+    // Xóa bỏ sự kiện khi component bị hủy
+    return () => {
+      window.ethereum.off('accountsChanged', handleAccountsChanged);
+    };
+  }, []);
+
+  return (
+    <div>
+      <h1>Địa chỉ ví MetaMask hiện tại: {currentAccount}</h1>
+    </div>
+  );
+}
+
+
+export function GetTouristInfor() {
   const [infor, setInfor] = useState(null);
   const abi = TokenArtifact.abi;
   
@@ -26,8 +76,8 @@ function GetTouristInfor() {
     const contract = new web3.eth.Contract(abi, contractAddress.Token);
     
     // Thực hiện các bước để lấy dữ liệu infor
-    const infor = await contract.methods.getBalance('0xcbffe3fa9226a7cD7CfFC770103299B83518F538').call();
-    console.log(typeof infor)
+    const infor = await contract.methods.getAllJourney().call({from: '0x0ea3E6ce65d314a212F3A9E50917A6402A5e20b0'});
+    console.log(infor)
     return infor;
   };
 
@@ -38,8 +88,8 @@ function GetTouristInfor() {
       {infor ? (
         <div>
           <h1>Thông tin du khách:</h1>
-          <p>Tên: {infor}</p>
-          <p>Tuổi: {infor}</p>
+          
+          <p>hành trình: {infor}</p>
           {/* Hiển thị các thông tin khác */}
         </div>
       ) : (
@@ -49,4 +99,3 @@ function GetTouristInfor() {
   );
 }
 
-export default GetTouristInfor;
