@@ -12,12 +12,12 @@ import { useDispatch } from "react-redux";
 // import img from "../../assets/imgs/avatar.png"
 const User = () => {
     let user = useSelector(getInfor);
-    const [firstname, setFirstname] = useState(user.firstName ? user.firstName : "");
-    const [lastname, setLastname] = useState(user.lastName ? user.lastName : "");
-    const [email, setEmail] = useState(user.email ? user.email : "");
-    const [phonenumber, setPhonenumber] = useState(user.phonenumber ? user.phonenumber : "");
-    const [avatar, setAvatar] = useState(user.avatar ? user.avatar : "");
-    const [avatarchange, setAvatarchange] = useState(user.avatar ? user.avatar : "");
+    const [firstname, setFirstname] = useState(user?.firstName ? user.firstName : "");
+    const [lastname, setLastname] = useState(user?.lastName ? user.lastName : "");
+    const [email, setEmail] = useState(user?.email ? user.email : "");
+    const [phonenumber, setPhonenumber] = useState(user?.phonenumber ? user.phonenumber : "");
+    const [avatar, setAvatar] = useState(user?.avatar ? user.avatar : "");
+    const [avatarchange, setAvatarchange] = useState(user?.avatar ? user.avatar : "");
     const dispatch = useDispatch();
 
     let axiosJWT = createAxios(user, dispatch, setInfor);
@@ -27,12 +27,10 @@ const User = () => {
 
     const handleSubmit1 = async (event) => {
         event.preventDefault();
-        const formData = new FormData();
-        console.log(avatar)
+        let formData = new FormData();
         formData.append("avatar", avatar);
-        console.log("avatar", formData);
         let token = user.accessToken;
-        dispatch(changeAvatar({ token, formData, axiosJWT }, { dispatch }))
+        dispatch(changeAvatar({ token, formData, axiosJWT }, dispatch))
         toast.success('Thay đổi avatar thành công !');
     };
     const handleSubmit2 = async (event) => {

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios
-    from 'axios';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -34,6 +34,7 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
             });
             console.log(infor.data)
             dispatch(setUser({ address: accounts[0], infor: infor.data }));
+            toast.success("Connect Ví Metamask thành công")
         } catch (err) {
             console.log(err.message);
         }
@@ -62,17 +63,15 @@ export const changeInfor = createAsyncThunk('user/changeinfor', async ({ token, 
     }
 })
 
-export const changeAvatar = createAsyncThunk('user/changeavatar', async ({ token, data, axiosJWT }, { dispatch }) => {
+export const changeAvatar = createAsyncThunk('user/changeavatar', async ({ token, formData, axiosJWT }, { dispatch }) => {
     try {
-        console.log(token)
-        console.log(data)
-        const res = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/changeavatar`, data, {
+        const res = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/changeavatar`, formData, {
             headers: {
                 token: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
             },
         })
-        console.log("avatar", res);
+        dispatch(setInfor({ infor: res.data }));
     }
     catch (err) {
         console.log(err)
@@ -82,6 +81,7 @@ export const changeAvatar = createAsyncThunk('user/changeavatar', async ({ token
 
 export const logout = createAsyncThunk('user/logout', async (_, { dispatch }) => {
     dispatch(clearUser());
+    toast.success("Đăng xuất thành công")
 })
 
 export const { setUser, clearUser, setInfor } = userSlice.actions;

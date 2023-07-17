@@ -1,5 +1,5 @@
 import "./css/Intro.scss";
-import plane from "../../assets/imgs/plane.png"
+// import plane from "../../assets/imgs/plane.png"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import avt from "../../assets/imgs/avatar.png"
@@ -39,7 +39,7 @@ const Intro = () => {
                 <div className="bg-img">
                     <Container maxWidth="lg">
                         <div className="intro-content">
-                            <div className="intro-plane"><img src={plane} alt="Máy bay"></img></div>
+                            {/* <div className="intro-plane"><img src={plane} alt="Máy bay"></img></div> */}
                             <h1 className="intro-name">TOURDC</h1>
                             <h6>Ứng dụng du lịch áp dụng công nghệ Blockchain</h6>
                             <button className="intro-tohome" onClick={() => window.location.replace('/home')}>Khám phá ngay</button>

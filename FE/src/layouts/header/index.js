@@ -37,7 +37,7 @@ function PaperComponent(props) {
 }
 
 const Header = () => {
-    //Connect Wallet
+    //Connect Wallet    
     let walletAddress = useSelector(getUserData);
     console.log(walletAddress)
     let image = avatar;
@@ -49,7 +49,6 @@ const Header = () => {
         if (walletAddress === "" || walletAddress === undefined) {
             console.log(walletAddress)
             dispatch(connectWallet(dispatch));
-            // toast.success('Kết nối ví Metamask thành công !');
         }
     };
     const openCamera = async () => {
@@ -94,9 +93,9 @@ const Header = () => {
 
     return (
         <header className="header">
-            <ToastContainer position="top-right"
+            <ToastContainer position="bottom-right"
                 type="success"
-                autoClose={5000}
+                autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
