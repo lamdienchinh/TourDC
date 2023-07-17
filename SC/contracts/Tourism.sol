@@ -35,6 +35,11 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         tickets.push(Ticket(8, false));
         tickets.push(Ticket(9, false));
         tickets.push(Ticket(10, false));
+        tickets.push(Ticket(11, false));
+        tickets.push(Ticket(12, false));
+        tickets.push(Ticket(13, false));
+        tickets.push(Ticket(14, false));
+        tickets.push(Ticket(15, false));
         admin.push(msg.sender);
         owner = msg.sender;
     }
