@@ -44,7 +44,9 @@ const placeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
+  placeid: {
+    type: Number,
+  },
   description: {
     type: String,
   },
@@ -59,9 +61,6 @@ const placeSchema = new mongoose.Schema({
     type: String,
   },
   address: {
-    type: String,
-  },
-  reviews_number: {
     type: String,
   }
 })
