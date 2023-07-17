@@ -27,7 +27,7 @@ const Trip = (props) => {
                 <CardContent>
                     <Typography variant="h6">{trip.title}</Typography>
                     <Typography variant="subtitle1">Thời gian: {trip.time}</Typography>
-                    <Typography variant="body1">{getFirst40Characters(trip)} <p className="trip__continue">Xem thêm</p></Typography>
+                    <Typography variant="body1">{getFirst40Characters(trip)} <span className="trip__continue">Xem thêm</span></Typography>
                     <Rating value={trip.rating} readOnly />
                 </CardContent>
             </Card>

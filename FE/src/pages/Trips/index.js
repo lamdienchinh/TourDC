@@ -18,6 +18,8 @@ import Rating from '@mui/material/Rating';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
+import { toast } from "react-toastify"
+// import { doesSectionFormatHaveLeadingZeros } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
 
 function PaperComponent(props) {
     return (
@@ -35,9 +37,11 @@ const Trips = () => {
     const options = config.options
     const [allTrips, setAllTrips] = useState([]);
     const [select, setSelect] = useState(1);
-    const [selectTrip, setSelectTrip] = useState();
-    const [style, setStyle] = useState()
-    console.log(style);
+    const [selectTrip, setSelectTrip] = useState("");
+    // const [style, setStyle] = useState()
+    const [imgs, setImgs] = useState([])
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
     // const [getplace, setGetPlaces] = useState(0);
     // const [trips, setTrips] = useState([]);
     const [row1, setRow1] = useState([]);
@@ -56,31 +60,40 @@ const Trips = () => {
     const [rating, setRating] = React.useState(0);
 
     const handleRatingChange = (event, value) => {
+        event.preventDefault();
         setRating(value);
     };
+    const handleTitleChange = (event) => {
+        event.preventDefault();
+        setTitle(event.target.value);
+    };
+    const handleDescriptionChange = (event) => {
+        event.preventDefault();
+        setDescription(event.target.value);
+    };
     useEffect(() => {
-        var style = {
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '90%',
-            height: '90%',
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-        };
+        // var style = {
+        //     position: 'absolute',
+        //     top: '50%',
+        //     left: '50%',
+        //     transform: 'translate(-50%, -50%)',
+        //     width: '90%',
+        //     height: '90%',
+        //     bgcolor: 'background.paper',
+        //     border: '2px solid #000',
+        //     boxShadow: 24,
+        //     p: 4,
+        // };
         let array = Array.from({ length: 32 }, () => ({ ...trips.trips }));
         setAllTrips(array);
-        setStyle(style);
+        // setStyle(style);
         // console.log(trips);
         // setTrips();
         setIsLoading(false)
     }, []);
 
     useEffect(() => {
-        let start = 4* (select - 1);
+        let start = 4 * (select - 1);
         let end = start + 4;
         if (end > allTrips.length) end = allTrips.length;
         const temp = allTrips.slice(start, end);
@@ -99,13 +112,46 @@ const Trips = () => {
         setTotalPages(totalPages);
     }, [select, allTrips]);
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = (trip) => {
+    const [open1, setOpen1] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    const handleOpen1 = (trip) => {
         setSelectTrip(trip);
-        setOpen(true);
+        setOpen1(true);
         setScroll(scroll);
     }
-    const handleClose = () => setOpen(false);
+    const handleOpen2 = () => {
+        setOpen2(true);
+    }
+    const handleClose1 = (event, action) => {
+        event.preventDefault();
+        if (action === 1) {
+            handleOpen2();
+        }
+        else {
+            setOpen1(false);
+        }
+    }
+    const handleClose2 = (event, action) => {
+        event.preventDefault();
+        if (action === 1) {
+            let result = {
+                rate: rating,
+                list_imgs: imgs,
+                title: title,
+                description: description
+            }
+            console.log(result);
+            toast.success("Lưu cảm nghĩ thành công !")
+            setSelectTrip("");
+            setImgs([]);
+            setRating(0);
+            setDescription("");
+            setTitle("");
+            setOpen1(false);
+        }
+        setOpen2(false);
+        return action;
+    }
     return (
         <div className="trip-wrapper">
             <div className="trip-slide">
@@ -163,7 +209,7 @@ const Trips = () => {
                             <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--1">
                             {row1 && row1.map((item, itemIndex) => (
-                                <div onClick={() => handleOpen(item)}> <Trip trip={item}></Trip></div>
+                                <div onClick={() => handleOpen1(item)} key={itemIndex}> <Trip trip={item}></Trip></div>
                             ))}
                         </div>}
                         {isLoading === true ? <div>
@@ -171,7 +217,7 @@ const Trips = () => {
                             <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--2">
                             {row2 && row2.map((item, itemIndex) => (
-                                <div onClick={() => handleOpen(item)}> <Trip trip={item}></Trip></div>
+                                <div onClick={() => handleOpen1(item)} key={itemIndex} > <Trip trip={item}></Trip></div>
                             ))}
                         </div>}
                         {/* <div className="trips__results--3">
@@ -193,8 +239,8 @@ const Trips = () => {
                     <Dialog
                         fullWidth={true}
                         maxWidth="xl"
-                        open={open}
-                        onClose={handleClose}
+                        open={open1}
+                        onClose={handleClose1}
                         PaperComponent={PaperComponent}
                         aria-labelledby="draggable-dialog-title"
                         scroll='paper'
@@ -218,7 +264,7 @@ const Trips = () => {
                                     <h2>Đánh giá</h2>
                                     <Rating name="rating"
                                         value={rating}
-                                        onChange={handleRatingChange}></Rating>
+                                        onChange={(event, value) => handleRatingChange(event, value)}></Rating>
                                     <div className="tripinfor-form">
                                         <TextField
                                             required
@@ -227,6 +273,7 @@ const Trips = () => {
                                             placeholder='Nhập tiêu đề'
                                             variant="standard"
                                             fullWidth
+                                            onChange={event => handleTitleChange(event)}
                                         />
                                         <TextField
                                             required
@@ -237,6 +284,7 @@ const Trips = () => {
                                             multiline
                                             rows={4}
                                             fullWidth
+                                            onChange={event => handleDescriptionChange(event)}
                                         />
                                     </div>
                                 </Box>
@@ -248,33 +296,59 @@ const Trips = () => {
                                         } else {
                                             console.log('Files uploaded:');
                                             console.log(files.map(f => f.fileUrl));
+                                            setImgs(files.map(f => f.fileUrl));
+                                            toast.success("Upload ảnh thành công !")
                                         }
                                     }}>
                                     {({ onClick }) =>
-                                        <Button onClick={onClick} variant="contained" >
+                                        <Button className='trip-btn' onClick={onClick} variant="contained" >
                                             Upload ảnh
                                         </Button>
                                     }
                                 </UploadButton>
                                 <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
-                                    {selectTrip?.images.map((item) => (
-                                        <ImageListItem key={item.url}>
-                                            <img
-                                                src={`${item.url}?w=161&fit=crop&auto=format`}
-                                                srcSet={`${item.url}?w=161&fit=crop&auto=format&dpr=2 2x`}
-                                                alt={`Đây là ảnh thứ ${item.id}`}
-                                                loading="lazy"
-                                            />
-                                        </ImageListItem>
+                                    {selectTrip && selectTrip?.images.map((item, index) => (
+                                        item && (
+                                            <ImageListItem key={index}>
+                                                <img
+                                                    src={`${item.url}?w=161&fit=crop&auto=format`}
+                                                    srcSet={`${item.url}?w=161&fit=crop&auto=format&dpr=2 2x`}
+                                                    alt={`Đây là ảnh thứ ${item.id}`}
+                                                    loading="lazy"
+                                                />
+                                            </ImageListItem>
+                                        )
                                     ))}
                                 </ImageList>
                             </div>
                         </DialogContent>
                         <DialogActions>
-                            <Button autoFocus onClick={(event) => handleClose(event, 0)}>
+                            <Button autoFocus onClick={(event) => handleClose1(event, 0)}>
                                 Huỷ
                             </Button>
-                            <Button onClick={(event) => handleClose(event, 1)}>Lưu</Button>
+                            <Button onClick={(event) => handleClose1(event, 1)}>Lưu</Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog
+                        fullWidth={true}
+                        maxWidth="xs"
+                        open={open2}
+                        onClose={handleClose2}
+                        PaperComponent={PaperComponent}
+                        aria-labelledby="draggable-dialog-title"
+                        scroll='paper'
+                    >
+                        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+                            Kiểm tra lại thông tin kỹ lưỡng trước khi xác nhận
+                        </DialogTitle>
+                        <DialogContent>
+
+                        </DialogContent>
+                        <DialogActions>
+                            <Button autoFocus onClick={(event) => handleClose2(event, 0)}>
+                                Huỷ
+                            </Button>
+                            <Button onClick={(event) => handleClose2(event, 1)}>Xác nhận</Button>
                         </DialogActions>
                     </Dialog>
                 </div>

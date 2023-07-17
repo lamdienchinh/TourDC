@@ -9,7 +9,7 @@
 }
 .code-wrapper {
     display: flex;
-    padding: 40px;
+    padding: 30px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -27,7 +27,7 @@
 
 .code-box {
     position: relative;
-    width: 1000px;
+    width: 800px;
     height: 100px;
     display: flex;
     justify-content: center;
@@ -72,12 +72,12 @@
     border: 0px;
     z-index: 1;
     color: white;
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 .code-btn {
-    padding: 1rem 8rem 1rem 8rem;
-    font-size: 4rem;
+    padding: 1rem 5rem 1rem 5rem;
+    font-size: 2rem;
     color: white;
     font-weight: 700;
     border-radius: 15px;

@@ -62,6 +62,12 @@ const placeSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+  },
+  list_imgs: {
+    type: [String]
+  },
+  type: {
+    type: String,
   }
 })
 
