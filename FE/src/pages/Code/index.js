@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./css/Code.scss"
 const Code = () => {
     const [input, setInput] = useState();
-    const [placeId, setPlaceId] = useState();
+    const [setPlaceId] = useState();
     const handleChange = (content) => {
         setInput(content);
     }
@@ -23,7 +23,7 @@ const Code = () => {
         // Tiếp tục xử lý với giá trị id
         // ...
         setPlaceId(id)
-      }, []);
+      }, [setPlaceId]);
       
     return (
         <section className="code-page">

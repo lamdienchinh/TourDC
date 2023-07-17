@@ -39,13 +39,14 @@ function PaperComponent(props) {
 const Header = () => {
     //Connect Wallet
     let walletAddress = useSelector(getUserData);
+    console.log(walletAddress)
     let image = avatar;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [clogout, setClogout] = useState(false);
 
     const login = async () => {
-        if (walletAddress === "") {
+        if (walletAddress === "" || walletAddress === undefined) {
             console.log(walletAddress)
             dispatch(connectWallet(dispatch));
             // toast.success('Kết nối ví Metamask thành công !');

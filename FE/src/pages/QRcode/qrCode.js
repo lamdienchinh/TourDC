@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import QRcode_1 from "../../assets/imgs/QRcode_1.png";
 import QRcode_2 from "../../assets/imgs/QRcode_2.png";
 import Col from "react-bootstrap/Col";

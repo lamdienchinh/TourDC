@@ -2,8 +2,8 @@
 import './App.css';
 import { BrowserRouter } from "react-router-dom";
 import RouterList from './routers';
-import {GetTouristInfor, ConnectWallet} from './components/dapp/dapp';
-import {TicketForm} from './components/dapp/checkIn.js'
+// import {GetTouristInfor, ConnectWallet} from './components/dapp/dapp';
+// import {TicketForm} from './components/dapp/checkIn.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 

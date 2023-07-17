@@ -10,6 +10,7 @@ const getAllPlace = async () => {
         return [];
     }
 }
+
 // const getAllTrip = async (walletAddress) => {
 //     try {
 //         let alltrip = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/getalltrips`, { data: walletAddress })
