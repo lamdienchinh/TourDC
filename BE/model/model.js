@@ -12,13 +12,8 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String
   },
-  username: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
+  phonenumber: {
+    type: String
   },
   avatar: {
     type: String,
@@ -26,7 +21,6 @@ const userSchema = new mongoose.Schema({
   walletAddress: {
     type: String
   }
-  
 })
 
 const albumSchema = new mongoose.Schema({
