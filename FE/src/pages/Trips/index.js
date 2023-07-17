@@ -80,12 +80,12 @@ const Trips = () => {
     }, []);
 
     useEffect(() => {
-        let start = 12 * (select - 1);
-        let end = start + 12;
+        let start = 4* (select - 1);
+        let end = start + 4;
         if (end > allTrips.length) end = allTrips.length;
         const temp = allTrips.slice(start, end);
 
-        const totalPages = Math.ceil(allTrips.length / 12);
+        const totalPages = Math.ceil(allTrips.length / 4);
 
         const row1 = temp.slice(0, 2);
         const row2 = temp.slice(2, 4);

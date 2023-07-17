@@ -60,6 +60,9 @@ const placeSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+  },
+  reviews_number: {
+    type: String,
   }
 })
 

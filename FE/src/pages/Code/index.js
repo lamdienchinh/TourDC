@@ -4,7 +4,7 @@ import "./css/Code.scss";
 import TokenArtifact from "../../contracts/TouristConTract.json";
 import contractAddress from "../../contracts/contract-address.json";
 import Web3 from "web3";
-import { ToastContainer, toast } from 'react-toastify';
+import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Code = () => {

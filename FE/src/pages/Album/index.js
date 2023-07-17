@@ -60,11 +60,11 @@ const Album = () => {
     }, []);
 
     useEffect(() => {
-        let start = 12 * (select - 1);
-        let end = start + 12;
+        let start = 4* (select - 1);
+        let end = start + 4;
         if (end > albums.length) end = albums.length;
         let currents = albums.slice(start, end);
-        let totalPages = Math.ceil(albums.length / 12);
+        let totalPages = Math.ceil(albums.length / 4);
         let row1 = currents.slice(0, 2);
         let row2 = currents.slice(2, 4);
         setRow1(row1);
