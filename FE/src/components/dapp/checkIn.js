@@ -7,11 +7,11 @@ import contractAddress from "../../contracts/contract-address.json";
 
 
 // export function CheckIn(QRcode, review, rate, ticketID) {
-  
+
 //   const checkInHandle = async () => {
 //     const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 //     const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
-    
+
 //     // Thực hiện các bước để thực hiện giao dịch contract
 //     const infor = await contract.methods.getBalance('0xcbffe3fa9226a7cD7CfFC770103299B83518F538').call();
 //     console.log(typeof infor)
@@ -20,7 +20,7 @@ import contractAddress from "../../contracts/contract-address.json";
 
 //   return (
 //     <div>
-      
+
 //     </div>
 //   );
 
@@ -83,24 +83,24 @@ export function TicketForm() {
     console.log('Bình luận:', comment);
     console.log('Đánh giá:', rating);
     console.log('Địa chỉ ví: ', currentAccount);
-    
+
     checkIn(currentAccount, 3, comment, rating, ticketCode)
-      .then(()=>{
-        const hashedMessage = web3.utils.soliditySha3(currentAccount,100,"check-in", 0);
-        console.log("Hashed Message: ",hashedMessage)
-        const signatureObj =  web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
+      .then(() => {
+        const hashedMessage = web3.utils.soliditySha3(currentAccount, 100, "check-in", 0);
+        console.log("Hashed Message: ", hashedMessage)
+        const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
         console.log("signature: ", signatureObj.signature);
         const signature = signatureObj.signature
-       
+
         const r = signature.slice(0, 66);
         const s = "0x" + signature.slice(66, 130);
         const v = parseInt(signature.slice(130, 132), 16);
         console.log({ r, s, v });
 
         alert(signature);
-        reward(currentAccount, '0xcbffe3fa9226a7cD7CfFC770103299B83518F538',100, "check-in", 0, signature)
+        reward(currentAccount, '0xcbffe3fa9226a7cD7CfFC770103299B83518F538', 100, "check-in", 0, signature)
       });
-    
+
     // Đặt lại giá trị trong form
     setTicketCode('');
     setComment('');
@@ -124,10 +124,10 @@ export function TicketForm() {
       })
       .then((txHash) => console.log("txHash: ", txHash))
       .catch((error) => console.error("error: ", error));
-    
+
   }
 
-  async function reward(currentAccount,signer, amount, message, nonce, signature){
+  async function reward(currentAccount, signer, amount, message, nonce, signature) {
     await window.ethereum
       .request({
         method: 'eth_sendTransaction',
@@ -144,17 +144,17 @@ export function TicketForm() {
       })
       .then((txHash) => console.log("txHash: ", txHash))
       .catch((error) => console.error("error: ", error));
-    
+
   }
 
-  async function getSignature(currentAccount) {
-    // WEB3 JS SIGNATURE
-		const hashedMessage = web3.utils.soliditySha3(currentAccount,100,"check-in", 0);
-		console.log("Hashed Message: ",hashedMessage)
-		const signatureObj = await web3.eth.accounts.sign(hashedMessage, '93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
-		console.log("signature: ", signatureObj.signature);
-		// const signature = signatureObj.signature;
-  }
+  // async function getSignature(currentAccount) {
+  //   // WEB3 JS SIGNATURE
+  // 	const hashedMessage = web3.utils.soliditySha3(currentAccount,100,"check-in", 0);
+  // 	console.log("Hashed Message: ",hashedMessage)
+  // 	const signatureObj = await web3.eth.accounts.sign(hashedMessage, '93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
+  // 	console.log("signature: ", signatureObj.signature);
+  // 	// const signature = signatureObj.signature;
+  // }
   return (
     <div>
       <h2>Form đánh giá vé</h2>

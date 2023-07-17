@@ -6,3 +6,8 @@ export const getUserData = createSelector(
     userSelector,
     (user) => user.address
 );
+
+export const getInfor = createSelector(
+    userSelector,
+    (user) => user.infor
+)
