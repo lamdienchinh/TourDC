@@ -18,6 +18,9 @@ import Rating from '@mui/material/Rating';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
+import Web3 from 'web3'
+import TokenArtifact from "../../contracts/TouristConTract.json"
+import contractAddress from "../../contracts/contract-address.json";
 
 function PaperComponent(props) {
     return (
@@ -38,6 +41,62 @@ const Trips = () => {
     const [selectTrip, setSelectTrip] = useState();
     const [style, setStyle] = useState()
     console.log(style);
+
+    // Fetch data từ blockchain
+    const [journey, setJourneys] = useState([]);
+    const [currentAccount, setCurrentAccount] = useState('0xcbffe3fa9226a7cD7CfFC770103299B83518F538');
+
+    useEffect(() => {
+        const loadWeb3 = async () => {
+          if (window.ethereum) {
+            // Sử dụng Web3.js để kết nối với MetaMask
+            const web3 = new Web3(window.ethereum);
+            try {
+              // Yêu cầu quyền truy cập tài khoản MetaMask
+              await window.ethereum.enable();
+              // Lấy danh sách tài khoản MetaMask hiện có
+              const accounts = await web3.eth.getAccounts();
+              // Lưu địa chỉ tài khoản đầu tiên vào state
+              setCurrentAccount(accounts[0]);
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        };
+    
+        const handleAccountsChanged = (accounts) => {
+          if (accounts.length > 0) {
+            // Cập nhật địa chỉ ví khi người dùng chuyển tài khoản trên MetaMask
+            setCurrentAccount(accounts[0]);
+          } else {
+            // Người dùng đã đăng xuất khỏi MetaMask
+            setCurrentAccount('');
+          }
+        };
+    
+        loadWeb3();
+        
+        // Đăng ký sự kiện "accountsChanged" để lắng nghe thay đổi tài khoản
+        window.ethereum.on('accountsChanged', handleAccountsChanged);
+    
+        // Xóa bỏ sự kiện khi component bị hủy
+        // return () => {
+        //   window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        // };
+        const fetchData = async (currentAccount) => {
+              const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
+              const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
+          
+              // Thực hiện các bước để lấy dữ liệu infor
+              const infor = await contract.methods.getAllJourney().call({from: currentAccount});
+              console.log("infor:",  infor)
+              setJourneys(infor)
+              setAllTrips(infor)
+          }
+        fetchData(currentAccount);
+        console.log("Trips: ", allTrips);
+    }, [currentAccount]);
+
     // const [getplace, setGetPlaces] = useState(0);
     // const [trips, setTrips] = useState([]);
     const [row1, setRow1] = useState([]);
@@ -72,7 +131,7 @@ const Trips = () => {
             p: 4,
         };
         let array = Array.from({ length: 32 }, () => ({ ...trips.trips }));
-        setAllTrips(array);
+        // setAllTrips(array);
         setStyle(style);
         // console.log(trips);
         // setTrips();

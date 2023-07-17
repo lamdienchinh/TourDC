@@ -20,37 +20,6 @@ const Code = () => {
     }
     const submitCode = async () => {
         console.log(input)
-        // await toast.promise(
-        //     contract.methods.checkValidTicket(input).call(),
-        //     {
-        //       pending: 'Đang kiểm tra...',
-        //       success: async (result) => {
-        //         console.log("result: ", result);
-        //         if (result) {
-        //           await toast.promise(
-        //             checkIn(currentAccount, input, placeId),
-        //             {
-        //               pending: 'Đang check in...',
-        //               success: () => {
-        //                 toast.success('Check in thành công');
-        //               },
-        //               error: (error) => {
-        //                 console.error("error: ", error);
-        //                 toast.error("Lỗi khi check in");
-        //               }
-        //             }
-        //           );
-        //         } else {
-        //           toast.error("Mã không hợp lệ");
-        //         }
-        //       },
-        //       error: (error) => {
-        //         console.error("error: ", error);
-        //         toast.error("Đã xảy ra lỗi");
-        //       }
-        //     }
-        //   );
-        // };
         await contract.methods.checkValidTicket(input).call()
         .then((result)=>{
             console.log("result: ", result);
