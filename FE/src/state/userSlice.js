@@ -34,13 +34,13 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
             });
             console.log(infor.data)
             dispatch(setUser({ address: accounts[0], infor: infor.data }));
-            toast.success("Connect Ví Metamask thành công")
+            toast.success("Kết nối ví Metamask thành công")
         } catch (err) {
             console.log(err.message);
         }
     } else {
         /* MetaMask is not installed */
-        console.log("Please install MetaMask");
+        console.log("Hãy cài đặt ví Metamask");
     }
 });
 
