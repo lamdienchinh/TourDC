@@ -15,13 +15,14 @@ import Rating from '@mui/material/Rating';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
-import Web3 from 'web3'
-import TokenArtifact from "../../contracts/TouristConTract.json"
-import contractAddress from "../../contracts/contract-address.json";
 import { toast } from "react-toastify"
 import axios from 'axios';
 // import { doesSectionFormatHaveLeadingZeros } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
-
+import {useSelector} from 'react-redux'
+import { getUserData } from '../../state/selectors';
+import { getAllTrips } from '../../components/dapp/getAllTrips';
+import reviewTrip from '../../components/dapp/reviewTrip';
+import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 function PaperComponent(props) {
     return (
         <Draggable
@@ -39,58 +40,20 @@ const Trips = () => {
 
     // Fetch data từ blockchain
     const [journey, setJourneys] = useState([]);
-    const [currentAccount, setCurrentAccount] = useState();
+    const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
     
-    const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
-    const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
-    useEffect(() => {
-        const loadWeb3 = async () => {
-            if (window.ethereum) {
-                // Sử dụng Web3.js để kết nối với MetaMask
-                const web3 = new Web3(window.ethereum);
-                try {
-                    // Yêu cầu quyền truy cập tài khoản MetaMask
-                    await window.ethereum.enable();
-                    // Lấy danh sách tài khoản MetaMask hiện có
-                    const accounts = await web3.eth.getAccounts();
-                    // Lưu địa chỉ tài khoản đầu tiên vào state
-                    setCurrentAccount(accounts[0]);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        };
-
-        const handleAccountsChanged = (accounts) => {
-            if (accounts.length > 0) {
-                // Cập nhật địa chỉ ví khi người dùng chuyển tài khoản trên MetaMask
-                setCurrentAccount(accounts[0]);
-            } else {
-                // Người dùng đã đăng xuất khỏi MetaMask
-                setCurrentAccount('');
-            }
-        };
-
-        loadWeb3();
-
-        // Đăng ký sự kiện "accountsChanged" để lắng nghe thay đổi tài khoản
-        window.ethereum.on('accountsChanged', handleAccountsChanged);
-
-        // Xóa bỏ sự kiện khi component bị hủy
-        // return () => {
-        //   window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        // };
+    useEffect (()=>{ 
         const fetchData = async (currentAccount) => {
           
               // Thực hiện các bước để lấy dữ liệu infor
-              const infor = await contract.methods.getAllJourney().call({from: currentAccount});
+              const infor = await getAllTrips(currentAccount);
               console.log("infor:",  infor)
               setJourneys(infor)
               setAllTrips(infor)
           }
         fetchData(currentAccount);
         console.log("Trips: ", allTrips);
-    }, [currentAccount]);
+    }, []);
 
 
 
@@ -207,7 +170,7 @@ const Trips = () => {
             // console.log("result:", result);
             console.log("selectTrip:", selectTrip);
             toast.promise(
-                reviewTrip(selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
+                reviewTrip(currentAccount,selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
                 {
                   pending: 'Đang đợi xử lí',
                   success: 'Lưu cảm nghĩ thành công !',
@@ -230,38 +193,6 @@ const Trips = () => {
         }
         setOpen2(false);
         return action;
-    }
-    const convertTimestampToVietnamTime = (timestamp) => {
-        // Tạo đối tượng Date với timestamp
-        const date = new Date(timestamp * 1000); // Đảo ngược timestamp về millisecond
-    
-        // Chuyển đổi thành ngày giờ Việt Nam
-        const vietnamTime = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
-    
-        // Trả về chuỗi ngày giờ Việt Nam
-        return vietnamTime.toString();
-      };
-
-    // function lưu data review vào blockchain
-    const reviewTrip = async (placeID, arrDate , comment, rate, title) => {
-        await window.ethereum
-          .request({
-            method: 'eth_sendTransaction',
-            params: [
-              {
-                from: currentAccount,
-                to: contractAddress.Token,
-                gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
-                maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
-                maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
-                data: contract.methods.review(placeID, arrDate, comment, rate, title).encodeABI()
-              },
-            ],
-          })
-          .then((txHash) => console.log("txHash: ", txHash))
-          .catch((error) => {
-            throw error;
-          })
     }
     
     return (
@@ -377,7 +308,7 @@ const Trips = () => {
                                     <h2>Đánh giá</h2>
                                     <Rating name="rating"
                                         value={rating}
-                                        disabled = {selectTrip.isReview == true?true:false}
+                                        disabled = {selectTrip.isReview === true?true:false}
                                         onChange={(event, value) => handleRatingChange(event, value)}></Rating>
                                     <div className="tripinfor-form">
                                         <TextField
@@ -388,7 +319,7 @@ const Trips = () => {
                                             variant="standard"
                                             fullWidth
                                             onChange={event => handleTitleChange(event)}
-                                            disabled = {selectTrip.isReview == true?true:false}
+                                            disabled = {selectTrip.isReview === true?true:false}
                                         />
                                         <TextField
                                             required
@@ -400,7 +331,7 @@ const Trips = () => {
                                             rows={4}
                                             fullWidth
                                             onChange={event => handleDescriptionChange(event)}
-                                            disabled = {selectTrip.isReview == true?true:false}
+                                            disabled = {selectTrip.isReview === true?true:false}
                                         />
                                     </div>
                                 </Box>

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import Web3 from 'web3'
+import {useSelector} from 'react-redux';
+import { getUserData } from '../../state/selectors';
 
 export function Connect() {
-  const [currentAccount, setCurrentAccount] = useState('');
-
+  const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
+  console.log(currentAccount)
   const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 
   useEffect(() => {
