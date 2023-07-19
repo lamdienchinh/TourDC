@@ -18,7 +18,7 @@ import Link from '@mui/material/Link';
 import { toast } from "react-toastify"
 import axios from 'axios';
 // import { doesSectionFormatHaveLeadingZeros } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getUserData } from '../../state/selectors';
 import { getAllTrips } from '../../components/dapp/getAllTrips';
 import reviewTrip from '../../components/dapp/reviewTrip';
@@ -41,16 +41,16 @@ const Trips = () => {
     // Fetch data từ blockchain
     const [journey, setJourneys] = useState([]);
     const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
-    
-    useEffect (()=>{ 
+
+    useEffect(() => {
         const fetchData = async (currentAccount) => {
-          
-              // Thực hiện các bước để lấy dữ liệu infor
-              const infor = await getAllTrips(currentAccount);
-              console.log("infor:",  infor)
-              setJourneys(infor)
-              setAllTrips(infor)
-          }
+
+            // Thực hiện các bước để lấy dữ liệu infor
+            const infor = await getAllTrips(currentAccount);
+            console.log("infor:", infor)
+            setJourneys(infor)
+            setAllTrips(infor)
+        }
         fetchData(currentAccount);
         console.log("Trips: ", allTrips);
     }, []);
@@ -145,7 +145,7 @@ const Trips = () => {
                 description: description
             }
             toast.promise(
-                reviewTrip(currentAccount,selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
+                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
                 {
                     pending: 'Đang đợi xử lí',
                     success: 'Lưu cảm nghĩ thành công !',
@@ -169,7 +169,7 @@ const Trips = () => {
         setOpen2(false);
         return action;
     }
-    
+
     return (
         <div className="trip-wrapper">
             <div className="trip-slide">
@@ -235,6 +235,7 @@ const Trips = () => {
                         {isLoading === true ? <div>
                             <div><Skeleton height="100%" /></div>
                             <div><Skeleton height="100%" /></div>
+                            <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--2">
                             {row2 && row2.map((item, itemIndex) => (
                                 <div onClick={() => handleOpen1(item)} key={itemIndex}>
@@ -286,7 +287,7 @@ const Trips = () => {
                                     <h2>Đánh giá</h2>
                                     <Rating name="rating"
                                         value={rating}
-                                        disabled = {selectTrip.isReview === true?true:false}
+                                        disabled={selectTrip.isReview === true ? true : false}
                                         onChange={(event, value) => handleRatingChange(event, value)}></Rating>
                                     <div className="tripinfor-form">
                                         <TextField
@@ -298,7 +299,7 @@ const Trips = () => {
                                             fullWidth
                                             value={selectTrip?.title}
                                             onChange={event => handleTitleChange(event)}
-                                            disabled = {selectTrip.isReview === true?true:false}
+                                            disabled={selectTrip.isReview === true ? true : false}
                                         />
                                         <TextField
                                             required
@@ -311,7 +312,7 @@ const Trips = () => {
                                             fullWidth
                                             value={selectTrip?.review}
                                             onChange={event => handleDescriptionChange(event)}
-                                            disabled = {selectTrip.isReview === true?true:false}
+                                            disabled={selectTrip.isReview === true ? true : false}
                                         />
                                     </div>
                                 </Box>
