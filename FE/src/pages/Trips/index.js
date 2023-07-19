@@ -58,16 +58,11 @@ const Trips = () => {
 
 
     const [selectTrip, setSelectTrip] = useState("");
-    // const [style, setStyle] = useState()
     const [imgs, setImgs] = useState([])
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    // const [getplace, setGetPlaces] = useState(0);
-    // const [trips, setTrips] = useState([]);
     const [row1, setRow1] = useState([]);
     const [row2, setRow2] = useState([]);
-    // const [row3, setRow3] = useState([]);
-    // const [row4, setRow4] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [value, setValue] = useState(dayjs('2022-04-17T15:30'));
     const [scroll, setScroll] = useState('paper');
@@ -92,23 +87,6 @@ const Trips = () => {
         setDescription(event.target.value);
     };
     useEffect(() => {
-        // var style = {
-        //     position: 'absolute',
-        //     top: '50%',
-        //     left: '50%',
-        //     transform: 'translate(-50%, -50%)',
-        //     width: '90%',
-        //     height: '90%',
-        //     bgcolor: 'background.paper',
-        //     border: '2px solid #000',
-        //     boxShadow: 24,
-        //     p: 4,
-        // };
-        let array = Array.from({ length: 32 }, () => ({ ...trips.trips }));
-        setAllTrips(array);
-        // setStyle(style);
-        // console.log(trips);
-        // setTrips();
         setIsLoading(false)
     }, []);
 
@@ -122,8 +100,7 @@ const Trips = () => {
 
         const row1 = temp.slice(0, 2);
         const row2 = temp.slice(2, 4);
-        // const row3 = temp.slice(6, 9);
-        // const row4 = temp.slice(9, 12);
+
 
         setRow1(row1);
         setRow2(row2);
@@ -167,21 +144,19 @@ const Trips = () => {
                 title: title,
                 description: description
             }
-            // console.log("result:", result);
-            console.log("selectTrip:", selectTrip);
             toast.promise(
                 reviewTrip(currentAccount,selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
                 {
-                  pending: 'Đang đợi xử lí',
-                  success: 'Lưu cảm nghĩ thành công !',
-                  error: (error) => {
-                    // Xử lý thông báo lỗi dựa trên các điều kiện khác nhau
-                    if (error.code === 4001) {
-                      return 'Lưu cảm nghĩ thất bại, người dùng từ chối';
-                    } else {
-                      return 'Đã xảy ra lỗi 🤯';
+                    pending: 'Đang đợi xử lí',
+                    success: 'Lưu cảm nghĩ thành công !',
+                    error: (error) => {
+                        // Xử lý thông báo lỗi dựa trên các điều kiện khác nhau
+                        if (error.code === 4001) {
+                            return 'Lưu cảm nghĩ thất bại, người dùng từ chối';
+                        } else {
+                            return 'Đã xảy ra lỗi 🤯';
+                        }
                     }
-                   }
                 }
             )
             setSelectTrip("");
@@ -252,8 +227,9 @@ const Trips = () => {
                             <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--1">
                             {row1 && row1.map((item, itemIndex) => (
-                                
-                                <div onClick={() => handleOpen1(item)} key={itemIndex}> <Trip trip={item}></Trip></div>
+                                <div onClick={() => handleOpen1(item)} key={itemIndex}>
+                                    <Trip trip={item}></Trip>
+                                </div>
                             ))}
                         </div>}
                         {isLoading === true ? <div>
@@ -261,7 +237,9 @@ const Trips = () => {
                             <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--2">
                             {row2 && row2.map((item, itemIndex) => (
-                                <div onClick={() => handleOpen1(item)} key={itemIndex} > <Trip trip={item}></Trip></div>
+                                <div onClick={() => handleOpen1(item)} key={itemIndex}>
+                                    <Trip trip={item}></Trip>
+                                </div>
                             ))}
                         </div>}
                         {/* <div className="trips__results--3">
@@ -275,7 +253,7 @@ const Trips = () => {
                     ))}
                 </div> */}
                         <div className="trips__results--pagination">
-                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton />
+                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                         </div>
                     </div>
                 </div>
@@ -294,7 +272,7 @@ const Trips = () => {
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                Thời gian: {convertTimestampToVietnamTime(Number(selectTrip.arrivalDate))}
+                                Thời gian: {convertTimestampToVietnamTime(Number(selectTrip?.arrivalDate))}
                             </DialogContentText>
                             <div className="trip-form">
                                 <Box
@@ -318,6 +296,7 @@ const Trips = () => {
                                             placeholder='Nhập tiêu đề'
                                             variant="standard"
                                             fullWidth
+                                            value={selectTrip?.title}
                                             onChange={event => handleTitleChange(event)}
                                             disabled = {selectTrip.isReview === true?true:false}
                                         />
@@ -330,12 +309,14 @@ const Trips = () => {
                                             multiline
                                             rows={4}
                                             fullWidth
+                                            value={selectTrip?.review}
                                             onChange={event => handleDescriptionChange(event)}
                                             disabled = {selectTrip.isReview === true?true:false}
                                         />
                                     </div>
                                 </Box>
-                                <Input type="file" name="images" multiple onChange={handleFileChange} />
+                                <Input type="file" name="images" multiple onChange={handleFileChange} disabled={selectTrip?.isReview == true ? true : false} />
+                                {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                 {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                     {selectTrip && selectTrip?.images.map((item, index) => (
                                         item && (
@@ -349,7 +330,7 @@ const Trips = () => {
                                             </ImageListItem>
                                         )
                                     ))}
-                                </ImageList>  */}
+                                </ImageList> */}
                             </div>
                         </DialogContent>
                         <DialogActions>
@@ -382,8 +363,8 @@ const Trips = () => {
                         </DialogActions>
                     </Dialog>
                 </div>
-            </Container>
-        </div>
+            </Container >
+        </div >
     );
 };
 
