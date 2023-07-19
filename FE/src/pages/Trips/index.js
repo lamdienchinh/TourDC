@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Pagination, Box, ImageList, ImageListItem, Button, NativeSelect, InputLabel, FormControl } from '@mui/material';
+import { Input, Container, Pagination, Box, ImageList, ImageListItem, Button, NativeSelect, InputLabel, FormControl } from '@mui/material';
 import Trip from "../../components/trip";
 import trips from "../../constants";
 import "./css/Trips.scss";
@@ -10,10 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { TextField, Dialog, DialogActions, DialogContent, DialogTitle, Paper, DialogContentText } from '@mui/material'
 import Draggable from 'react-draggable';
-import { Uploader } from "uploader";
-import { UploadButton } from "react-uploader";
 import Skeleton from '@mui/material/Skeleton';
-import config from "../../constants"
 import Rating from '@mui/material/Rating';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
@@ -22,6 +19,7 @@ import Web3 from 'web3'
 import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
 import { toast } from "react-toastify"
+import axios from 'axios';
 // import { doesSectionFormatHaveLeadingZeros } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
 
 function PaperComponent(props) {
@@ -36,12 +34,8 @@ function PaperComponent(props) {
 }
 
 const Trips = () => {
-    const uploader = Uploader({ apiKey: "public_kW15bW94Lbmj25TACS55UzraugpF" });
-    const options = config.options
     const [allTrips, setAllTrips] = useState([]);
     const [select, setSelect] = useState(1);
-    const [style, setStyle] = useState()
-    console.log(style);
 
     // Fetch data từ blockchain
     const [journey, setJourneys] = useState([]);
@@ -51,37 +45,37 @@ const Trips = () => {
     const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
     useEffect(() => {
         const loadWeb3 = async () => {
-          if (window.ethereum) {
-            // Sử dụng Web3.js để kết nối với MetaMask
-            const web3 = new Web3(window.ethereum);
-            try {
-              // Yêu cầu quyền truy cập tài khoản MetaMask
-              await window.ethereum.enable();
-              // Lấy danh sách tài khoản MetaMask hiện có
-              const accounts = await web3.eth.getAccounts();
-              // Lưu địa chỉ tài khoản đầu tiên vào state
-              setCurrentAccount(accounts[0]);
-            } catch (error) {
-              console.error(error);
+            if (window.ethereum) {
+                // Sử dụng Web3.js để kết nối với MetaMask
+                const web3 = new Web3(window.ethereum);
+                try {
+                    // Yêu cầu quyền truy cập tài khoản MetaMask
+                    await window.ethereum.enable();
+                    // Lấy danh sách tài khoản MetaMask hiện có
+                    const accounts = await web3.eth.getAccounts();
+                    // Lưu địa chỉ tài khoản đầu tiên vào state
+                    setCurrentAccount(accounts[0]);
+                } catch (error) {
+                    console.error(error);
+                }
             }
-          }
         };
-    
+
         const handleAccountsChanged = (accounts) => {
-          if (accounts.length > 0) {
-            // Cập nhật địa chỉ ví khi người dùng chuyển tài khoản trên MetaMask
-            setCurrentAccount(accounts[0]);
-          } else {
-            // Người dùng đã đăng xuất khỏi MetaMask
-            setCurrentAccount('');
-          }
+            if (accounts.length > 0) {
+                // Cập nhật địa chỉ ví khi người dùng chuyển tài khoản trên MetaMask
+                setCurrentAccount(accounts[0]);
+            } else {
+                // Người dùng đã đăng xuất khỏi MetaMask
+                setCurrentAccount('');
+            }
         };
-    
+
         loadWeb3();
-        
+
         // Đăng ký sự kiện "accountsChanged" để lắng nghe thay đổi tài khoản
         window.ethereum.on('accountsChanged', handleAccountsChanged);
-    
+
         // Xóa bỏ sự kiện khi component bị hủy
         // return () => {
         //   window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
@@ -177,6 +171,13 @@ const Trips = () => {
 
     const [open1, setOpen1] = useState(false);
     const [open2, setOpen2] = useState(false);
+
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleFileChange = (event) => {
+        setSelectedFiles(Array.from(event.target.files));
+    };
+
     const handleOpen1 = (trip) => {
         setSelectTrip(trip);
         setOpen1(true);
@@ -403,24 +404,7 @@ const Trips = () => {
                                         />
                                     </div>
                                 </Box>
-                                <UploadButton uploader={uploader}         // Required.
-                                    options={options}           // Optional.
-                                    onComplete={files => {      // Optional.
-                                        if (files.length === 0) {
-                                            console.log('No files selected.')
-                                        } else {
-                                            console.log('Files uploaded:');
-                                            console.log(files.map(f => f.fileUrl));
-                                            setImgs(files.map(f => f.fileUrl));
-                                            toast.success("Upload ảnh thành công !")
-                                        }
-                                    }}>
-                                    {({ onClick }) =>
-                                        <Button className='trip-btn' onClick={onClick} variant="contained" >
-                                            Upload ảnh
-                                        </Button>
-                                    }
-                                </UploadButton>
+                                <Input type="file" name="images" multiple onChange={handleFileChange} />
                                 {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                     {selectTrip && selectTrip?.images.map((item, index) => (
                                         item && (
@@ -434,7 +418,7 @@ const Trips = () => {
                                             </ImageListItem>
                                         )
                                     ))}
-                                </ImageList> */}
+                                </ImageList>  */}
                             </div>
                         </DialogContent>
                         <DialogActions>
