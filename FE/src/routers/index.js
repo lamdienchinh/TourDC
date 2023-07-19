@@ -13,7 +13,7 @@ import UserLayout from "../layouts/user_layout";
 import CreateAlbum from "../pages/CreateAlbum";
 import Trips from "../pages/Trips";
 import Code from "../pages/Code";
-// import QrCode from "../pages/QRcode/qrCode";
+import QrCode from "../pages/QRcode/qrCode";
 const RouterList = () => {
   return (
     <Routes>
@@ -30,7 +30,7 @@ const RouterList = () => {
         <Route path="/createalbum" element={<CreateAlbum />} />
         <Route path="/trips" element={<Trips />} />
         <Route path="/code" element={<Code />} />
-        {/* <Route path="/qrcode" element={<QrCode />} /> */}
+        <Route path="/qrcode" element={<QrCode />} />
       </Route>
     </Routes>
   );

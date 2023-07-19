@@ -4,7 +4,7 @@ import { Rating } from '@mui/material';
 const Trip = (props) => {
     console.log(props)
     let trip = props.trip;
-    console.log(trip.arrivalDate)
+    console.log(trip.review)
     const convertTimestampToVietnamTime = (timestamp) => {
         // Tạo đối tượng Date với timestamp
         const date = new Date(timestamp * 1000); // Đảo ngược timestamp về millisecond
@@ -41,7 +41,7 @@ const Trip = (props) => {
                 <CardContent>
                     {trip.title? <Typography variant="h6">{trip.title}</Typography> :<Typography variant="h6">Title</Typography>}
                     <Typography variant="subtitle1">Thời gian: {convertTimestampToVietnamTime(Number(trip.arrivalDate))}</Typography>
-                    <Typography variant="body1">{getFirst40Characters(trip)} <p className="trip__continue">Xem thêm</p></Typography>
+                    <Typography variant="body1">{(trip.review)}</Typography>
                     <Rating value={Number(trip.rate)} readOnly />
                 </CardContent>
             </Card>
