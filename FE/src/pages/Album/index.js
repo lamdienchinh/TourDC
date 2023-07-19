@@ -60,7 +60,7 @@ const Album = () => {
     }, []);
 
     useEffect(() => {
-        let start = 4* (select - 1);
+        let start = 4 * (select - 1);
         let end = start + 4;
         if (end > albums.length) end = albums.length;
         let currents = albums.slice(start, end);
@@ -202,7 +202,7 @@ const Album = () => {
                                 </div>
                             }
                             <div className="album__results--pagination">
-                                <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton />
+                                <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                             </div>
                         </div>
                     </div>

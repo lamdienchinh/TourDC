@@ -86,7 +86,7 @@ const Trips = () => {
             const infor = await contract.methods.getAllJourney().call({ from: currentAccount });
             console.log("infor:", infor)
             setJourneys(infor)
-            //   setAllTrips(infor)
+            setAllTrips(infor)
         }
         fetchData(currentAccount);
         console.log("Trips: ", allTrips);
@@ -139,8 +139,8 @@ const Trips = () => {
         //     boxShadow: 24,
         //     p: 4,
         // };
-        let array = Array.from({ length: 32 }, () => ({ ...trips.trips }));
-        setAllTrips(array);
+        // let array = Array.from({ length: 32 }, () => ({ ...trips.trips }));
+        // setAllTrips(array);
         // setStyle(style);
         // console.log(trips);
         // setTrips();
@@ -195,28 +195,28 @@ const Trips = () => {
     }
     const handleClose2 = async (event, action) => {
         event.preventDefault();
-        if (action === 1) {
-            const formData = new FormData();
-            selectedFiles.forEach((file) => {
-                formData.append('images', file);
-            });
-            let result = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/upload`, formData)
-            console.log("Imgs", result)
-            // let result = {
-            //     rate: rating,
-            //     list_imgs: imgs,
-            //     title: title,
-            //     description: description
-            // }
-            // console.log(result);
-            toast.success("Lưu cảm nghĩ thành công !")
-            setSelectTrip("");
-            setImgs([]);
-            setRating(0);
-            setDescription("");
-            setTitle("");
-            setOpen1(false);
-        }
+        // if (action === 1) {
+        //     const formData = new FormData();
+        //     selectedFiles.forEach((file) => {
+        //         formData.append('images', file);
+        //     });
+        //     let result = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/upload`, formData)
+        //     console.log("Imgs", result)
+        //     // let result = {
+        //     //     rate: rating,
+        //     //     list_imgs: imgs,
+        //     //     title: title,
+        //     //     description: description
+        //     // }
+        //     // console.log(result);
+        //     toast.success("Lưu cảm nghĩ thành công !")
+        //     setSelectTrip("");
+        //     setImgs([]);
+        //     setRating(0);
+        //     setDescription("");
+        //     setTitle("");
+        //     setOpen1(false);
+        // }
         setOpen2(false);
         return action;
     }
@@ -299,7 +299,7 @@ const Trips = () => {
                     ))}
                 </div> */}
                         <div className="trips__results--pagination">
-                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton />
+                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                         </div>
                     </div>
                 </div>
@@ -357,7 +357,7 @@ const Trips = () => {
                                     </div>
                                 </Box>
                                 <Input type="file" name="images" multiple onChange={handleFileChange} />
-                                <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
+                                {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                     {selectTrip && selectTrip?.images.map((item, index) => (
                                         item && (
                                             <ImageListItem key={index}>
@@ -370,7 +370,7 @@ const Trips = () => {
                                             </ImageListItem>
                                         )
                                     ))}
-                                </ImageList>
+                                </ImageList> */}
                             </div>
                         </DialogContent>
                         <DialogActions>

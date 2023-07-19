@@ -274,7 +274,7 @@ const Home = () => {
                             ))}
                         </div>}
                         <div className="home__results--pagination">
-                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton />
+                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                         </div>
                     </div>
                 </div>
