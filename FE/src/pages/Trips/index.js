@@ -120,6 +120,8 @@ const Trips = () => {
 
     const handleOpen1 = (trip) => {
         setSelectTrip(trip);
+        setTitle(trip.title);
+        setDescription(trip.review)
         setOpen1(true);
         setScroll(scroll);
     }
@@ -148,9 +150,13 @@ const Trips = () => {
                 reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
                 {
                     pending: 'Đang đợi xử lí',
-                    success: 'Lưu cảm nghĩ thành công !',
+                    success: () => {
+                        console.log("OK")
+                        return 'Lưu cảm nghĩ thành công !'
+                    },
                     error: (error) => {
                         // Xử lý thông báo lỗi dựa trên các điều kiện khác nhau
+                        console.log("FAIL")
                         if (error.code === 4001) {
                             return 'Lưu cảm nghĩ thất bại, người dùng từ chối';
                         } else {
@@ -235,7 +241,6 @@ const Trips = () => {
                         {isLoading === true ? <div>
                             <div><Skeleton height="100%" /></div>
                             <div><Skeleton height="100%" /></div>
-                            <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--2">
                             {row2 && row2.map((item, itemIndex) => (
                                 <div onClick={() => handleOpen1(item)} key={itemIndex}>
@@ -297,7 +302,7 @@ const Trips = () => {
                                             placeholder='Nhập tiêu đề'
                                             variant="standard"
                                             fullWidth
-                                            value={selectTrip?.title}
+                                            value={title}
                                             onChange={event => handleTitleChange(event)}
                                             disabled={selectTrip.isReview === true ? true : false}
                                         />
@@ -310,7 +315,7 @@ const Trips = () => {
                                             multiline
                                             rows={4}
                                             fullWidth
-                                            value={selectTrip?.review}
+                                            value={description}
                                             onChange={event => handleDescriptionChange(event)}
                                             disabled={selectTrip.isReview === true ? true : false}
                                         />

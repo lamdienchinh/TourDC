@@ -1,10 +1,10 @@
 const { cloudinary } = require('../utils/index.js')
+const { Trip } = require('../model/model')
 
 const tripController = {
     upload: async (req, res) => {
         const files = req.files;
         const uploadPromises = [];
-
         try {
             // Tải lên các tệp lên Cloudinary và thu thập các promise tải lên
             files.forEach(file => {
@@ -24,11 +24,27 @@ const tripController = {
             // Chờ cho tất cả các promise tải lên hoàn thành
             const uploadedUrls = await Promise.all(uploadPromises);
 
+            const newTrip = new Trip({
+                user: req.user.id,
+                list_imgs: uploadedUrls,
+                time: req.body.time
+            });
+            let result = await newTrip.save();
             // uploadedUrls chứa các liên kết ảnh đã tải lên từ Cloudinary
-            res.json(uploadedUrls);
+            res.status(200).json(result);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Upload failed' });
+        }
+    },
+    getTrips: async (req, res) => {
+        try {
+            let userid = req.user.id;
+            let Trips = Trip.find({ user: userid });
+            res.status(200).json(Trips);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Fail' });
         }
     },
 };
