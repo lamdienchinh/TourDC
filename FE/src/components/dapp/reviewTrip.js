@@ -20,9 +20,13 @@ const reviewTrip = async (currentAccount,placeID, arrDate , comment, rate, title
         },
       ],
     })
-    .then((txHash) => console.log("txHash: ", txHash))
+    .then((txHash) => {
+       console.log("txHash: ", txHash)
+       return txHash;
+      })
     .catch((error) => {
-      throw error;
+      console.error(error)
+      return "4001";
     })
 }
 export default reviewTrip;

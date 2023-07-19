@@ -144,21 +144,17 @@ const Trips = () => {
                 title: title,
                 description: description
             }
-            toast.promise(
-                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
-                {
-                    pending: 'Đang đợi xử lí',
-                    success: 'Lưu cảm nghĩ thành công !',
-                    error: (error) => {
-                        // Xử lý thông báo lỗi dựa trên các điều kiện khác nhau
-                        if (error.code === 4001) {
-                            return 'Lưu cảm nghĩ thất bại, người dùng từ chối';
-                        } else {
-                            return 'Đã xảy ra lỗi 🤯';
-                        }
-                    }
-                }
-            )
+            const review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
+            // toast.promise(
+            //  review,
+            //     {
+            //         pending: 'Đang đợi xử lí',
+            //         success: 'Lưu cảm nghĩ thành công !',
+            //         error: 'Người dùng từ chối!',
+            //     }
+            // )
+            console.log("review: ", review)
+
             setSelectTrip("");
             setImgs([]);
             setRating(0);
