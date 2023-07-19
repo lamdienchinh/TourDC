@@ -39,8 +39,10 @@ const Trips = () => {
 
     // Fetch data từ blockchain
     const [journey, setJourneys] = useState([]);
-    const [currentAccount, setCurrentAccount] = useState('0xcbffe3fa9226a7cD7CfFC770103299B83518F538');
+    const [currentAccount, setCurrentAccount] = useState();
 
+    const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
+    const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
     useEffect(() => {
         const loadWeb3 = async () => {
             if (window.ethereum) {
@@ -79,30 +81,23 @@ const Trips = () => {
         //   window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
         // };
         const fetchData = async (currentAccount) => {
-            const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
-            const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
 
             // Thực hiện các bước để lấy dữ liệu infor
             const infor = await contract.methods.getAllJourney().call({ from: currentAccount });
-            console.log("infor:", infor)
             setJourneys(infor)
             setAllTrips(infor)
         }
         fetchData(currentAccount);
-        console.log("Trips: ", allTrips);
     }, [currentAccount]);
 
+
+
     const [selectTrip, setSelectTrip] = useState("");
-    // const [style, setStyle] = useState()
     const [imgs, setImgs] = useState([])
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    // const [getplace, setGetPlaces] = useState(0);
-    // const [trips, setTrips] = useState([]);
     const [row1, setRow1] = useState([]);
     const [row2, setRow2] = useState([]);
-    // const [row3, setRow3] = useState([]);
-    // const [row4, setRow4] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [value, setValue] = useState(dayjs('2022-04-17T15:30'));
     const [scroll, setScroll] = useState('paper');
@@ -127,23 +122,6 @@ const Trips = () => {
         setDescription(event.target.value);
     };
     useEffect(() => {
-        // var style = {
-        //     position: 'absolute',
-        //     top: '50%',
-        //     left: '50%',
-        //     transform: 'translate(-50%, -50%)',
-        //     width: '90%',
-        //     height: '90%',
-        //     bgcolor: 'background.paper',
-        //     border: '2px solid #000',
-        //     boxShadow: 24,
-        //     p: 4,
-        // };
-        // let array = Array.from({ length: 32 }, () => ({ ...trips.trips }));
-        // setAllTrips(array);
-        // setStyle(style);
-        // console.log(trips);
-        // setTrips();
         setIsLoading(false)
     }, []);
 
@@ -157,8 +135,7 @@ const Trips = () => {
 
         const row1 = temp.slice(0, 2);
         const row2 = temp.slice(2, 4);
-        // const row3 = temp.slice(6, 9);
-        // const row4 = temp.slice(9, 12);
+
 
         setRow1(row1);
         setRow2(row2);
@@ -195,31 +172,75 @@ const Trips = () => {
     }
     const handleClose2 = async (event, action) => {
         event.preventDefault();
-        // if (action === 1) {
-        //     const formData = new FormData();
-        //     selectedFiles.forEach((file) => {
-        //         formData.append('images', file);
-        //     });
-        //     let result = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/upload`, formData)
-        //     console.log("Imgs", result)
-        //     // let result = {
-        //     //     rate: rating,
-        //     //     list_imgs: imgs,
-        //     //     title: title,
-        //     //     description: description
-        //     // }
-        //     // console.log(result);
-        //     toast.success("Lưu cảm nghĩ thành công !")
-        //     setSelectTrip("");
-        //     setImgs([]);
-        //     setRating(0);
-        //     setDescription("");
-        //     setTitle("");
-        //     setOpen1(false);
-        // }
+        if (action === 1) {
+            let result = {
+                rate: rating,
+                list_imgs: imgs,
+                title: title,
+                description: description
+            }
+            toast.promise(
+                reviewTrip(selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
+                {
+                    pending: 'Đang đợi xử lí',
+                    success: 'Lưu cảm nghĩ thành công !',
+                    error: (error) => {
+                        // Xử lý thông báo lỗi dựa trên các điều kiện khác nhau
+                        if (error.code === 4001) {
+                            return 'Lưu cảm nghĩ thất bại, người dùng từ chối';
+                        } else {
+                            return 'Đã xảy ra lỗi 🤯';
+                        }
+                    }
+                }
+            )
+            setSelectTrip("");
+            setImgs([]);
+            setRating(0);
+            setDescription("");
+            setTitle("");
+            setOpen1(false);
+        }
         setOpen2(false);
         return action;
     }
+    const convertTimestampToVietnamTime = (timestamp) => {
+        // Tạo đối tượng Date với timestamp
+        const date = new Date(timestamp * 1000); // Đảo ngược timestamp về millisecond
+
+        // Chuyển đổi thành ngày giờ Việt Nam
+        const vietnamTime = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+
+        // Trả về chuỗi ngày giờ Việt Nam
+        return vietnamTime.toString();
+    };
+
+    // function lưu data review vào blockchain
+    const reviewTrip = async (placeID, arrDate, comment, rate, title) => {
+        await window.ethereum
+            .request({
+                method: 'eth_sendTransaction',
+                params: [
+                    {
+                        from: currentAccount,
+                        to: contractAddress.Token,
+                        gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
+                        maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
+                        maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
+                        data: contract.methods.review(placeID, arrDate, comment, rate, title).encodeABI()
+                    },
+                ],
+            })
+            .then((txHash) => {
+                console.log("txHash: ", txHash)
+
+            }
+            )
+            .catch((error) => {
+                throw error;
+            })
+    }
+
     return (
         <div className="trip-wrapper">
             <div className="trip-slide">
@@ -277,7 +298,9 @@ const Trips = () => {
                             <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--1">
                             {row1 && row1.map((item, itemIndex) => (
-                                <div onClick={() => handleOpen1(item)} key={itemIndex}> <Trip trip={item}></Trip></div>
+                                <div onClick={() => handleOpen1(item)} key={itemIndex}>
+                                    <Trip trip={item}></Trip>
+                                </div>
                             ))}
                         </div>}
                         {isLoading === true ? <div>
@@ -285,7 +308,9 @@ const Trips = () => {
                             <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--2">
                             {row2 && row2.map((item, itemIndex) => (
-                                <div onClick={() => handleOpen1(item)} key={itemIndex} > <Trip trip={item}></Trip></div>
+                                <div onClick={() => handleOpen1(item)} key={itemIndex}>
+                                    <Trip trip={item}></Trip>
+                                </div>
                             ))}
                         </div>}
                         {/* <div className="trips__results--3">
@@ -318,7 +343,7 @@ const Trips = () => {
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                Thời gian: {selectTrip?.time}
+                                Thời gian: {convertTimestampToVietnamTime(Number(selectTrip?.arrivalDate))}
                             </DialogContentText>
                             <div className="trip-form">
                                 <Box
@@ -331,7 +356,8 @@ const Trips = () => {
                                 >
                                     <h2>Đánh giá</h2>
                                     <Rating name="rating"
-                                        value={rating}
+                                        value={Number(selectTrip?.rate)}
+                                        disabled={selectTrip?.isReview == true ? true : false}
                                         onChange={(event, value) => handleRatingChange(event, value)}></Rating>
                                     <div className="tripinfor-form">
                                         <TextField
@@ -341,7 +367,9 @@ const Trips = () => {
                                             placeholder='Nhập tiêu đề'
                                             variant="standard"
                                             fullWidth
+                                            value={selectTrip?.title}
                                             onChange={event => handleTitleChange(event)}
+                                            disabled={selectTrip?.isReview == true ? true : false}
                                         />
                                         <TextField
                                             required
@@ -352,11 +380,14 @@ const Trips = () => {
                                             multiline
                                             rows={4}
                                             fullWidth
+                                            value={selectTrip?.review}
                                             onChange={event => handleDescriptionChange(event)}
+                                            disabled={selectTrip?.isReview == true ? true : false}
                                         />
                                     </div>
                                 </Box>
-                                <Input type="file" name="images" multiple onChange={handleFileChange} />
+                                <Input type="file" name="images" multiple onChange={handleFileChange} disabled={selectTrip?.isReview == true ? true : false} />
+                                {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                 {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                     {selectTrip && selectTrip?.images.map((item, index) => (
                                         item && (
@@ -403,8 +434,8 @@ const Trips = () => {
                         </DialogActions>
                     </Dialog>
                 </div>
-            </Container>
-        </div>
+            </Container >
+        </div >
     );
 };
 

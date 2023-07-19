@@ -44,7 +44,7 @@ const userController = {
   },
   login: async (req, res) => {
     try {
-      const user = await User.findOne(req.body);
+      let user = await User.findOne(req.body);
       if (!user) {
         let newUser = new User(req.body);
         let addUser = await newUser.save();
