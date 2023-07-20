@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Container, Pagination, Box, ImageList, ImageListItem, Button, NativeSelect, InputLabel, FormControl } from '@mui/material';
+import { Container, Pagination, Box, Button, NativeSelect, InputLabel, FormControl } from '@mui/material';
 import Trip from "../../components/trip";
-import trips from "../../constants";
+// import trips from "../../constants";
 import "./css/Trips.scss";
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -16,13 +16,20 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import { toast } from "react-toastify"
-import axios from 'axios';
+import 'photoswipe/dist/photoswipe.css'
+import { Gallery, Item } from 'react-photoswipe-gallery'
+// import axios from 'axios';
 // import { doesSectionFormatHaveLeadingZeros } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
 import { useSelector } from 'react-redux'
-import { getUserData } from '../../state/selectors';
+import { getInfor, getUserData } from '../../state/selectors';
 import { getAllTrips } from '../../components/dapp/getAllTrips';
 import reviewTrip from '../../components/dapp/reviewTrip';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
+import { getTrips, reviewtoBE } from '../../service/api';
+import { createAxios } from "../../utils/createInstance";
+import { setInfor } from "../../state/userSlice";
+import { useDispatch } from "react-redux";
+
 function PaperComponent(props) {
     return (
         <Draggable
@@ -37,23 +44,38 @@ function PaperComponent(props) {
 const Trips = () => {
     const [allTrips, setAllTrips] = useState([]);
     const [select, setSelect] = useState(1);
-
+    const dispatch = useDispatch();
+    const user = useSelector(getInfor)
+    let axiosJWT = createAxios(user, dispatch, setInfor);
     // Fetch data từ blockchain
     const [journey, setJourneys] = useState([]);
     const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
-
+    const [userinfor, getUserInfor] = useState(useSelector(getInfor))
+    const [update, setUpdate] = useState(true)
     useEffect(() => {
         const fetchData = async (currentAccount) => {
 
             // Thực hiện các bước để lấy dữ liệu infor
             const infor = await getAllTrips(currentAccount);
             console.log("infor:", infor)
-            setJourneys(infor)
-            setAllTrips(infor)
+            let temp = await getTrips(userinfor.accessToken, axiosJWT)
+            console.log("Get Trip from BE", temp.data)
+            temp = temp.data
+            const mergedArray = infor.map((item1) => {
+                const matchingElement = temp.find((item2) => item2.time === (item1.arrivalDate).toString());
+                if (matchingElement) {
+                    return { ...item1, ...matchingElement };
+                } else {
+                    return item1;
+                }
+            });
+            console.log("Merge Array", mergedArray)
+            setJourneys(mergedArray)
+            setAllTrips(mergedArray)
         }
         fetchData(currentAccount);
         console.log("Trips: ", allTrips);
-    }, []);
+    }, [update]);
 
 
 
@@ -120,7 +142,8 @@ const Trips = () => {
     const handleOpen1 = (trip) => {
         setSelectTrip(trip);
         setTitle(trip.title);
-        setDescription(trip.review)
+        setDescription(trip.review);
+        setImgs(trip.list_imgs);
         setOpen1(true);
         setScroll(scroll);
     }
@@ -138,6 +161,7 @@ const Trips = () => {
     }
     const handleClose2 = async (event, action) => {
         event.preventDefault();
+        console.log(selectTrip)
         if (action === 1) {
             let result = {
                 rate: rating,
@@ -148,19 +172,36 @@ const Trips = () => {
             // let review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
             // console.log("review:",review);
             let review = await toast.promise(
-               reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
+                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
                 {
                     pending: 'Đang đợi xử lí',
                     // success: 'Lưu cảm nghĩ thành công !',
                     // error: 'Người dùng từ chối!',
                 }
             )
-            console.log("review:", review);
+            if (review !== "") {
+                let formData = new FormData();
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    formData.append('images', selectedFiles[i]);
+                }
+                formData.append("user", userinfor._id);
+                formData.append("time", selectTrip.arrivalDate)
+                formData.append("trHash", review)
+                console.log(selectedFiles)
+                await reviewtoBE(formData, userinfor.accessToken, axiosJWT)
+                if (update) {
+                    setUpdate(false)
+                }
+                else {
+                    setUpdate(true)
+                }
+            }
             setSelectTrip("");
             setImgs([]);
             setRating(0);
             setDescription("");
             setTitle("");
+            setSelectedFiles([])
             setOpen1(false);
         }
         setOpen2(false);
@@ -312,22 +353,44 @@ const Trips = () => {
                                         />
                                     </div>
                                 </Box>
-                                <Input type="file" name="images" multiple onChange={handleFileChange} disabled={selectTrip?.isReview == true ? true : false} />
-                                {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
-                                {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
-                                    {selectTrip && selectTrip?.images.map((item, index) => (
-                                        item && (
-                                            <ImageListItem key={index}>
-                                                <img
-                                                    src={`${item.url}?w=161&fit=crop&auto=format`}
-                                                    srcSet={`${item.url}?w=161&fit=crop&auto=format&dpr=2 2x`}
-                                                    alt={`Đây là ảnh thứ ${item.id}`}
-                                                    loading="lazy"
-                                                />
-                                            </ImageListItem>
-                                        )
-                                    ))}
-                                </ImageList> */}
+                                <label className="upload-imgs">
+                                    Tải ảnh lên
+                                    <input className="input-upload-imgs" type="file" name="images" multiple onChange={handleFileChange} disabled={selectTrip?.isReview === true ? true : false} />
+                                </label>
+                                <div className="trip-img-wrapper">
+                                    <Gallery>
+                                        {
+                                            selectedFiles && selectedFiles.map((item, index) => (
+                                                <Item
+                                                    original={window.URL.createObjectURL(item)}
+                                                    thumbnail={window.URL.createObjectURL(item)}
+                                                    width="1024"
+                                                    height="768"
+                                                    key={index}
+                                                >
+                                                    {({ ref, open }) => (
+                                                        <img ref={ref} onClick={open} src={window.URL.createObjectURL(item)} alt="ảnh" />
+                                                    )}
+                                                </Item>
+                                            ))
+                                        }
+                                        {
+                                            imgs && imgs.map((item, index) => (
+                                                <Item
+                                                    original={item}
+                                                    thumbnail={item}
+                                                    width="1024"
+                                                    height="768"
+                                                    key={index}
+                                                >
+                                                    {({ ref, open }) => (
+                                                        <img ref={ref} onClick={open} src={item} alt="ảnh" />
+                                                    )}
+                                                </Item>
+                                            ))
+                                        }
+                                    </Gallery>
+                                </div>
                             </div>
                         </DialogContent>
                         <DialogActions>

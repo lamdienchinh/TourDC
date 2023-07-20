@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connectWallet } from '../../state/userSlice';
 import { useSelector } from 'react-redux';
-import { getUserData } from '../../state/selectors';
+import { getInfor, getUserData } from '../../state/selectors';
 import { useDispatch } from 'react-redux';
 import { Avatar } from "@mui/material";
 import Container from '@mui/material/Container';
@@ -38,7 +38,8 @@ function PaperComponent(props) {
 
 const Header = () => {
     //Connect Wallet    
-    let walletAddress = useSelector(getUserData);
+    const walletAddress = useSelector(getUserData);
+    const userInfor = useSelector(getInfor);
     console.log(walletAddress)
     let image = avatar;
     const dispatch = useDispatch();
@@ -136,7 +137,7 @@ const Header = () => {
                     }
                     <div className={walletAddress && walletAddress.length > 0 ? "header__ele header__ele--connected" : "header__ele header__ele--login"} onClick={login}>
                         {walletAddress && walletAddress.length > 0
-                            ? <Avatar className="header__avatar" src={image} alt="Avatar" aria-controls={open ? 'fade-menu' : undefined}
+                            ? <Avatar className="header__avatar" src={userInfor?.avatar ? userInfor.avatar : image} alt="Avatar" aria-controls={open ? 'fade-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
                                 onClick={handleClick} /> : "LOGIN"}

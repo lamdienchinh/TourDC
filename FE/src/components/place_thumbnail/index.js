@@ -8,20 +8,22 @@ import { getDestinationRates } from "../dapp/getDestinationRates";
 
 const PlaceThumbnail = (props) => {
     let place = props.place;
-    const [reviewCount, getReviewCount] = useState(0);
+    console.log("place: ", place)
+    const [reviewCount, setReviewCount] = useState(0);
     const [rates, setRates] = useState([]);
     // const [average, setAverage] = useState(0);
     const navigate = useNavigate();
+    const [average, setAverage] = useState(0);
     const handleClick = () => {
         // Thêm một hàm lấy reviews
         
         //Sau đó tổng hợp data truyền cho placeinfor
-        navigate('/placeinfor', { state: place });
+        navigate('/placeinfor', { state: {place, average, rates, reviewCount}});
     }; 
     useEffect(() => {
         const getNumberRate = async(placeid) => {
             let number = await getReviewNumber(placeid);
-            getReviewCount(Number(number));
+            setReviewCount(Number(number));
             // console.log("number: ", number)
         }
 
@@ -36,6 +38,7 @@ const PlaceThumbnail = (props) => {
         getNumberRate(place.placeid);
     },[]);
     
+    
     const getAverage = async(rates) => {
         let temp = 0;
         for(let i = 0; i < rates.length; i++) {
@@ -45,13 +48,18 @@ const PlaceThumbnail = (props) => {
         // console.log(rates)
         temp = temp / rates.length;
         // setAverage(temp);
-        console.log("average: ",temp)
+        
         return temp;
     }
-    const number =  async() => {
-        return await getAverage(rates);
-    } 
-    
+    useEffect(() => {
+        // Gọi hàm tính trung bình và cập nhật state average khi rates thay đổi.
+        const fetchDataRate = async() => {
+            const averageValue = await getAverage(rates);
+            setAverage(averageValue);
+        }
+        fetchDataRate();
+      }, [rates]); // Khi rates thay đổi, useEffect sẽ được gọi lại.
+      console.log("average: ",average)
     return (
         <div className="placethumbnail" onClick={handleClick}>
             <div className="placethumbnail__intro">
@@ -59,7 +67,7 @@ const PlaceThumbnail = (props) => {
                     <img src={place.thumbnail} alt="Ảnh tạm"></img>
                 </div>
                 <div className="placethumbnail__rate">
-                    <Rating name="size-large" defaultValue={number()} precision={0.5} size="large" readOnly />
+                    <Rating name="size-large" value={average} precision={0.5} size="large" readOnly />
                 </div>
                 <div className="placethumbnail__title">
                     {place.name}

@@ -3,7 +3,7 @@ import PlaceThumbnail from "../../components/place_thumbnail";
 import { FaSearch } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { Pagination, NativeSelect, InputLabel, FormControl, TextField } from '@mui/material';
-import types from "../../constants";
+// import types from "../../constants";
 import Container from '@mui/material/Container';
 import Skeleton from '@mui/material/Skeleton';
 import Breadcrumbs from '@mui/material/Breadcrumbs';

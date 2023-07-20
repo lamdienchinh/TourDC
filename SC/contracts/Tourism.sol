@@ -19,26 +19,26 @@ contract ERC20WithAutoMinerReward is ERC20("DCToken", "Xu"),  VerifySignature{
 
 contract TouristConTract is ERC20WithAutoMinerReward {
     constructor()  {
-        destinations.push(Destination(1, unicode"Rừng Tràm Trà Sư"));
-        destinations.push(Destination(2, unicode"Hồ & Chùa Tà Pạ"));
-        destinations.push(Destination(3, unicode"Hồ Latina"));
-        destinations.push(Destination(4, unicode"Chùa Koh Kas"));
-        destinations.push(Destination(6, unicode"Bún cá Hiếu Thuận"));
-        destinations.push(Destination(5, unicode"Miếu Bà Chúa Xứ Núi Sam"));
-        destinations.push(Destination(7, unicode"Quán nướng 368 (Thành phố Long Xuyên)"));
-        destinations.push(Destination(8, unicode"Lẩu mắm Hiếu Miênn (Thành phố Long Xuyên)"));
-        destinations.push(Destination(9, unicode"Quán bò Tư Thiêng (Thành phố Châu Đốc)"));
-        destinations.push(Destination(10, unicode"Bánh bò Út Dứt (Huyện An Phú)"));
-        destinations.push(Destination(11, unicode"Little Sài Gòn Hostel (Little Saigon Hostel)"));
-        destinations.push(Destination(12, unicode"SANG NHU NGOC RESORT"));
-        destinations.push(Destination(13, unicode"Khách sạn châu tiến"));
-        destinations.push(Destination(14, unicode"Khách Sạn The Luxe Châu Đốc (The Luxe Hotel Chau Doc)"));
-        destinations.push(Destination(15, unicode"Dong Bao Hotel An Giang"));
-        destinations.push(Destination(16, unicode"Trại Cá Sấu Long Xuyên"));
-        destinations.push(Destination(17, unicode"Flyhigh Trampoline Park Vietnam"));
-        destinations.push(Destination(18, unicode"Thanh Long Water Park"));
-        destinations.push(Destination(19, unicode"Lotte Cinema Mỹ Bình Long Xuyên"));
-        destinations.push(Destination(20, unicode"Công viên Mỹ Thới"));
+        // destinations.push(Destination(1, unicode"Rừng Tràm Trà Sư"));
+        // destinations.push(Destination(2, unicode"Hồ & Chùa Tà Pạ"));
+        // destinations.push(Destination(3, unicode"Hồ Latina"));
+        // destinations.push(Destination(4, unicode"Chùa Koh Kas"));
+        // destinations.push(Destination(6, unicode"Bún cá Hiếu Thuận"));
+        // destinations.push(Destination(5, unicode"Miếu Bà Chúa Xứ Núi Sam"));
+        // destinations.push(Destination(7, unicode"Quán nướng 368 (Thành phố Long Xuyên)"));
+        // destinations.push(Destination(8, unicode"Lẩu mắm Hiếu Miênn (Thành phố Long Xuyên)"));
+        // destinations.push(Destination(9, unicode"Quán bò Tư Thiêng (Thành phố Châu Đốc)"));
+        // destinations.push(Destination(10, unicode"Bánh bò Út Dứt (Huyện An Phú)"));
+        // destinations.push(Destination(11, unicode"Little Sài Gòn Hostel (Little Saigon Hostel)"));
+        // destinations.push(Destination(12, unicode"SANG NHU NGOC RESORT"));
+        // destinations.push(Destination(13, unicode"Khách sạn châu tiến"));
+        // destinations.push(Destination(14, unicode"Khách Sạn The Luxe Châu Đốc (The Luxe Hotel Chau Doc)"));
+        // destinations.push(Destination(15, unicode"Dong Bao Hotel An Giang"));
+        // destinations.push(Destination(16, unicode"Trại Cá Sấu Long Xuyên"));
+        // destinations.push(Destination(17, unicode"Flyhigh Trampoline Park Vietnam"));
+        // destinations.push(Destination(18, unicode"Thanh Long Water Park"));
+        // destinations.push(Destination(19, unicode"Lotte Cinema Mỹ Bình Long Xuyên"));
+        // destinations.push(Destination(20, unicode"Công viên Mỹ Thới"));
         tickets.push(Ticket(1, false));
         tickets.push(Ticket(2, false));
         tickets.push(Ticket(3, false));
@@ -80,10 +80,10 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       string name;
     }
 
-    struct Destination {
-        uint256 index; // identifier
-        string desName;
-    }
+    // struct Destination {
+    //     uint256 index; // identifier
+    //     string desName;
+    // }
 
     struct Journey {
         uint placeId;
@@ -108,7 +108,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     ERC20 private erc20Token;
 
     Ticket[] private tickets;
-    Destination[] private destinations;
+    // Destination[] private destinations;
     Tourist[] private tourists;
 
     mapping(address => Tourist) public touristIdentify; // tra cứu định danh du khách bằng địa chỉ ví
@@ -117,21 +117,28 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     
     mapping(address => Album[]) public touristAlbums; // tra cứu danh sách album qua địa chỉ ví của du khách
     mapping(address => mapping(uint=>Journey[])) public albumJourneys; //tra cứu hành trình của du khách qua địa chỉ ví và id album
-    mapping(address => mapping(uint=>Destination[])) public albumDestination;  // tra cứu địa điểm được thêm vào album qua địa chỉ ví và id album
+    // mapping(address => mapping(uint=>Destination[])) public albumDestination;  // tra cứu địa điểm được thêm vào album qua địa chỉ ví và id album
 
     mapping(uint => uint) public noPeopleCheckIn; // số lượng người check in tại 1 địa điểm
     mapping(uint => uint) public noPeopleRate; // số lượng người rate tại 1 địa điểm
 
     mapping(uint => uint[]) public destinationRates; // số rate của một địa điểm
     mapping(uint => string[]) public destinationReviews; // tất cả reviews của một địa điểm
-
+    mapping(uint => address[]) public touristReview; // nhung du khach review tai dia diem index
+    mapping(uint => uint256[]) public timeReview; // thoi gian du khach review tai dia diem index 
     function getAllRates(uint placeid) public view returns(uint [] memory ) {
       return destinationRates[placeid];
     }  
 
-     function getAllReviews(uint placeid) public view returns(string [] memory ) {
+    function getAllReviews(uint placeid) public view returns(string [] memory ) {
       return destinationReviews[placeid]; 
-    }  
+    }
+    function getTouristReview(uint placeid) public view returns(address [] memory ) {
+      return touristReview[placeid]; 
+    }
+    function getTimeReview(uint placeid) public view returns(uint256 [] memory ) {
+      return timeReview[placeid]; 
+    }
 
     event CreateAlbum(uint _id, string _name);
     function createAlbum(uint _id,string memory _name) public {
@@ -147,18 +154,18 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       }
     }
 
-    event AddDestinationInAlbum(string nameDestination, string nameAlbum);
-    function addDestinationInAlbum(uint desIndex, uint albumId) public {
-      string memory name; 
-      for (uint i = 0; i < destinations.length; ++i) {  // thực hiện vòng lặp để tìm index của Destination trong mảng destinations
-        if (desIndex == destinations[i].index) { 
-          name = destinations[i].desName;
-          albumDestination[msg.sender][albumId].push(destinations[i]); // thêm địa điểm vào album
-          break;
-        }
-      }
-      emit AddDestinationInAlbum(name, getNameAlbum(desIndex));
-    }
+    // event AddDestinationInAlbum(string nameDestination, string nameAlbum);
+    // function addDestinationInAlbum(uint desIndex, uint albumId) public {
+    //   string memory name; 
+    //   for (uint i = 0; i < destinations.length; ++i) {  // thực hiện vòng lặp để tìm index của Destination trong mảng destinations
+    //     if (desIndex == destinations[i].index) { 
+    //       name = destinations[i].desName;
+    //       albumDestination[msg.sender][albumId].push(destinations[i]); // thêm địa điểm vào album
+    //       break;
+    //     }
+    //   }
+    //   emit AddDestinationInAlbum(name, getNameAlbum(desIndex));
+    // }
 
     event AddJourneyInAlbum(string AlbumName, Journey journey);
     function addAlbumJourney(uint placeId, uint albumId, uint256 date) public { // thêm địa điểm check-in vào album
@@ -191,9 +198,9 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       emit AddJourneyInAlbum(getNameAlbum(albumId),journey);
     }
 
-    function getAlbumNotCheckIn(uint id) public view returns (Destination[] memory) {
-      return albumDestination[msg.sender][id];
-    }
+    // function getAlbumNotCheckIn(uint id) public view returns (Destination[] memory) {
+    //   return albumDestination[msg.sender][id];
+    // }
 
     function getAlbumCheckIn(uint id) public view returns (Journey[] memory){
       return albumJourneys[msg.sender][id];
@@ -255,6 +262,8 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     } 
         destinationReviews[placeId].push(comment);
         destinationRates[placeId].push(rate);
+        touristReview[placeId].push(msg.sender);
+        timeReview[placeId].push(block.timestamp);
         noPeopleRate[placeId]++;
     }
 
@@ -267,9 +276,9 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     }
     
 
-    function getAllDestination() public view returns (Destination[] memory) {
-        return destinations;
-    }
+    // function getAllDestination() public view returns (Destination[] memory) {
+    //     return destinations;
+    // }
 
     modifier onlyAdmin {
       bool isAdmin = false;
@@ -303,17 +312,17 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       }
     }
 
-    function validIndex(uint index) private view returns(bool) {
-        for (uint i = 0; i < destinations.length;++i){
-          if(index == destinations[i].index) return false;
-        }
-        return true;
-    }
+    // function validIndex(uint index) private view returns(bool) {
+    //     for (uint i = 0; i < destinations.length;++i){
+    //       if(index == destinations[i].index) return false;
+    //     }
+    //     return true;
+    // }
 
-    function addDestination(uint index, string memory name) external onlyAdmin {
-      require(validIndex(index) == true, "Index has been already existed"); 
-      destinations.push(Destination(index, name));  
-    }
+    // function addDestination(uint index, string memory name) external onlyAdmin {
+    //   require(validIndex(index) == true, "Index has been already existed"); 
+    //   destinations.push(Destination(index, name));  
+    // }
 
     function validAddIDTicket(uint256 id) public view returns (bool) {
       for (uint i = 0; i < tickets.length;i++) {

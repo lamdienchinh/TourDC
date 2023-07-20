@@ -27,7 +27,8 @@ const tripController = {
             const newTrip = new Trip({
                 user: req.user.id,
                 list_imgs: uploadedUrls,
-                time: req.body.time
+                time: req.body.time,
+                trHash: req.body.trHash
             });
             let result = await newTrip.save();
             // uploadedUrls chứa các liên kết ảnh đã tải lên từ Cloudinary
@@ -40,7 +41,7 @@ const tripController = {
     getTrips: async (req, res) => {
         try {
             let userid = req.user.id;
-            let Trips = Trip.find({ user: userid });
+            const Trips = await Trip.find({ user: userid });
             res.status(200).json(Trips);
         } catch (error) {
             console.error(error);

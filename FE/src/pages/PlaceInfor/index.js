@@ -8,19 +8,23 @@ import ReviewChart from "../../components/review_chart";
 // import { useState } from "react";
 import Review from "../../components/review";
 import Container from '@mui/material/Container';
+import { getDestinationRates } from "../../components/dapp/getDestinationRates";
 
 const PlaceInfor = () => {
 
-    const { placeinformation } = useLocation();
-    console.log(placeinformation);
+    const placeinformation = useLocation();
+    const {place, average,rates, reviewCount} = placeinformation.state;
+    console.log("rates:", rates);
+    console.log("review:", reviewCount);
+    console.log("place:" ,place);
     const navigate = useNavigate();
     // Xử lý Slideshow
     const handleDragStart = (e) => e.preventDefault();
 
     const items = [
-        <img src={img} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        <img src={img} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        <img src={img} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        <img src={place.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        <img src={place.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        <img src={place.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
     ];
 
     const handleClick = () => {
@@ -36,10 +40,10 @@ const PlaceInfor = () => {
     return (
         <div className="placeinfor">
             <div className="placeinfor__slide">
-                <img src={img} alt="Ảnh nền"></img>
+                <img src={place.thumbnail} alt="Ảnh nền"></img>
                 <div className="placeinfor__content">
                     <div className="placeinfor__title">
-                        Rừng Tràm Trà Sư
+                        {place.name}
                     </div>
                 </div>
                 <div className="placeinfor__suggest">
@@ -108,34 +112,35 @@ const PlaceInfor = () => {
                                 Đánh giá
                             </div>
                             <div className="placeinfor__rate--star">
-                                <Rating name="size-large" defaultValue={4.5} precision={0.5} size="large" readOnly />
+                                <Rating name="size-large" defaultValue={average} precision={0.5} size="large" readOnly />
                             </div>
                             <div className="placeinfor__rate--address">
-                                Địa chỉ: Ấp Văn Trà, Tịnh Biên, An Giang 884000
+                                Địa chỉ: {place.address}
                             </div>
                         </div>
                         <div className="placeinfor__rate--content">
                             <div style={{ fontSize: '40px', fontWeight: '500' }}>
-                                NHỮNG ĐIỀU VỀ RỪNG TRÀM TRÀ SƯ
+                                {place.intro}
                             </div>
                             <div>
-                                Địa chỉ rừng tràm Trà Sư ở đâu? <br></br>
+                                {/* Địa chỉ rừng tràm Trà Sư ở đâu? <br></br>
                                 Rừng tràm Trà Sư là một địa điểm du lịch đẹp ở miền Tây rất nổi tiếng thuộc tỉnh An Giang, cách trung tâm TP.Châu Đốc ước chừng khoảng 30km.<br></br>
                                 Với một khoảng cách khá gần như thế, du khách có thể dễ dàng lựa chọn phương tiện di chuyển đến rừng tràm Trà Sư.<br></br>
-                                Trong số các phương tiện đường bộ hiện nay thì khách du lịch thích chọn đi bằng xe máy để trải nghiệm trọn vẹn một chuyến phượt rừng tràm Trà Sư.
+                                Trong số các phương tiện đường bộ hiện nay thì khách du lịch thích chọn đi bằng xe máy để trải nghiệm trọn vẹn một chuyến phượt rừng tràm Trà Sư. */}
+                                {place.description}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="placeinfor__review">
                     <div className="placeinfor__rv--1">
-                        Ratings & Reviews ({273})
+                        Ratings & Reviews ({reviewCount})
                     </div>
                     <div className="placeinfor__rv--2">
                         Summary
                     </div>
                     <div className="placeinfor__chart">
-                        <ReviewChart />
+                        <ReviewChart reviews={rates} average={average}/>
                     </div>
                     <div className="placeinfor__filter">
                         <FormControl fullWidth>
