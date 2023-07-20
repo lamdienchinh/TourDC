@@ -1,4 +1,4 @@
-section {
+.intro-section {
     height: 50rem;
     // overflow: auto;
     // padding-top: 120px;
@@ -106,7 +106,9 @@ section {
     padding: 0.8rem 0.5em;
     font-weight: 700;
     text-decoration: none;
-    transition: color 0.3s, background-color;
+    transition:
+        color 0.3s,
+        background-color;
 }
 .intro-tohome:hover {
     scale: 1.02;
