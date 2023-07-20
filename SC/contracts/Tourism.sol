@@ -124,7 +124,14 @@ contract TouristConTract is ERC20WithAutoMinerReward {
 
     mapping(uint => uint[]) public destinationRates; // số rate của một địa điểm
     mapping(uint => string[]) public destinationReviews; // tất cả reviews của một địa điểm
-  
+
+    function getAllRates(uint placeid) public view returns(uint [] memory ) {
+      return destinationRates[placeid];
+    }  
+
+     function getAllReviews(uint placeid) public view returns(string [] memory ) {
+      return destinationReviews[placeid]; 
+    }  
 
     event CreateAlbum(uint _id, string _name);
     function createAlbum(uint _id,string memory _name) public {
