@@ -90,3 +90,40 @@
 .trip-btn {
     margin-bottom: 20px !important;
 }
+
+.upload-imgs {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    border: 2px dashed black;
+    background-color: transparent;
+    font-weight: 500;
+}
+.upload-imgs:hover {
+    border: 2px dashed rgb(19, 118, 223);
+}
+.input-upload-imgs {
+    display: none;
+}
+
+.trip-img-wrapper {
+    display: flex;
+    width: 100%;
+    padding: 20px 0px 20px 0px;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: stretch;
+    // gap: 2rem;
+    & > img {
+        width: 10%;
+        height: 7rem;
+        flex-basis: 200px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin: 8px;
+    }
+}

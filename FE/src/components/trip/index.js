@@ -31,27 +31,11 @@ const Trip = (props) => {
                 <img src={img} alt="Ảnh Chuyến Đi"></img>
             </div>
             <div className="trip__information">
-                {trip.title ? <Typography variant="h6">{trip.title}</Typography> : <Typography variant="h6">Title</Typography>}
+                {trip.title ? <Typography variant="h6">{trip.title}</Typography> : <Typography variant="h6">Chưa có cảm nghĩ</Typography>}
                 <Typography variant="subtitle1">Thời gian: {convertTimestampToVietnamTime(Number(trip?.arrivalDate))}</Typography>
                 <Typography variant="body1">{(getFirst40Characters(trip))}<div className="trip__continue">xem thêm</div></Typography>
                 <Rating value={Number(trip.rate)} readOnly />
             </div>
-            {/* <Card>
-                <CardMedia
-                    component="img"
-                    alt={trip?.title}
-                    height="140"
-                    // image={trip?.images[0].url}
-                    onClick={() => handleTripClick(trip)}
-                    style={{ cursor: 'pointer' }}
-                />
-                <CardContent>
-                    {trip.title ? <Typography variant="h6">{trip.title}</Typography> : <Typography variant="h6">Title</Typography>}
-                    <Typography variant="subtitle1">Thời gian: {convertTimestampToVietnamTime(Number(trip.arrivalDate))}</Typography>
-                    <Typography variant="body1">{(getFirst40Characters(trip))}</Typography>
-                    <Rating value={Number(trip.rate)} readOnly />
-                </CardContent>
-            </Card> */}
         </div >
     );
 }

@@ -30,8 +30,8 @@ const User = () => {
         let formData = new FormData();
         formData.append("avatar", avatar);
         let token = user.accessToken;
+        console.log(user)
         dispatch(changeAvatar({ token, formData, axiosJWT }, dispatch))
-        toast.success('Thay đổi avatar thành công !');
     };
     const handleSubmit2 = async (event) => {
         event.preventDefault();

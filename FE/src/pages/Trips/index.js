@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Container, Pagination, Box, ImageList, ImageListItem, Button, NativeSelect, InputLabel, FormControl } from '@mui/material';
+import { Container, Pagination, Box, Button, NativeSelect, InputLabel, FormControl } from '@mui/material';
 import Trip from "../../components/trip";
-import trips from "../../constants";
+// import trips from "../../constants";
 import "./css/Trips.scss";
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -16,13 +16,16 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import { toast } from "react-toastify"
-import axios from 'axios';
+import 'photoswipe/dist/photoswipe.css'
+import { Gallery, Item } from 'react-photoswipe-gallery'
+// import axios from 'axios';
 // import { doesSectionFormatHaveLeadingZeros } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
 import { useSelector } from 'react-redux'
 import { getUserData } from '../../state/selectors';
 import { getAllTrips } from '../../components/dapp/getAllTrips';
 import reviewTrip from '../../components/dapp/reviewTrip';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
+
 function PaperComponent(props) {
     return (
         <Draggable
@@ -136,6 +139,12 @@ const Trips = () => {
         else {
             setOpen1(false);
         }
+        setSelectTrip("");
+        setImgs([]);
+        setRating(0);
+        setDescription("");
+        setTitle("");
+        setSelectedFiles([])
     }
     const handleClose2 = async (event, action) => {
         event.preventDefault();
@@ -146,6 +155,8 @@ const Trips = () => {
                 title: title,
                 description: description
             }
+            let temp = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title);
+            console.log("Check", temp)
             toast.promise(
                 reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
                 {
@@ -170,6 +181,7 @@ const Trips = () => {
             setRating(0);
             setDescription("");
             setTitle("");
+            setSelectedFiles([])
             setOpen1(false);
         }
         setOpen2(false);
@@ -321,7 +333,29 @@ const Trips = () => {
                                         />
                                     </div>
                                 </Box>
-                                <Input type="file" name="images" multiple onChange={handleFileChange} disabled={selectTrip?.isReview == true ? true : false} />
+                                <label className="upload-imgs">
+                                    Tải ảnh lên
+                                    <input className="input-upload-imgs" type="file" name="images" multiple onChange={handleFileChange} disabled={selectTrip?.isReview === true ? true : false} />
+                                </label>
+                                <div className="trip-img-wrapper">
+                                    <Gallery>
+                                        {
+                                            selectedFiles && selectedFiles.map((item, index) => (
+                                                <Item
+                                                    original={window.URL.createObjectURL(item)}
+                                                    thumbnail={window.URL.createObjectURL(item)}
+                                                    width="1024"
+                                                    height="768"
+                                                    key={index}
+                                                >
+                                                    {({ ref, open }) => (
+                                                        <img ref={ref} onClick={open} src={window.URL.createObjectURL(item)} alt="ảnh" />
+                                                    )}
+                                                </Item>
+                                            ))
+                                        }
+                                    </Gallery>
+                                </div>
                                 {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                 {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
                                     {selectTrip && selectTrip?.images.map((item, index) => (

@@ -71,7 +71,9 @@ export const changeAvatar = createAsyncThunk('user/changeavatar', async ({ token
                 'Content-Type': 'multipart/form-data'
             },
         })
-        dispatch(setInfor({ infor: res.data }));
+        let newData = { ...res.data, accessToken: token };
+        dispatch(setInfor({ infor: newData }));
+        toast.success('Thay đổi avatar thành công !');
     }
     catch (err) {
         console.log(err)

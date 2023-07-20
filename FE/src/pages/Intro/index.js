@@ -35,7 +35,7 @@ const Intro = () => {
     };
     return (
         <div className="intro-wrapper" >
-            <section className="intro-first">
+            <section className="intro-section intro-first">
                 <div className="bg-img">
                     <Container maxWidth="lg">
                         <div className="intro-content">
@@ -71,7 +71,7 @@ const Intro = () => {
                     </Container>
                 </div>
             </section >
-            <section className="intro-two">
+            <section className="intro-section intro-two">
                 <div className="intro-two-overlay">
                     <Container maxWidth="lg">
                         <div className="intro-two__title">
@@ -107,7 +107,7 @@ const Intro = () => {
                     </Container>
                 </div>
             </section >
-            <section className="intro-three">
+            <section className="intro-section intro-three">
                 <div className="intro-three-overlay">
                     <Container maxWidth="lg">
                         <div className="intro-three-content">

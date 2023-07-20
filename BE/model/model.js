@@ -78,6 +78,9 @@ const tripSchema = new mongoose.Schema({
   },
   list_imgs: {
     type: [String],
+  },
+  trHash: {
+    type: String,
   }
 })
 
