@@ -1,12 +1,14 @@
 import Web3 from 'web3'
 import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
+import { toast } from "react-toastify"
 
 // function lưu data review vào blockchain
 const reviewTrip = async (currentAccount,placeID, arrDate , comment, rate, title) => {
   const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
   const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
-  await window.ethereum
+  try {
+  let temp = await window.ethereum
     .request({
       method: 'eth_sendTransaction',
       params: [
@@ -20,13 +22,20 @@ const reviewTrip = async (currentAccount,placeID, arrDate , comment, rate, title
         },
       ],
     })
-    .then((txHash) => {
-       console.log("txHash: ", txHash)
-       return txHash;
-      })
-    .catch((error) => {
-      console.error(error)
-      return "4001";
-    })
+    toast.success("Lưu cảm nghĩ thành công!")
+    return temp.toString();
+  } catch (error) {
+    toast.error('Người dùng từ chối!')
+    return "";
+  }
+    // .then((txHash) => {
+    //    console.log("txHash: ", txHash)
+    //    transactionHash = txHash;
+    //   })
+    // catch((error) => {
+    //   console.error(error)
+    //   throw error;
+    // })
+    // return transactionHash;
 }
 export default reviewTrip;

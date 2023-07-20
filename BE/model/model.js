@@ -68,9 +68,22 @@ const placeSchema = new mongoose.Schema({
     type: String,
   }
 })
+const tripSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  time: {
+    type: String,
+  },
+  list_imgs: {
+    type: [String],
+  }
+})
 
 let User = mongoose.model("User", userSchema);
 let Author = mongoose.model("Album", albumSchema);
-let Place = mongoose.model('Place', placeSchema);
+let Place = mongoose.model("Place", placeSchema);
+let Trip = mongoose.model("Trip", tripSchema);
 
-module.exports = { User, Author, Place };
+module.exports = { User, Author, Place, Trip };

@@ -111,7 +111,6 @@ const Trips = () => {
 
     const [open1, setOpen1] = useState(false);
     const [open2, setOpen2] = useState(false);
-
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleFileChange = (event) => {
@@ -120,6 +119,8 @@ const Trips = () => {
 
     const handleOpen1 = (trip) => {
         setSelectTrip(trip);
+        setTitle(trip.title);
+        setDescription(trip.review)
         setOpen1(true);
         setScroll(scroll);
     }
@@ -144,17 +145,17 @@ const Trips = () => {
                 title: title,
                 description: description
             }
-            const review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
-            // toast.promise(
-            //  review,
-            //     {
-            //         pending: 'Đang đợi xử lí',
-            //         success: 'Lưu cảm nghĩ thành công !',
-            //         error: 'Người dùng từ chối!',
-            //     }
-            // )
-            console.log("review: ", review)
-
+            // let review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
+            // console.log("review:",review);
+            let review = await toast.promise(
+               reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
+                {
+                    pending: 'Đang đợi xử lí',
+                    // success: 'Lưu cảm nghĩ thành công !',
+                    // error: 'Người dùng từ chối!',
+                }
+            )
+            console.log("review:", review);
             setSelectTrip("");
             setImgs([]);
             setRating(0);
@@ -231,7 +232,6 @@ const Trips = () => {
                         {isLoading === true ? <div>
                             <div><Skeleton height="100%" /></div>
                             <div><Skeleton height="100%" /></div>
-                            <div><Skeleton height="100%" /></div>
                         </div> : <div className="trips__results--2">
                             {row2 && row2.map((item, itemIndex) => (
                                 <div onClick={() => handleOpen1(item)} key={itemIndex}>
@@ -293,7 +293,7 @@ const Trips = () => {
                                             placeholder='Nhập tiêu đề'
                                             variant="standard"
                                             fullWidth
-                                            value={selectTrip?.title}
+                                            value={title}
                                             onChange={event => handleTitleChange(event)}
                                             disabled={selectTrip.isReview === true ? true : false}
                                         />
@@ -306,7 +306,7 @@ const Trips = () => {
                                             multiline
                                             rows={4}
                                             fullWidth
-                                            value={selectTrip?.review}
+                                            value={description}
                                             onChange={event => handleDescriptionChange(event)}
                                             disabled={selectTrip.isReview === true ? true : false}
                                         />

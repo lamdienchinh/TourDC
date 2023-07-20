@@ -8,4 +8,7 @@ const router = require("express").Router();
 // Change Avatar
 router.post("/upload", middlewareController.verifyToken, upload.array('images', 10), tripController.upload);
 
+// Get Trip
+
+router.get("/", middlewareController.verifyToken, tripController.getTrips)
 module.exports = router;
