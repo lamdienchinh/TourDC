@@ -43,20 +43,20 @@ const Home = () => {
         const fetchdata = async () => {
             let fetch = await getAllPlace();
             console.log(fetch)
-            // setAllPlaces(fetch);
-            // setPlaces(fetch);
+            setAllPlaces(fetch);
+            setPlaces(fetch);
         }
-        let temp = types.types;
-        const array = Array.from({ length: 50 }, (_, index) =>
-            temp[Math.floor(index / 10)]
-        ).flatMap((placeType, index) => ({
-            ...placeType
-        }));
+        // let temp = types.types;
+        // const array = Array.from({ length: 50 }, (_, index) =>
+        //     temp[Math.floor(index / 10)]
+        // ).flatMap((placeType, index) => ({
+        //     ...placeType
+        // }));
 
         fetchdata();
-        setAllPlaces(array);
-        setPlaces(array);
-
+        // setAllPlaces(array);
+        // setPlaces(array);
+        console.log("allplace: ", allplaces)
         setIsLoading(false);
     }, []);
 

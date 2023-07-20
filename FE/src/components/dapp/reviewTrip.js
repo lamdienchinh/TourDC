@@ -25,7 +25,8 @@ const reviewTrip = async (currentAccount,placeID, arrDate , comment, rate, title
     toast.success("Lưu cảm nghĩ thành công!")
     return temp.toString();
   } catch (error) {
-    toast.error('Người dùng từ chối!')
+    if(error.code === 4001) toast.error('Người dùng từ chối!')
+    else toast.error('Chỉ được review 1 lần')
     return "";
   }
     // .then((txHash) => {
