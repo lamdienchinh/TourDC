@@ -114,7 +114,6 @@ const Trips = () => {
 
     const [open1, setOpen1] = useState(false);
     const [open2, setOpen2] = useState(false);
-
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleFileChange = (event) => {
@@ -155,27 +154,17 @@ const Trips = () => {
                 title: title,
                 description: description
             }
-            let temp = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title);
-            console.log("Check", temp)
-            toast.promise(
-                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
+            // let review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
+            // console.log("review:",review);
+            let review = await toast.promise(
+               reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
                 {
                     pending: 'Đang đợi xử lí',
-                    success: () => {
-                        console.log("OK")
-                        return 'Lưu cảm nghĩ thành công !'
-                    },
-                    error: (error) => {
-                        // Xử lý thông báo lỗi dựa trên các điều kiện khác nhau
-                        console.log("FAIL")
-                        if (error.code === 4001) {
-                            return 'Lưu cảm nghĩ thất bại, người dùng từ chối';
-                        } else {
-                            return 'Đã xảy ra lỗi 🤯';
-                        }
-                    }
+                    // success: 'Lưu cảm nghĩ thành công !',
+                    // error: 'Người dùng từ chối!',
                 }
             )
+            console.log("review:", review);
             setSelectTrip("");
             setImgs([]);
             setRating(0);

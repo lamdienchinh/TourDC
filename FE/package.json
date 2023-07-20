@@ -17,10 +17,15 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "dayjs": "^1.11.9",
+    "i": "^0.3.7",
     "ipfs-http-client": "^60.0.1",
     "jwt-decode": "^3.1.2",
     "node-sass": "^9.0.0",
+<<<<<<< HEAD
     "photoswipe": "^5.3.8",
+=======
+    "npm": "^9.8.0",
+>>>>>>> de88c52b1a7d497d458ab42a31b5f5cc3e67ee3e
     "react": "^18.2.0",
     "react-alice-carousel": "^2.7.1",
     "react-bootstrap": "^2.8.0",
