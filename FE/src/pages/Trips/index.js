@@ -356,21 +356,6 @@ const Trips = () => {
                                         }
                                     </Gallery>
                                 </div>
-                                {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
-                                {/* <ImageList sx={{ width: 600, height: 350 }} cols={3} rowHeight={164}>
-                                    {selectTrip && selectTrip?.images.map((item, index) => (
-                                        item && (
-                                            <ImageListItem key={index}>
-                                                <img
-                                                    src={`${item.url}?w=161&fit=crop&auto=format`}
-                                                    srcSet={`${item.url}?w=161&fit=crop&auto=format&dpr=2 2x`}
-                                                    alt={`Đây là ảnh thứ ${item.id}`}
-                                                    loading="lazy"
-                                                />
-                                            </ImageListItem>
-                                        )
-                                    ))}
-                                </ImageList> */}
                             </div>
                         </DialogContent>
                         <DialogActions>
