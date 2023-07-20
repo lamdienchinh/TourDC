@@ -114,13 +114,12 @@
     width: 100%;
     padding: 20px 0px 20px 0px;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
-    align-items: stretch;
+    align-items: center;
     // gap: 2rem;
     & > img {
-        width: 10%;
-        height: 7rem;
+        height: 8rem;
         flex-basis: 200px;
         flex-grow: 0;
         flex-shrink: 0;
