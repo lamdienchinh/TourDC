@@ -123,22 +123,24 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     mapping(uint => uint) public noPeopleRate; // số lượng người rate tại 1 địa điểm
 
     mapping(uint => uint[]) public destinationRates; // số rate của một địa điểm
-    mapping(uint => string[]) public destinationReviews; // tất cả reviews của một địa điểm
-    mapping(uint => address[]) public touristReview; // nhung du khach review tai dia diem index
-    mapping(uint => uint256[]) public timeReview; // thoi gian du khach review tai dia diem index 
+    // mapping(uint => string[]) public destinationReviews; // tất cả reviews của một địa điểm
+    // mapping(uint => address[]) public touristReview; // nhung du khach review tai dia diem index
+    // mapping(uint => uint256[]) public timeReview; // thoi gian du khach review tai dia diem index 
+    mapping (uint => Journey[]) destinationJourney; 
+
     function getAllRates(uint placeid) public view returns(uint [] memory ) {
       return destinationRates[placeid];
     }  
 
-    function getAllReviews(uint placeid) public view returns(string [] memory ) {
-      return destinationReviews[placeid]; 
+    function getReviewsInPlace(uint placeid) public view returns(Journey [] memory ) {
+      return destinationJourney[placeid]; 
     }
-    function getTouristReview(uint placeid) public view returns(address [] memory ) {
-      return touristReview[placeid]; 
-    }
-    function getTimeReview(uint placeid) public view returns(uint256 [] memory ) {
-      return timeReview[placeid]; 
-    }
+    // function getTouristReview(uint placeid) public view returns(address [] memory ) {
+    //   return touristReview[placeid]; 
+    // }
+    // function getTimeReview(uint placeid) public view returns(uint256 [] memory ) {
+    //   return timeReview[placeid]; 
+    // }
 
     event CreateAlbum(uint _id, string _name);
     function createAlbum(uint _id,string memory _name) public {
@@ -257,13 +259,11 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         touristJourneys[msg.sender][i].rate = rate;
         touristJourneys[msg.sender][i].isReview = true;
         touristJourneys[msg.sender][i].title = title; 
+        destinationJourney[placeId].push(touristJourneys[msg.sender][i]);
         break;
       }
     } 
-        destinationReviews[placeId].push(comment);
         destinationRates[placeId].push(rate);
-        touristReview[placeId].push(msg.sender);
-        timeReview[placeId].push(block.timestamp);
         noPeopleRate[placeId]++;
     }
 

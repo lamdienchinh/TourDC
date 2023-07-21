@@ -5,12 +5,14 @@ import "./css/Place_Thumbnail.scss";
 import { getReviewNumber } from "../dapp/getReviewNumber";
 import { useEffect, useState } from "react";
 import { getDestinationRates } from "../dapp/getDestinationRates";
+import getReviewInPlace from "../dapp/getAllReviews";
 
 const PlaceThumbnail = (props) => {
     let place = props.place;
     console.log("place: ", place)
     const [reviewCount, setReviewCount] = useState(0);
     const [rates, setRates] = useState([]);
+    const [reviews, setReviews] = useState([]);
     // const [average, setAverage] = useState(0);
     const navigate = useNavigate();
     const [average, setAverage] = useState(0);
@@ -33,8 +35,13 @@ const PlaceThumbnail = (props) => {
             setRates(arrayRates);
         }
 
-        
-        getAllRates(place.placeid)
+        const getPlaceReview = async(placeid) => {
+            let arrayJourney = await getReviewInPlace(placeid);
+            console.log("arrayReviews: ", arrayJourney);
+            // setReviews(arrayString);
+        }
+        getPlaceReview(place.placeid);
+        getAllRates(place.placeid);
         getNumberRate(place.placeid);
     },[]);
     
