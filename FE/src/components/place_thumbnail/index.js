@@ -16,55 +16,55 @@ const PlaceThumbnail = (props) => {
     const [average, setAverage] = useState(0);
     const handleClick = () => {
         // Thêm một hàm lấy reviews
-        
+
         //Sau đó tổng hợp data truyền cho placeinfor
-        navigate('/placeinfor', { state: {place, average, rates, reviewCount}});
-    }; 
+        navigate('/placeinfor', { state: { place, average, rates, reviewCount } });
+    };
     useEffect(() => {
-        const getNumberRate = async(placeid) => {
+        const getNumberRate = async (placeid) => {
             let number = await getReviewNumber(placeid);
             setReviewCount(Number(number));
             // console.log("number: ", number)
         }
 
-        const getAllRates = async(placeid) => {
+        const getAllRates = async (placeid) => {
             let arrayRates = await getDestinationRates(placeid);
             console.log("arrayRates: ", arrayRates);
             setRates(arrayRates);
         }
 
-        
+
         getAllRates(place.placeid)
         getNumberRate(place.placeid);
-    },[]);
-    
-    
-    const getAverage = async(rates) => {
+    }, []);
+
+
+    const getAverage = async (rates) => {
         let temp = 0;
-        for(let i = 0; i < rates.length; i++) {
+        for (let i = 0; i < rates.length; i++) {
             temp += Number(rates[i]);
         }
         // console.log("trungbinh" ,average/rates.length); 
         // console.log(rates)
         temp = temp / rates.length;
         // setAverage(temp);
-        
+
         return temp;
     }
     useEffect(() => {
         // Gọi hàm tính trung bình và cập nhật state average khi rates thay đổi.
-        const fetchDataRate = async() => {
+        const fetchDataRate = async () => {
             const averageValue = await getAverage(rates);
             setAverage(averageValue);
         }
         fetchDataRate();
-      }, [rates]); // Khi rates thay đổi, useEffect sẽ được gọi lại.
-      console.log("average: ",average)
+    }, [rates]); // Khi rates thay đổi, useEffect sẽ được gọi lại.
+    console.log("average: ", average)
     return (
         <div className="placethumbnail" onClick={handleClick}>
             <div className="placethumbnail__intro">
-                <div className="placethumbnail__img">
-                    <img src={place.thumbnail} alt="Ảnh tạm"></img>
+                <div className="placethumbnail__image">
+                    <img src={place.thumbnail} alt="Ảnh"></img>
                 </div>
                 <div className="placethumbnail__rate">
                     <Rating name="size-large" value={average} precision={0.5} size="large" readOnly />
@@ -73,16 +73,16 @@ const PlaceThumbnail = (props) => {
                     {place.name}
                 </div>
                 <div className="placethumbnail__content">
-                    {place.content}
+                    {place.intro}
                 </div>
                 <div className="placethumbnail__sth">
                     <div className="placethumbnail__sth--address">
-                        <FaMapMarkerAlt></FaMapMarkerAlt>
-                        <div>{place.address}</div>
+                        <FaMapMarkerAlt className="place-icon"></FaMapMarkerAlt>
+                        <div className="place-address">{place.address}</div>
                     </div>
                     <div className="placethumbnail__sth--comment">
-                        <FaComments></FaComments>
-                        <div>{reviewCount}</div>
+                        <FaComments className="place-icon"></FaComments>
+                        <div className="place-review">{reviewCount}</div>
                     </div>
                 </div>
             </div>

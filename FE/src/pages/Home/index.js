@@ -45,6 +45,7 @@ const Home = () => {
             console.log(fetch)
             setAllPlaces(fetch);
             setPlaces(fetch);
+            setIsLoading(false);
         }
         // let temp = types.types;
         // const array = Array.from({ length: 50 }, (_, index) =>
@@ -57,7 +58,6 @@ const Home = () => {
         // setAllPlaces(array);
         // setPlaces(array);
         console.log("allplace: ", allplaces)
-        setIsLoading(false);
     }, []);
 
     useEffect(() => {
@@ -92,19 +92,19 @@ const Home = () => {
             setGetPlaces(value);
             switch (value) {
                 case 1:
-                    currents = allplaces.filter(item => item.type === 'danh lam')
+                    currents = allplaces.filter(item => item.type === 'danhlam')
                     setPlaces(currents);
                     break;
                 case 2:
-                    currents = allplaces.filter(item => item.type === 'am thuc')
+                    currents = allplaces.filter(item => item.type === 'amthuc')
                     setPlaces(currents);
                     break;
                 case 3:
-                    currents = allplaces.filter(item => item.type === 'giai tri')
+                    currents = allplaces.filter(item => item.type === 'giaitri')
                     setPlaces(currents);
                     break;
                 case 4:
-                    currents = allplaces.filter(item => item.type === 'noi o')
+                    currents = allplaces.filter(item => item.type === 'noio')
                     setPlaces(currents);
                     break;
                 default:
@@ -257,22 +257,26 @@ const Home = () => {
                         </FormControl>
                     </div>
                     <div className="home__results">
-                        {isLoading === true ? <div>
-                            <div><Skeleton height="32rem" /></div>
-                            <div><Skeleton height="32rem" /></div>
-                        </div> : <div className="home__results--1">
-                            {row1 && row1.map((item, itemIndex) => (
-                                <PlaceThumbnail place={item}></PlaceThumbnail>
-                            ))}
-                        </div>}
-                        {isLoading === true ? <div>
-                            <div><Skeleton height="32rem" /></div>
-                            <div><Skeleton height="32rem" /></div>
-                        </div> : <div className="home__results--2">
-                            {row2 && row2.map((item, itemIndex) => (
-                                <PlaceThumbnail place={item}></PlaceThumbnail>
-                            ))}
-                        </div>}
+                        {isLoading === true ?
+                            <div>
+                                <Skeleton height="100%" />
+                                <Skeleton height="100%" />
+                            </div>
+                            : <div className="home__results--1">
+                                {row1 && row1.map((item, itemIndex) => (
+                                    <PlaceThumbnail key={itemIndex} place={item}></PlaceThumbnail>
+                                ))}
+                            </div>}
+                        {isLoading === true ?
+                            <div>
+                                <Skeleton height="100%" />
+                                <Skeleton height="100%" />
+                            </div>
+                            : <div className="home__results--2">
+                                {row2 && row2.map((item, itemIndex) => (
+                                    <PlaceThumbnail key={itemIndex} place={item}></PlaceThumbnail>
+                                ))}
+                            </div>}
                         <div className="home__results--pagination">
                             <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                         </div>

@@ -13,14 +13,13 @@ import { getDestinationRates } from "../../components/dapp/getDestinationRates";
 const PlaceInfor = () => {
 
     const placeinformation = useLocation();
-    const {place, average,rates, reviewCount} = placeinformation.state;
+    const { place, average, rates, reviewCount } = placeinformation.state;
     console.log("rates:", rates);
     console.log("review:", reviewCount);
-    console.log("place:" ,place);
+    console.log("place:", place);
     const navigate = useNavigate();
     // Xử lý Slideshow
     const handleDragStart = (e) => e.preventDefault();
-
     const items = [
         <img src={place.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
         <img src={place.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
@@ -30,7 +29,9 @@ const PlaceInfor = () => {
     const handleClick = () => {
         navigate('/placeinfor');
     };
-
+    const handleNavigate = (newplace) => {
+        console.log("Newplace", newplace)
+    }
     //Xử lý filter
     // const [selectedValue, setSelectedValue] = useState('');
     // console.log(selectedValue)
@@ -55,7 +56,7 @@ const PlaceInfor = () => {
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
-                            <div>
+                            <div >
                                 Chùa Hang
                             </div>
                         </div>
@@ -68,7 +69,7 @@ const PlaceInfor = () => {
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
-                            <div>
+                            <div >
                                 Chùa Hang
                             </div>
                         </div>
@@ -81,7 +82,7 @@ const PlaceInfor = () => {
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
-                            <div>
+                            <div >
                                 Chùa Hang
                             </div>
                         </div>
@@ -94,7 +95,7 @@ const PlaceInfor = () => {
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
-                            <div>
+                            <div >
                                 Chùa Hang
                             </div>
                         </div>
@@ -104,7 +105,23 @@ const PlaceInfor = () => {
             <Container maxWidth="lg">
                 <div className="placeinfor__intro">
                     <div className="placeinfor__imgs">
-                        <AliceCarousel mouseTracking autoWidth={true} autoHeight={true} animationDuration={1000} items={items} autoPlayInterval={1000} autoPlay={true} infinite={true} />
+                        <AliceCarousel
+                            mouseTracking
+                            disableDotsControls
+                            // disableButtonsControls  // ---> also remove this
+                            // activeIndex={activeIndex}  // ---> no need to this anymore
+                            items={items}
+                            controlsStrategy="responsive"
+                            autoPlay={true}
+                            autoPlayInterval={5000}
+                            infinite={true}
+                            keyboardNavigation={true}
+                            renderPrevButton={() => {
+                                return <div className="place-pre-btn">Previous Item</div>
+                            }}
+                            renderNextButton={() => {
+                                return <div className="place-next-btn">Next Item</div>
+                            }} />
                     </div>
                     <div className="placeinfor__rate">
                         <div>
@@ -140,7 +157,7 @@ const PlaceInfor = () => {
                         Summary
                     </div>
                     <div className="placeinfor__chart">
-                        <ReviewChart reviews={rates} average={average}/>
+                        <ReviewChart reviews={rates} average={average} />
                     </div>
                     <div className="placeinfor__filter">
                         <FormControl fullWidth>

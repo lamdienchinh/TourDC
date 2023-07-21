@@ -45,7 +45,7 @@ const CreateAlbum = () => {
     }, [selectedTrips])
 
     const handleAdd = async (event, id) => {
-
+        event.stopPropagation();
         let trip = trips.find(item => item.id === id);
         let newselectedtrips = [...selectedTrips];
         let check = newselectedtrips.find(item => item.id === id);
@@ -76,7 +76,6 @@ const CreateAlbum = () => {
         console.log(selectedTrips)
         toast.success('Tạo album mới thành công !')
     };
-
     return (
         <div className="createalbum">
             <div className="createalbum-slide">
@@ -140,12 +139,24 @@ const CreateAlbum = () => {
                                     {
                                         <Accordion>
                                             <AccordionSummary
-                                                expandIcon={<ExpandMoreIcon />}
+                                                expandIcon={
+                                                    <ExpandMoreIcon
+                                                        sx={{
+                                                            pointerEvents: "auto"
+                                                        }}
+                                                    />
+                                                }
                                                 aria-controls="panel1a-content"
                                                 id="panel1a-header"
+                                                sx={{
+                                                    pointerEvents: "none"
+                                                }}
                                             >
                                                 <Typography sx={{ width: '33%', flexShrink: 0 }}> {currentTrip.title}</Typography>
-                                                <Typography sx={{ color: 'text.secondary' }}>Thời gian: {currentTrip.time}, Địa điểm: </Typography>
+                                                <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {currentTrip.time}, Địa điểm: </Typography>
+                                                <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip.id)} variant="outlined">
+                                                    Thêm
+                                                </Button>
                                             </AccordionSummary>
                                             <AccordionDetails>
                                                 <div className="trip__infor">
@@ -184,9 +195,6 @@ const CreateAlbum = () => {
                                             </AccordionDetails>
                                         </Accordion>
                                     }
-                                    <Button className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip.id)} variant="outlined">
-                                        Thêm
-                                    </Button>
                                 </div>
                             ))}
                         </div>
