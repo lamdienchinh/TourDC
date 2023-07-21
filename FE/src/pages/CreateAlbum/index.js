@@ -21,7 +21,8 @@ import { getUserData, getInfor } from '../../state/selectors';
 import { setInfor } from "../../state/userSlice";
 import { createAxios } from "../../utils/createInstance";
 import { getTrips, reviewtoBE } from '../../service/api';
-import { Gallery, Item } from "react-photoswipe-gallery"
+import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
+
 
 function PaperComponent(props) {
     return (
