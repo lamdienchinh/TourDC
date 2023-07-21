@@ -16,12 +16,12 @@ import Link from '@mui/material/Link';
 // import axios from 'axios';
 // import img from "../../assets/imgs/place1.png"
 import { getAllTrips } from '../../components/dapp/getAllTrips';
-import { useSelector,useDispatch } from 'react-redux'
-import { getUserData,getInfor } from '../../state/selectors';
+import { useSelector, useDispatch } from 'react-redux'
+import { getUserData, getInfor } from '../../state/selectors';
 import { setInfor } from "../../state/userSlice";
 import { createAxios } from "../../utils/createInstance";
 import { getTrips, reviewtoBE } from '../../service/api';
-
+import { Gallery, Item } from "react-photoswipe-gallery"
 
 function PaperComponent(props) {
     return (
@@ -47,7 +47,7 @@ const CreateAlbum = () => {
     const [update, setUpdate] = useState(true)
     useEffect(() => {
         const fetchData = async (currentAccount) => {
-        
+
             // Thực hiện các bước để lấy dữ liệu infor
             const infor = await getAllTrips(currentAccount);
             console.log("infor:", infor)
@@ -70,25 +70,26 @@ const CreateAlbum = () => {
         }
         fetchData(currentAccount);
     }, [update]);
-    
+
     const [selectedTrips, setSelectedTrips] = useState([]);
-    
+
 
     useEffect(() => {
         console.log('New', selectedTrips);
     }, [selectedTrips])
 
     const handleAdd = async (event, id) => {
-        // event.stopPropagation();
-        // let trip = trips.find(item => item.id === id);
-        // let newselectedtrips = [...selectedTrips];
-        // let check = newselectedtrips.find(item => item.id === id);
-        // if (check) toast.error("Bạn đã thêm chuyến đi này vào album rồi")
-        // else {
-        //     newselectedtrips.push(trip);
-        //     toast.success("Thêm chuyến đi vào album thành công")
-        //     setSelectedTrips(newselectedtrips);
-        // }
+        event.stopPropagation();
+        let trip = allTrips.find(item => item._id === id);
+        let newselectedtrips = [...selectedTrips];
+        let check = newselectedtrips.find(item => item._id === id);
+        console.log(id)
+        if (check) toast.error("Bạn đã thêm chuyến đi này vào album rồi")
+        else {
+            newselectedtrips.push(trip);
+            toast.success("Thêm chuyến đi vào album thành công")
+            setSelectedTrips(newselectedtrips);
+        }
     }
     const handleRemove = async (event, id) => {
         setRemoveTrip(id);
@@ -186,9 +187,9 @@ const CreateAlbum = () => {
                                                     pointerEvents: "none"
                                                 }}
                                             >
-                                                <Typography sx={{ width: '33%', flexShrink: 0 }}>{currentTrip.title? currentTrip.title : "Không có tiêu đề"}</Typography>
+                                                <Typography sx={{ width: '33%', flexShrink: 0 }}>{currentTrip.title ? currentTrip.title : "Không có tiêu đề"}</Typography>
                                                 <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {Number(currentTrip.arrivalDate)}, Địa điểm: </Typography>
-                                                <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip.id)} variant="outlined">
+                                                <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip._id)} variant="outlined">
                                                     Thêm
                                                 </Button>
                                             </AccordionSummary>
@@ -207,23 +208,25 @@ const CreateAlbum = () => {
                                                             {currentTrip?.review ? currentTrip.review : "Chưa có cảm nghĩ"}
                                                         </Typography>
                                                     </div>
-                                                    <div>
-                                                        Ảnh đã đăng tải:
-                                                        <ImageList sx={{ width: 800, height: 450 }} cols={3} rowHeight={164}>
-                                                            {currentTrip.list_imgs && currentTrip.list_imgs.map((image, index) => (
-                                                                <ImageListItem key={index}>
-                                                                    <Paper>
-                                                                        <img
-                                                                            src={`${image}?w=164&h=164&fit=crop&auto=format`}
-                                                                            srcSet={`${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                                                            alt={`Hình ${index}`}
-                                                                            loading="lazy"
-                                                                            style={{ width: '100%' }}
-                                                                        />
-                                                                    </Paper>
-                                                                </ImageListItem>
-                                                            ))}
-                                                        </ImageList>
+                                                    <div>Ảnh đã đăng tải:</div>
+                                                    <div className="createalbum-img-wrapper">
+                                                        <Gallery>
+                                                            {
+                                                                currentTrip.list_imgs && currentTrip.list_imgs.map((item, index) => (
+                                                                    <Item
+                                                                        original={item}
+                                                                        thumbnail={item}
+                                                                        width="1024"
+                                                                        height="768"
+                                                                        key={index}
+                                                                    >
+                                                                        {({ ref, open }) => (
+                                                                            <img ref={ref} onClick={open} src={item} alt="ảnh" />
+                                                                        )}
+                                                                    </Item>
+                                                                ))
+                                                            }
+                                                        </Gallery>
                                                     </div>
                                                 </div>
                                             </AccordionDetails>
