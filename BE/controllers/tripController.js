@@ -31,6 +31,7 @@ const tripController = {
                 trHash: req.body.trHash
             });
             let result = await newTrip.save();
+            console.log(files);
             // uploadedUrls chứa các liên kết ảnh đã tải lên từ Cloudinary
             res.status(200).json(result);
         } catch (error) {

@@ -3,7 +3,7 @@ import "./css/PlaceInfor.scss"
 import 'react-alice-carousel/lib/alice-carousel.css';
 import AliceCarousel from 'react-alice-carousel';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Rating, NativeSelect, FormControl, InputLabel } from '@mui/material';
+import { Rating, NativeSelect, FormControl, InputLabel, Button } from '@mui/material';
 import ReviewChart from "../../components/review_chart";
 // import { useState } from "react";
 import Review from "../../components/review";
@@ -117,10 +117,10 @@ const PlaceInfor = () => {
                             infinite={true}
                             keyboardNavigation={true}
                             renderPrevButton={() => {
-                                return <div className="place-pre-btn">Previous Item</div>
+                                return <Button className="place-pre-btn">Trước</Button>
                             }}
                             renderNextButton={() => {
-                                return <div className="place-next-btn">Next Item</div>
+                                return <Button className="place-next-btn">Sau</Button>
                             }} />
                     </div>
                     <div className="placeinfor__rate">

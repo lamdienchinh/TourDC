@@ -37,10 +37,10 @@ const PlaceThumbnail = (props) => {
 
 
         getAllRates(place.placeid)
-        const getPlaceReview = async(placeid) => {
+        const getPlaceReview = async (placeid) => {
             let arrayJourney = await getReviewInPlace(placeid);
             console.log("arrayReviews: ", arrayJourney);
-            // setReviews(arrayString);
+            setReviews(arrayJourney);
         }
         getPlaceReview(place.placeid);
         getAllRates(place.placeid);

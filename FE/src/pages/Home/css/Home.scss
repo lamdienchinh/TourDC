@@ -131,6 +131,9 @@
             // & > div {
             //     // width: 100%;
             // }
+            & span {
+                -webkit-transform: scale(1, 1) !important;
+            }
         }
         & .home__results--pagination {
             display: flex;

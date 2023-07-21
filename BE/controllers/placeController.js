@@ -10,7 +10,7 @@ const placeController = {
             const savePlace = await newPlace.save();
             return res.status(200).json(savePlace);
         } catch (error) {
-            return res.status(500).json(err);
+            return res.status(500).json(error);
         }
     },
     updatePlace: async (req, res) => {
@@ -21,16 +21,16 @@ const placeController = {
             return res.status(200).json(update)
         }
         catch (error) {
-            return res.status(500).json(err);
+            return res.status(500).json(error);
         }
     },
     getAllPlaces: async (req, res) => {
         try {
-            const places = await Place.find();
+            const places = await Place.find().populate('referPlaces');
             return res.status(200).json(places)
         }
         catch (error) {
-            return res.status(500).json(err)
+            return res.status(500).json(error)
         }
     },
     getPlace: async (req, res) => {
@@ -40,7 +40,7 @@ const placeController = {
             return res.status(200).json(place)
         }
         catch (error) {
-            return res.status(500).json(err)
+            return res.status(500).json(error)
         }
     },
     deletePlace: async (req, res) => {
@@ -50,7 +50,7 @@ const placeController = {
             return res.status(200).json(delprocess);
         }
         catch (error) {
-            return res.status(500).json(err);
+            return res.status(500).json(error);
         }
     }
 }

@@ -14,6 +14,7 @@ const middleware = {
             })
         }
         else {
+            console.log(token)
             return res.status(401).json("You're not authenticated")
         }
     },
