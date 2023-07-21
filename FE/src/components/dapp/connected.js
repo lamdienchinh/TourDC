@@ -42,9 +42,9 @@ export function Connect() {
     window.ethereum.on('accountsChanged', handleAccountsChanged);
 
     // Xóa bỏ sự kiện khi component bị hủy
-    return () => {
-      window.ethereum.off('accountsChanged', handleAccountsChanged);
-    };
+    // return () => {
+    //   window.ethereum.off('accountsChanged', handleAccountsChanged);
+    // };
   }, []);
 
   return console.log("currentAccount: ", currentAccount);
