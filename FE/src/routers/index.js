@@ -17,7 +17,7 @@ import Forum from "../pages/Forum";
 import { useSelector } from "react-redux";
 import { getUserData } from "../state/selectors";
 import Error from "../pages/Error";
-// import QrCode from "../pages/QRcode/qrCode";
+import QrCode from "../pages/QRcode/qrCode";
 const RouterList = () => {
   const walletAddress = useSelector(getUserData);
   return (
@@ -38,7 +38,7 @@ const RouterList = () => {
             <Route path="/trips" element={<Trips />} />
             <Route path="/code" element={<Code />} />
             <Route path="/forum" element={<Forum />}></Route>
-            {/* <Route path="/qrcode" element={<QrCode />} /> */}
+            <Route path="/qrcode" element={<QrCode />} />
           </Route>
           :
           <Route path="*" element={<Error />} />

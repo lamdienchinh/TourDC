@@ -27,6 +27,7 @@ const PlaceThumbnail = (props) => {
             let arrayRates = await getDestinationRates(placeid);
             console.log("arrayRates: ", arrayRates);
             setRates(arrayRates);
+            getAverage(arrayRates);
         }
 
         const getPlaceReview = async (placeid) => {
@@ -50,7 +51,6 @@ const PlaceThumbnail = (props) => {
         getPlaceReview(place.placeid);
         getAllRates(place.placeid);
         getNumberRate(place.placeid);
-        getAverage(rates);
 
     }, []);
 

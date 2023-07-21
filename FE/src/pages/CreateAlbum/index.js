@@ -189,7 +189,7 @@ const CreateAlbum = () => {
                                                 }}
                                             >
                                                 <Typography sx={{ width: '33%', flexShrink: 0 }}>{currentTrip.title ? currentTrip.title : "Không có tiêu đề"}</Typography>
-                                                <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {Number(currentTrip.arrivalDate)}, Địa điểm: </Typography>
+                                                <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {convertTimestampToVietnamTime(Number(currentTrip.arrivalDate))}, Địa điểm: </Typography>
                                                 <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip._id)} variant="outlined">
                                                     Thêm
                                                 </Button>

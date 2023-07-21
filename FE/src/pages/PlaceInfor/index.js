@@ -50,9 +50,9 @@ const PlaceInfor = () => {
         newplace.referPlaces = referP.data.referPlaces;
         console.log("R", referP.data)
         navigate('.', { replace: true, state: { newplace, average, rates, reviewCount } });
-        setAverage(average);
-        setRates(rates);
-        setReviewCount(reviewCount);
+        // setAverage(average);
+        // setRates(rates);
+        // setReviewCount(reviewCount);
         setPlace(newplace)
     };
     //Xử lý filter
