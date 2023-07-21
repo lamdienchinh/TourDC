@@ -22,7 +22,7 @@ import { setInfor } from "../../state/userSlice";
 import { createAxios } from "../../utils/createInstance";
 import { getTrips, reviewtoBE } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
-
+import {Gallery, Item} from "react-photoswipe-gallery"
 
 function PaperComponent(props) {
     return (
