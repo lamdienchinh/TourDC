@@ -14,6 +14,10 @@ router.get("/", userController.getAllUsers);
 // Login
 router.post("/login", userController.login);
 
+// Logout 
+
+router.post("/logout", middlewareController.verifyToken, userController.logout);
+
 // Change Infor
 router.post("/changeinfor", middlewareController.verifyToken, userController.changeInfor);
 
@@ -21,5 +25,5 @@ router.post("/changeinfor", middlewareController.verifyToken, userController.cha
 router.post("/changeavatar", middlewareController.verifyToken, upload.single('avatar'), userController.changeAvatar);
 
 //refreshToken
-router.post("/refresh",userController.requestRefreshToken)
+router.post("/refresh", userController.requestRefreshToken)
 module.exports = router;

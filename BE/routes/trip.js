@@ -11,4 +11,5 @@ router.post("/upload", middlewareController.verifyToken, upload.array('images', 
 // Get Trip
 
 router.get("/", middlewareController.verifyToken, tripController.getTrips)
+router.post("/", middlewareController.verifyToken, tripController.getTripsofPlace)
 module.exports = router;

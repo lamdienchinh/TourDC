@@ -81,6 +81,9 @@ const tripSchema = new mongoose.Schema({
   },
   trHash: {
     type: String,
+  },
+  placeid: {
+    type: String,
   }
 })
 

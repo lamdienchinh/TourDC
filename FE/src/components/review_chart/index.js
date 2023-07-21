@@ -1,6 +1,6 @@
 import { LinearProgress, Rating } from "@mui/material";
 import "./css/Review_Chart.scss";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 const ReviewChart = (props) => {
     let reviews = props.reviews;
     let oneStarCount = 0;
@@ -10,13 +10,20 @@ const ReviewChart = (props) => {
     let fiveStarCount = 0;
 
     const countStar = () => {
-        for (let i =0; i < reviews.length; i++) {
+        for (let i = 0; i < reviews.length; i++) {
             switch (Number(reviews[i])) {
                 case 1: oneStarCount++;
+                    break;
                 case 2: twoStarCount++;
+                    break;
                 case 3: threeStarCount++;
+                    break;
                 case 4: fourStarCount++;
+                    break;
                 case 5: fiveStarCount++;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -25,7 +32,7 @@ const ReviewChart = (props) => {
         <div className="reviewchart">
             <div className="reviewchart__column1">
                 <div className="reviewchart__total">
-                {props.average}
+                    {Math.round(props.average + 0.5) - 0.5}
                 </div>
                 <div>
                     <Rating name="size-large" value={props.average} precision={0.5} size="large" readOnly />

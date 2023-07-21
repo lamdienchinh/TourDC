@@ -1,43 +1,59 @@
-import img from "../../assets/imgs/angiang.webp"
 import "./css/PlaceInfor.scss"
 import 'react-alice-carousel/lib/alice-carousel.css';
 import AliceCarousel from 'react-alice-carousel';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Rating, NativeSelect, FormControl, InputLabel, Button } from '@mui/material';
 import ReviewChart from "../../components/review_chart";
 // import { useState } from "react";
 import Review from "../../components/review";
 import Container from '@mui/material/Container';
-import { getDestinationRates } from "../../components/dapp/getDestinationRates";
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios"
 const PlaceInfor = () => {
-
     const information = useLocation();
-    const { place1, average1, rates1, reviewCount1 } = information.state;
-    const [place, setPlace] = useState(place1);
-    const [average, setAverage] = useState(average1);
-    const [rates, setRates] = useState(rates1);
-    const [reviewCount, setReviewCount] = useState(reviewCount1);
-    // const [placeinformation, setPlaceInformation] = useState(information.state);
-    console.log("rates:", rates1);
-    console.log("review:", reviewCount1);
-    console.log("place:", place1);
-    const navigate = useNavigate();
-    // Xử lý Slideshow
+    const [place, setPlace] = useState(information.state.place);
+    const [average, setAverage] = useState(information.state.average);
+    const [rates, setRates] = useState(information.state.rates);
+    const [reviewCount, setReviewCount] = useState(information.state.reviewCount);
+    const [items, setItems] = useState([]);
     const handleDragStart = (e) => e.preventDefault();
-    const items = [
-        <img src={place?.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        <img src={place?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        <img src={place?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-    ];
 
-    const handleClick = (place) => {
-        // navigate('/placeinfor', {state: { place, average, rates, reviewCount}} );
-        // setAverage(average);
-        // setRates(rates);
-        // setReviewCount(reviewCount);
-        setPlace(place)
+    // const { place1, average1, rates1, reviewCount1 } = information.state;
+    // setAverage(average1);
+    // setRates(rates1);
+    // setReviewCount(reviewCount1);
+    useEffect(() => {
+        const place1 = information.state.place
+        console.log("Infor", place1)
+        console.log("Place", place1.referPlaces);
+        setPlace(place1);
+        console.log("Check", place)
+        setItems([
+            <img src={place1?.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+            <img src={place1?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+            <img src={place1?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        ]);
+    }, [])
+    const navigate = useNavigate();
+
+    // console.log("rates:", rates);
+    // console.log("review:", reviewCount);
+    // console.log("place:", place);
+    // const [placeinformation, setPlaceInformation] = useState(information.state);
+    // Xử lý Slideshow
+
+    const handleClicks = async (newplace) => {
+        console.log("RUN")
+        console.log("NEW", newplace)
+        let referP = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/place/get`, { name: newplace.name });
+        newplace.referPlaces = referP.data.referPlaces;
+        console.log("R", referP.data)
+        navigate('.', { replace: true, state: { newplace, average, rates, reviewCount } });
+        setAverage(average);
+        setRates(rates);
+        setReviewCount(reviewCount);
+        setPlace(newplace)
     };
     //Xử lý filter
     // const [selectedValue, setSelectedValue] = useState('');
@@ -57,53 +73,53 @@ const PlaceInfor = () => {
                 <div className="placeinfor__suggest">
                     <div className="placeinfor__suggest--1">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick(place.referPlaces[0])}></img>
+                            <img src={place.referPlaces[0].thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place.referPlaces[0])}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
-                            <div>
+                            <div className="placeinfor__suggest--row1">
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
-                            <div >
+                            <div className="placeinfor__suggest--row2">
                                 {place.referPlaces[0].name}
                             </div>
                         </div>
                     </div>
                     <div className="placeinfor__suggest--2">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick()}></img>
+                            <img src={place.referPlaces[1]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place.referPlaces[1])}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
                             <div >
-                            {place.referPlaces[1].name}
+                                {place.referPlaces[1].name}
                             </div>
                         </div>
                     </div>
                     <div className="placeinfor__suggest--3">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick()}></img>
+                            <img src={place.referPlaces[2]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place.referPlaces[2])}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
                             <div >
-                            {place.referPlaces[2].name}
+                                {place.referPlaces[2].name}
                             </div>
                         </div>
                     </div>
                     <div className="placeinfor__suggest--4">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick()}></img>
+                            <img src={place.referPlaces[3]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place.referPlaces[3])}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
                             <div >
-                            {place.referPlaces[3].name}
+                                {place.referPlaces[3].name}
                             </div>
                         </div>
                     </div>
@@ -147,10 +163,6 @@ const PlaceInfor = () => {
                                 {place.intro}
                             </div>
                             <div>
-                                {/* Địa chỉ rừng tràm Trà Sư ở đâu? <br></br>
-                                Rừng tràm Trà Sư là một địa điểm du lịch đẹp ở miền Tây rất nổi tiếng thuộc tỉnh An Giang, cách trung tâm TP.Châu Đốc ước chừng khoảng 30km.<br></br>
-                                Với một khoảng cách khá gần như thế, du khách có thể dễ dàng lựa chọn phương tiện di chuyển đến rừng tràm Trà Sư.<br></br>
-                                Trong số các phương tiện đường bộ hiện nay thì khách du lịch thích chọn đi bằng xe máy để trải nghiệm trọn vẹn một chuyến phượt rừng tràm Trà Sư. */}
                                 {place.description}
                             </div>
                         </div>

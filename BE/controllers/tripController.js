@@ -49,6 +49,16 @@ const tripController = {
             res.status(500).json({ error: 'Fail' });
         }
     },
+    getTripsofPlace: async (req, res) => {
+        try {
+            let place = req.body.placeid;
+            const Trips = await Trip.find({ placeid: place });
+            res.status(200).json(Trips);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Fail' });
+        }
+    },
 };
 
 
