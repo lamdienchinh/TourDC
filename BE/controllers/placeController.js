@@ -30,16 +30,18 @@ const placeController = {
             return res.status(200).json(places)
         }
         catch (error) {
+            console.log(error)
             return res.status(500).json(error)
         }
     },
     getPlace: async (req, res) => {
         try {
             let search = req.body.name;
-            const place = await Place.findOne({ name: search });
+            const place = await Place.findOne({ name: search }).populate("referPlaces");
             return res.status(200).json(place)
         }
         catch (error) {
+            console.log(Error)
             return res.status(500).json(error)
         }
     },

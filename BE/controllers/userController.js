@@ -67,10 +67,12 @@ const userController = {
   },
   logout: async (req, res) => {
     try {
-
+      refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken)
+      res.clearCookie("refreshToken");
+      res.status(200).json('Log out')
     }
     catch (err) {
-
+      return res.status(500).json(err)
     }
   },
   changeInfor: async (req, res) => {

@@ -81,9 +81,21 @@ export const changeAvatar = createAsyncThunk('user/changeavatar', async ({ token
 }
 )
 
-export const logout = createAsyncThunk('user/logout', async (_, { dispatch }) => {
-    dispatch(clearUser());
-    toast.success("Đăng xuất thành công")
+export const logout = createAsyncThunk('user/logout', async ({ token, axiosJWT }, { dispatch }) => {
+    try {
+        const res = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/logout`, token, {
+            headers: {
+                token: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+        dispatch(clearUser());
+        console.log(res);
+        toast.success("Đăng xuất thành công")
+    }
+    catch (err) {
+
+    }
 })
 
 export const { setUser, clearUser, setInfor } = userSlice.actions;

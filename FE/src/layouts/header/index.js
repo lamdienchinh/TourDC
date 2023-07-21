@@ -24,6 +24,8 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, P
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { createAxios } from '../../utils/createInstance';
+import { setInfor } from '../../state/userSlice';
 
 function PaperComponent(props) {
     return (
@@ -45,7 +47,8 @@ const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [clogout, setClogout] = useState(false);
-
+    const user = useSelector(getInfor)
+    let axiosJWT = createAxios(user, dispatch, setInfor);
     const login = async () => {
         if (walletAddress === "" || walletAddress === undefined) {
             console.log(walletAddress)
@@ -86,7 +89,8 @@ const Header = () => {
 
     const confirmlogout = (event, check) => {
         if (check) {
-            dispatch(logout(dispatch));
+            let token = user.accessToken;
+            dispatch(logout({ token, axiosJWT }, dispatch));
             navigate('/')
         }
         setClogout(false);
