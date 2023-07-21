@@ -37,7 +37,6 @@ function PaperComponent(props) {
 const CreateAlbum = () => {
 
     const [allTrips, setAllTrips] = useState([]);
-    const [journey, setJourneys] = useState([]);
     const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
     const dispatch = useDispatch();
     const user = useSelector(getInfor)
@@ -45,6 +44,8 @@ const CreateAlbum = () => {
     const [imgs, setImgs] = useState([]);
     let axiosJWT = createAxios(user, dispatch, setInfor);
     const [update, setUpdate] = useState(true)
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
     useEffect(() => {
         const fetchData = async (currentAccount) => {
 
@@ -168,6 +169,25 @@ const CreateAlbum = () => {
                 <div className="createalbum__contents">
                     <div className="createalbum__left">
                         <h2>Create Album</h2>
+                        <div>
+                            <TextField
+                                label="Tiêu đề"
+                                id="standard-size-normal"
+                                variant="standard"
+                                onChange={(event) => setTitle(event.target.value)}
+                                placeholder="Tìm kiếm ở đây"
+                            />
+                        </div>
+                        <div>
+                            <TextField
+                                label="Nội dung"
+                                id="standard-size-normal"
+                                variant="standard"
+                                multiline={5}
+                                onChange={(event) => setContent(event.target.value)}
+                                placeholder="Tìm kiếm ở đây"
+                            />
+                        </div>
                         <div className="trips-list">
                             {allTrips && allTrips.map((currentTrip) => (
                                 <div className="trip-box">
