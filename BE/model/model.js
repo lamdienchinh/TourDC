@@ -22,18 +22,23 @@ const userSchema = new mongoose.Schema({
 })
 
 const albumSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
-    required: true
   },
-
-  // createdAt: {
-  //   type: Date,
-  //   default:  Date.now
-  // },
+  content: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
+  },
+  trips: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Trip"
   }
 })
 
