@@ -9,29 +9,36 @@ import ReviewChart from "../../components/review_chart";
 import Review from "../../components/review";
 import Container from '@mui/material/Container';
 import { getDestinationRates } from "../../components/dapp/getDestinationRates";
+import { useEffect, useState } from "react";
 
 const PlaceInfor = () => {
 
-    const placeinformation = useLocation();
-    const { place, average, rates, reviewCount } = placeinformation.state;
-    console.log("rates:", rates);
-    console.log("review:", reviewCount);
-    console.log("place:", place);
+    const information = useLocation();
+    const { place1, average1, rates1, reviewCount1 } = information.state;
+    const [place, setPlace] = useState(place1);
+    const [average, setAverage] = useState(average1);
+    const [rates, setRates] = useState(rates1);
+    const [reviewCount, setReviewCount] = useState(reviewCount1);
+    // const [placeinformation, setPlaceInformation] = useState(information.state);
+    console.log("rates:", rates1);
+    console.log("review:", reviewCount1);
+    console.log("place:", place1);
     const navigate = useNavigate();
     // Xử lý Slideshow
     const handleDragStart = (e) => e.preventDefault();
     const items = [
-        <img src={place.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        <img src={place.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        <img src={place.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        <img src={place?.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        <img src={place?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        <img src={place?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
     ];
 
-    const handleClick = () => {
-        navigate('/placeinfor');
+    const handleClick = (place) => {
+        // navigate('/placeinfor', {state: { place, average, rates, reviewCount}} );
+        // setAverage(average);
+        // setRates(rates);
+        // setReviewCount(reviewCount);
+        setPlace(place)
     };
-    const handleNavigate = (newplace) => {
-        console.log("Newplace", newplace)
-    }
     //Xử lý filter
     // const [selectedValue, setSelectedValue] = useState('');
     // console.log(selectedValue)
@@ -41,62 +48,62 @@ const PlaceInfor = () => {
     return (
         <div className="placeinfor">
             <div className="placeinfor__slide">
-                <img src={place.thumbnail} alt="Ảnh nền"></img>
+                <img src={place?.thumbnail} alt="Ảnh nền"></img>
                 <div className="placeinfor__content">
                     <div className="placeinfor__title">
-                        {place.name}
+                        {place?.name}
                     </div>
                 </div>
                 <div className="placeinfor__suggest">
                     <div className="placeinfor__suggest--1">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick}></img>
+                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick(place.referPlaces[0])}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
                             <div >
-                                Chùa Hang
+                                {place.referPlaces[0].name}
                             </div>
                         </div>
                     </div>
                     <div className="placeinfor__suggest--2">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick}></img>
+                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick()}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
                             <div >
-                                Chùa Hang
+                            {place.referPlaces[1].name}
                             </div>
                         </div>
                     </div>
                     <div className="placeinfor__suggest--3">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick}></img>
+                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick()}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
                             <div >
-                                Chùa Hang
+                            {place.referPlaces[2].name}
                             </div>
                         </div>
                     </div>
                     <div className="placeinfor__suggest--4">
                         <div>
-                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick}></img>
+                            <img src={img} alt="Ảnh đề xuất" onClick={handleClick()}></img>
                         </div>
                         <div className="placeinfor__suggest--infor">
                             <div>
                                 ĐI ĐẾN ĐỊA ĐIỂM
                             </div>
                             <div >
-                                Chùa Hang
+                            {place.referPlaces[3].name}
                             </div>
                         </div>
                     </div>

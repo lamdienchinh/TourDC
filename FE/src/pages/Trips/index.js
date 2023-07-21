@@ -47,6 +47,7 @@ const Trips = () => {
     const dispatch = useDispatch();
     const user = useSelector(getInfor)
     let axiosJWT = createAxios(user, dispatch, setInfor);
+    
     // Fetch data từ blockchain
     const [journey, setJourneys] = useState([]);
     const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));

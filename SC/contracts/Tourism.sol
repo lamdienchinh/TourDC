@@ -135,6 +135,23 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     function getReviewsInPlace(uint placeid) public view returns(Journey [] memory ) {
       return destinationJourney[placeid]; 
     }
+    
+    function getJourneyWithTime(uint256[] memory timestamp) public view returns (Journey[] memory) {
+      Journey[] memory lstJourney = new Journey[](timestamp.length);
+      uint256 count = 0;
+
+      for (uint256 i = 0; i < timestamp.length; i++) {
+          for (uint256 j = 0; j < touristJourneys[msg.sender].length; j++) {
+              if (timestamp[i] == touristJourneys[msg.sender][j].arrivalDate) {
+                  // Thêm vào mảng lstJourney
+                  lstJourney[count] = touristJourneys[msg.sender][j];
+                  count++;
+              }
+          }
+      }
+      return lstJourney;
+    }
+
     // function getTouristReview(uint placeid) public view returns(address [] memory ) {
     //   return touristReview[placeid]; 
     // }
