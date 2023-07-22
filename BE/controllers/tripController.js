@@ -28,7 +28,8 @@ const tripController = {
                 user: req.user.id,
                 list_imgs: uploadedUrls,
                 time: req.body.time,
-                trHash: req.body.trHash
+                trHash: req.body.trHash,
+                tripid: req.body.tripid
             });
             let result = await newTrip.save();
             console.log(files);
