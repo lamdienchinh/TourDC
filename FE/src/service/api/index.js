@@ -91,10 +91,15 @@ const getAllReviewsInAllPlaces = async() => {
     }
     return mergedArray
 }
+
+const getReviewsWithIds = async(idList) => {
+    return await contract.methods.getJourneyWithID(idList).call();
+}
 export {
     getAllPlace,
     reviewtoBE,
     getTrips,
     getPlace,
-    getAllReviewsInAllPlaces
+    getAllReviewsInAllPlaces,
+    getReviewsWithIds
 }
