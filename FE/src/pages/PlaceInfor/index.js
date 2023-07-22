@@ -53,7 +53,12 @@ const PlaceInfor = () => {
         setAverage(average);
         setRates(rates);
         setReviewCount(reviewCount);
-        setPlace(newplace)
+        setItems([
+            <img src={newplace?.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+            <img src={newplace?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+            <img src={newplace?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        ]);
+        setPlace(newplace);
     };
     //Xử lý filter
     // const [selectedValue, setSelectedValue] = useState('');

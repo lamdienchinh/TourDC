@@ -52,7 +52,7 @@ const PlaceThumbnail = (props) => {
         getAllRates(place.placeid);
         getNumberRate(place.placeid);
 
-    }, []);
+    }, [place]);
 
 
 
