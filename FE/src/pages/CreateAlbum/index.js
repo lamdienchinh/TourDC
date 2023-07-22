@@ -82,10 +82,11 @@ const CreateAlbum = () => {
 
     const handleAdd = async (event, id) => {
         event.stopPropagation();
-        let trip = allTrips.find(item => item._id === id);
+        let trip = allTrips.find(item => item.tripId === id);
         let newselectedtrips = [...selectedTrips];
-        let check = newselectedtrips.find(item => item._id === id);
-        console.log(id)
+        let check = newselectedtrips.find(item => item.tripId === id);
+        console.log("ID", id)
+        console.log("AllTrips", allTrips)
         if (check) toast.error("Bạn đã thêm chuyến đi này vào album rồi")
         else {
             newselectedtrips.push(trip);
@@ -94,6 +95,7 @@ const CreateAlbum = () => {
         }
     }
     const handleRemove = async (event, id) => {
+        console.log(id);
         setRemoveTrip(id);
     }
     const [removetrip, setRemoveTrip] = useState("");
@@ -101,7 +103,7 @@ const CreateAlbum = () => {
     const handleClose = (event, check) => {
         if (check) {
             let newselectedtrips = [...selectedTrips];
-            newselectedtrips = newselectedtrips.filter(item => item.id !== removetrip);
+            newselectedtrips = newselectedtrips.filter(item => item.tripId !== removetrip);
             toast.success("Xoá chuyến đi này khỏi album thành công")
             setSelectedTrips(newselectedtrips);
         }
@@ -214,7 +216,7 @@ const CreateAlbum = () => {
                                             >
                                                 <Typography sx={{ width: '33%', flexShrink: 0 }}>{currentTrip.title ? currentTrip.title : "Không có tiêu đề"}</Typography>
                                                 <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {convertTimestampToVietnamTime(Number(currentTrip.arrivalDate))}, Địa điểm: </Typography>
-                                                <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip._id)} variant="outlined">
+                                                <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip.tripId)} variant="outlined">
                                                     Thêm
                                                 </Button>
                                             </AccordionSummary>
@@ -269,7 +271,7 @@ const CreateAlbum = () => {
                             {selectedTrips && selectedTrips.map((trip) => (
                                 <div className="selected-trip">
                                     <div key={trip.title}>{trip.title}</div>
-                                    <Button className={`trip-remove-btn`} onClick={(event) => handleRemove(event, trip.id)} variant="outlined">
+                                    <Button className={`trip-remove-btn`} onClick={(event) => handleRemove(event, trip.tripId)} variant="outlined">
                                         Xoá
                                     </Button>
                                 </div>

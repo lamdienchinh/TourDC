@@ -71,4 +71,26 @@ const trips =
     ]
 }
 
-export default { types, trips };
+const placenames = [
+    "Rừng Tràm Trà Sư",
+    "Hồ & Chùa Pà Tạ",
+    "Hồ Latina",
+    "Chùa Koh Kas",
+    "Bún cá Hiếu Thuận",
+    "Miếu Bà Chúa Xứ Núi Sam",
+    "Quán nướng 368",
+    "Lẩu Mắm Hiếu Miênn",
+    "Quán Bò Tư Thiên ",
+    "Bánh Bò Út Dứt",
+    "Little Sài Gòn Hostel",
+    "SANG NHU NGOC RESORT",
+    "khách sạn châu tiến",
+    "Khách sạn The Luxe Châu Đốc",
+    "Dong Bao Hotel",
+    "Trại cá sấu Long Xuyên",
+    "Flyhigh Trampoline Park",
+    "Thanh Long Water Park",
+    "Lotte Cinema Mĩ Bình",
+    "Công viên Mỹ Thới",
+]
+export default { types, trips, placenames };

@@ -29,7 +29,7 @@ import { getTrips, reviewtoBE } from '../../service/api';
 import { createAxios } from "../../utils/createInstance";
 import { setInfor } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
-import { getPlace } from '../../service/api';
+// import { getPlace } from '../../service/api';
 import { getAllReviewsInAllPlaces } from '../../service/api';
 function PaperComponent(props) {
     return (
@@ -48,7 +48,7 @@ const Trips = () => {
     const dispatch = useDispatch();
     const user = useSelector(getInfor)
     let axiosJWT = createAxios(user, dispatch, setInfor);
-    
+
     // Fetch data từ blockchain
     const [journey, setJourneys] = useState([]);
     const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
@@ -66,7 +66,7 @@ const Trips = () => {
             console.log("Get Trip from BE", temp.data)
             temp = temp.data
             const mergedArray = infor.map((item1) => {
-                const matchingElement = temp.find((item2) => item2.time === (item1.arrivalDate).toString());
+                const matchingElement = temp.find((item2) => item2.tripid === (item1.tripId).toString());
                 if (matchingElement) {
                     return { ...item1, ...matchingElement };
                 } else {
@@ -171,7 +171,7 @@ const Trips = () => {
                 rate: rating,
                 list_imgs: imgs,
                 title: title,
-                description: description
+                description: description,
             }
             // let review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
             // console.log("review:",review);
@@ -191,6 +191,7 @@ const Trips = () => {
                 formData.append("user", userinfor._id);
                 formData.append("time", selectTrip.arrivalDate)
                 formData.append("trHash", review)
+                formData.append("tripid", (selectTrip.tripId).toString())
                 console.log(selectedFiles)
                 await reviewtoBE(formData, userinfor.accessToken, axiosJWT)
                 if (update) {
