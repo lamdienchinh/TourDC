@@ -33,10 +33,18 @@
         justify-content: center;
         position: relative;
         top: -10px;
-        width: 2%;
+        width: 5%;
         font-weight: 500;
     }
     & .reviewchart__row--2 {
-        width: 98%;
+        width: 90%;
+    }
+    & .reviewchart__row--3 {
+        width: 5%;
+        top: -10px;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        align-items: center;
     }
 }

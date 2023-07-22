@@ -6,7 +6,7 @@ import contractAddress from "../../contracts/contract-address.json";
 export async function checkIn(currentAccount, ticketID, placeId) {
   const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
   const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
-
+  let transactionHash;
   await window.ethereum
           .request({
             method: 'eth_sendTransaction',
@@ -21,9 +21,13 @@ export async function checkIn(currentAccount, ticketID, placeId) {
               },
             ],
           })
-          .then((txHash) => console.log("txHash: ", txHash))
+          .then((txHash) => {
+            console.log("txHash: ", txHash)
+            transactionHash = txHash;
+          })
           .catch((error) => {
             console.error("error: ", error)
             throw error;
-          } );
+          });
+          // console.log('status: ', await  web3.eth.getTransactionReceipt(transactionHash))
 }

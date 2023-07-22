@@ -5,7 +5,7 @@ import "./css/Place_Thumbnail.scss";
 import { getReviewNumber } from "../dapp/getReviewNumber";
 import { useEffect, useState } from "react";
 import { getDestinationRates } from "../dapp/getDestinationRates";
-import getReviewInPlace from "../dapp/getAllReviews";
+import getReviewInPlace from "../dapp/getReviewsInPlace";
 
 const PlaceThumbnail = (props) => {
     let place = props.place;
@@ -70,7 +70,8 @@ const PlaceThumbnail = (props) => {
 
         //Sau đó tổng hợp data truyền cho placeinfor
         console.log({ state: { place, average, rates, reviewCount } })
-        navigate('/placeinfor', { state: { place, average, rates, reviewCount } });
+        navigate(`/placeinfor?placeid=${place.placeid}`)
+        // navigate('/placeinfor', { state: { place, average, rates, reviewCount } });
     };
 
     return (

@@ -36,8 +36,8 @@ const placeController = {
     },
     getPlace: async (req, res) => {
         try {
-            let search = req.body.name;
-            const place = await Place.findOne({ name: search }).populate("referPlaces");
+            let search = req.body.placeid;
+            const place = await Place.findOne({ placeid: search }).populate("referPlaces");
             return res.status(200).json(place)
         }
         catch (error) {

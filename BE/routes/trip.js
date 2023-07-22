@@ -13,6 +13,6 @@ router.post("/upload", middlewareController.verifyToken, upload.array('images', 
 // By user
 router.get("/", middlewareController.verifyToken, tripController.getTrips)
 // By placeid
-router.post("/", middlewareController.verifyToken, tripController.getTripsofPlace)
+router.post("/", tripController.getTripsofPlace)
 
 module.exports = router;

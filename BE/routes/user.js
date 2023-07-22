@@ -24,6 +24,7 @@ router.post("/changeinfor", middlewareController.verifyToken, userController.cha
 // Change Avatar
 router.post("/changeavatar", middlewareController.verifyToken, upload.single('avatar'), userController.changeAvatar);
 
-//refreshToken
+// RefreshToken
 router.post("/refresh", userController.requestRefreshToken)
+
 module.exports = router;

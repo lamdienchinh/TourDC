@@ -86,6 +86,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     // }
 
     struct Journey {
+        uint tripId;
         uint placeId;
         uint256 arrivalDate;
         string review;
@@ -111,6 +112,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     // Destination[] private destinations;
     Tourist[] private tourists;
 
+    mapping(address => uint) private tripID;
     mapping(address => Tourist) public touristIdentify; // tra cứu định danh du khách bằng địa chỉ ví
     mapping(address => Journey[]) public touristJourneys; // tra cứu hành trình dư khách bằng địa chỉ ví
     mapping(address => Service[]) private enterpriseService; // tra cứu các dịch vụ du lịch của doanh nghiệp qua địa chỉ ví doanh nghiệp
@@ -136,16 +138,17 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       return destinationJourney[placeid]; 
     }
     
-    function getJourneyWithTime(uint256[] memory timestamp) public view returns (Journey[] memory) {
-      Journey[] memory lstJourney = new Journey[](timestamp.length);
+    function getJourneyWithID(uint[] memory idTrip) public view returns (Journey[] memory) {
+      Journey[] memory lstJourney = new Journey[](idTrip.length);
       uint256 count = 0;
 
-      for (uint256 i = 0; i < timestamp.length; i++) {
+      for (uint256 i = 0; i < idTrip.length; i++) {
           for (uint256 j = 0; j < touristJourneys[msg.sender].length; j++) {
-              if (timestamp[i] == touristJourneys[msg.sender][j].arrivalDate) {
+              if (idTrip[i] == touristJourneys[msg.sender][j].tripId) {
                   // Thêm vào mảng lstJourney
                   lstJourney[count] = touristJourneys[msg.sender][j];
                   count++;
+                  break;
               }
           }
       }
@@ -201,6 +204,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         if ((placeId == touristJourneys[msg.sender][i].placeId) // check ID của destination và placeID trong Journey 
           && (touristJourneys[msg.sender][i].arrivalDate == date)) { // check date
           journey = Journey({
+            tripId: touristJourneys[msg.sender][i].tripId,
             placeId: placeId,
             arrivalDate: date,
             review: touristJourneys[msg.sender][i].review,
@@ -264,13 +268,14 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         }
       }
       noPeopleCheckIn[placeID]++;
-      touristJourneys[msg.sender].push(Journey(placeID, block.timestamp, "", 0, false, "")); // thêm vào mảng touristJourney
+      tripID[msg.sender]++;
+      touristJourneys[msg.sender].push(Journey(tripID[msg.sender],placeID, block.timestamp, "", 0, false, "")); // thêm vào mảng touristJourney
       emit CheckIn(ticketID, placeID);
     }
 
-  function review(uint placeId, uint arrDate, string memory comment, uint rate, string memory title) public {
+  function review(uint placeId, uint idTrip, string memory comment, uint rate, string memory title) public {
     for (uint i = 0; i < touristJourneys[msg.sender].length; i++){
-      if(arrDate == touristJourneys[msg.sender][i].arrivalDate) {
+      if(idTrip == touristJourneys[msg.sender][i].tripId) {
         require(touristJourneys[msg.sender][i].isReview == false, 'You had been reviewed this trip');
         touristJourneys[msg.sender][i].review = comment;
         touristJourneys[msg.sender][i].rate = rate;

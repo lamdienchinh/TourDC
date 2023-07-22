@@ -1,5 +1,5 @@
 const { cloudinary } = require('../utils/index.js')
-const { Trip} = require('../model/model')
+const { Trip } = require('../model/model')
 
 const tripController = {
     upload: async (req, res) => {
@@ -42,7 +42,7 @@ const tripController = {
     getTrips: async (req, res) => {
         try {
             let userid = req.user.id;
-            const Trips = await Trip.find({ user: userid });
+            const Trips = await Trip.find({ user: userid }).populate("user");
             res.status(200).json(Trips);
         } catch (error) {
             console.error(error);
@@ -52,7 +52,7 @@ const tripController = {
     getTripsofPlace: async (req, res) => {
         try {
             let place = req.body.placeid;
-            const Trips = await Trip.find({ placeid: place });
+            const Trips = await Trip.find({ placeid: place }).populate("user");
             res.status(200).json(Trips);
         } catch (error) {
             console.error(error);
