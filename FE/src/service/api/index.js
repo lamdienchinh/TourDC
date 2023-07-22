@@ -47,7 +47,9 @@ const getPlace = async (token, axiosJWT) => {
         // From SC
         let review1 = "";
         // From BE
-        let review2 = await axiosJWT.get(`${process.env.REACT_APP_ENDPOINT}/v1/trip`, {
+        let review2 = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/`,{
+            placeid: placeid
+        } ,{
             headers: {
                 token: `Bearer ${token}`,
             },
