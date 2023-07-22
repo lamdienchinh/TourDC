@@ -50,10 +50,15 @@ const PlaceInfor = () => {
         newplace.referPlaces = referP.data.referPlaces;
         console.log("R", referP.data)
         navigate('.', { replace: true, state: { newplace, average, rates, reviewCount } });
-        // setAverage(average);
-        // setRates(rates);
-        // setReviewCount(reviewCount);
-        setPlace(newplace)
+        setAverage(average);
+        setRates(rates);
+        setReviewCount(reviewCount);
+        setItems([
+            <img src={newplace?.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+            <img src={newplace?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+            <img src={newplace?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
+        ]);
+        setPlace(newplace);
     };
     //Xử lý filter
     // const [selectedValue, setSelectedValue] = useState('');

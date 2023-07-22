@@ -15,7 +15,7 @@ const Trip = (props) => {
 
         // Trả về chuỗi ngày giờ Việt Nam
         return vietnamTime.toString();
-    }; 
+    };
 
     const getFirst40Characters = (obj) => {
         if (obj.hasOwnProperty("review")) {
@@ -27,7 +27,7 @@ const Trip = (props) => {
     return (
         <div className="trip-wrapper">
             <div className="trip__img">
-                <img src={img} alt="Ảnh Chuyến Đi"></img>
+                <img src={trip.list_imgs ? trip.list_imgs[0] : img} alt="Ảnh Chuyến Đi"></img>
             </div>
             <div className="trip__information">
                 {trip.title ? <Typography variant="h6">{trip.title}</Typography> : <Typography variant="h6">Chưa có cảm nghĩ</Typography>}

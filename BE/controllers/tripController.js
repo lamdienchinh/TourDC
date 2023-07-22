@@ -1,5 +1,5 @@
 const { cloudinary } = require('../utils/index.js')
-const { Trip } = require('../model/model')
+const { Trip} = require('../model/model')
 
 const tripController = {
     upload: async (req, res) => {

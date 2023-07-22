@@ -89,6 +89,17 @@ const tripSchema = new mongoose.Schema({
   },
   placeid: {
     type: String,
+  },
+  like: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  dislike: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  tripid: {
+    type: String,
   }
 })
 

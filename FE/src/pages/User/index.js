@@ -2,7 +2,6 @@ import "./css/User.scss";
 import React, { useState, useRef } from "react";
 import Container from "@mui/material/Container";
 import { TextField, Button, Avatar, Input } from '@mui/material';
-import { toast } from 'react-toastify';
 import { getInfor } from "../../state/selectors";
 import { useSelector } from "react-redux"
 import { createAxios } from "../../utils/createInstance"
@@ -43,15 +42,15 @@ const User = () => {
             phonenumber: phonenumber
         }
         dispatch(changeInfor({ token, data, axiosJWT }, { dispatch }));
-        setAvatarchange("");
-        toast.success('Thay đổi thông tin thành công !');
     };
 
     const handleFileChange = async (event) => {
         event.preventDefault();
         const file = event.target.files[0];
         setAvatar(file);
-        setAvatarchange(URL.createObjectURL(file))
+        if (typeof (file) !== "String")
+            setAvatarchange(URL.createObjectURL(file))
+        else setAvatarchange("")
     };
 
     return (

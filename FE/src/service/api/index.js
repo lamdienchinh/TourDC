@@ -1,4 +1,10 @@
 import axios from "axios";
+import Web3 from 'web3'
+import TokenArtifact from "../../contracts/TouristConTract.json"
+import contractAddress from "../../contracts/contract-address.json";
+
+
+
 const getAllPlace = async () => {
     try {
         let allplace = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/place/getallplaces`)
@@ -40,48 +46,41 @@ const getTrips = async (token, axiosJWT) => {
         console.log(err)
     }
 }
-// const getAllTrip = async (walletAddress) => {
-//     try {
-//         let alltrip = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/getalltrips`, { data: walletAddress })
-//         return alltrip.data;
-//     }
-//     catch (err) {
-//         console.log(err);
-//         return [];
-//     }
-// }
-// const reviewTrip = async (reviewdata) => {
-//     try {
-//         let review = await axios.post(`${process.env.REACT_APPOINT}`, { data: reviewdata })
-//         return review;
-//     }
-//     catch (err) {
-//         console.log(err);
-//     }
-// }
 
-// const getAllAlbums = async (walletAddress) => {
-//     try {
-//         let allalbums = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/album/getallalbums`, { data: walletAddress })
-//         return allalbums.data;
-//     }
-//     catch (err) {
-//         console.log(err);
-//         return [];
-//     }
-// }
+const getPlace = async (token, axiosJWT, placeid) => {
+    try {
+        console.log(token)
+        // From SC
+        const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
+        const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
+        let review1 =  await contract.methods.getReviewsInPlace(placeid).call();
+        // From BE
+        // let review2 = await axiosJWT.get(`${process.env.REACT_APP_ENDPOINT}/v1/trip`, {
+        //     headers: {
+        //         token: `Bearer ${token}`,
+        //     },
+        // })
+        // //Merge
+        // const mergedArray = review1.map((item1) => {
+        //     const matchingElement = review2.find((item2) => item2.time === (item1.tripid));
+        //     if (matchingElement) {
+        //         return { ...item1, ...matchingElement };
+        //     } else {
+        //         return item1;
+        //     }
+        // });
+        // console.log("Merge Array", mergedArray)
 
-// const removeAlbum = async (albumid) => {
-//     try {
-//         let album_del = await axios.delete(`${process.env.REACT_APP_ENDPOINT}/v1/album/remove`, { data: albumid })
-//         return album_del;
-//     }
-//     catch (err) {
-//         console.log(err)
-//     }
-// }
+        // return mergedArray
+        return review1
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
-    getTrips
+    getTrips,
+    getPlace
 }

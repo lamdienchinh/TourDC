@@ -22,7 +22,7 @@ import { setInfor } from "../../state/userSlice";
 import { createAxios } from "../../utils/createInstance";
 import { getTrips, reviewtoBE } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
-import {Gallery, Item} from "react-photoswipe-gallery"
+import { Gallery, Item } from "react-photoswipe-gallery"
 
 function PaperComponent(props) {
     return (
@@ -38,7 +38,6 @@ function PaperComponent(props) {
 const CreateAlbum = () => {
 
     const [allTrips, setAllTrips] = useState([]);
-    const [journey, setJourneys] = useState([]);
     const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
     const dispatch = useDispatch();
     const user = useSelector(getInfor)
@@ -46,6 +45,8 @@ const CreateAlbum = () => {
     const [imgs, setImgs] = useState([]);
     let axiosJWT = createAxios(user, dispatch, setInfor);
     const [update, setUpdate] = useState(true)
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
     useEffect(() => {
         const fetchData = async (currentAccount) => {
 
@@ -136,6 +137,7 @@ const CreateAlbum = () => {
                             variant="standard"
                             // onChange={(event) => setInputSearch(event.target.value)}
                             placeholder="Tìm kiếm ở đây"
+                            fullWidth
                         />
                         {/* <FaSearch className="search-icon" onClick={() => search(inputsearch)}></FaSearch> */}
                         <div className="createalbum__search__btn">
@@ -169,6 +171,28 @@ const CreateAlbum = () => {
                 <div className="createalbum__contents">
                     <div className="createalbum__left">
                         <h2>Create Album</h2>
+                        <div className="album__input">
+                            <TextField
+                                label="Tiêu đề"
+                                id="standard-size-normal"
+                                variant="standard"
+                                onChange={(event) => setTitle(event.target.value)}
+                                placeholder="Tìm kiếm ở đây"
+                                fullWidth
+                            />
+                        </div>
+                        <div className="album__input">
+                            <TextField
+                                label="Nội dung"
+                                id="standard-size-normal"
+                                variant="standard"
+                                multiline
+                                minRows={5}
+                                onChange={(event) => setContent(event.target.value)}
+                                placeholder="Tìm kiếm ở đây"
+                                fullWidth
+                            />
+                        </div>
                         <div className="trips-list">
                             {allTrips && allTrips.map((currentTrip) => (
                                 <div className="trip-box">

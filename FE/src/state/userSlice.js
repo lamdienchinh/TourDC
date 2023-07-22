@@ -57,6 +57,7 @@ export const changeInfor = createAsyncThunk('user/changeinfor', async ({ token, 
             accessToken: token
         }
         dispatch(setInfor({ infor: newinfor }))
+        toast.success('Thay đổi thông tin thành công !');
     }
     catch (err) {
         console.log(err)

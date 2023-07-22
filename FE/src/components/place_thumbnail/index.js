@@ -5,7 +5,7 @@ import "./css/Place_Thumbnail.scss";
 import { getReviewNumber } from "../dapp/getReviewNumber";
 import { useEffect, useState } from "react";
 import { getDestinationRates } from "../dapp/getDestinationRates";
-import getReviewInPlace from "../dapp/getAllReviews";
+import getReviewInPlace from "../dapp/getReviewsInPlace";
 
 const PlaceThumbnail = (props) => {
     let place = props.place;
@@ -27,7 +27,7 @@ const PlaceThumbnail = (props) => {
             let arrayRates = await getDestinationRates(placeid);
             console.log("arrayRates: ", arrayRates);
             setRates(arrayRates);
-            getAverage(arrayRates);
+            await getAverage(arrayRates);
         }
 
         const getPlaceReview = async (placeid) => {
@@ -52,7 +52,7 @@ const PlaceThumbnail = (props) => {
         getAllRates(place.placeid);
         getNumberRate(place.placeid);
 
-    }, []);
+    }, [place]);
 
 
 

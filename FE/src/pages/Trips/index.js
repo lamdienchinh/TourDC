@@ -29,6 +29,7 @@ import { getTrips, reviewtoBE } from '../../service/api';
 import { createAxios } from "../../utils/createInstance";
 import { setInfor } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
+import { getPlace } from '../../service/api';
 
 function PaperComponent(props) {
     return (
@@ -57,6 +58,8 @@ const Trips = () => {
         const fetchData = async (currentAccount) => {
 
             // Thực hiện các bước để lấy dữ liệu infor
+            // let getTripsInPlace = await getPlace(userinfor.accessToken,axiosJWT, 1)
+            // console.log("getPlace: ", getTripsInPlace)
             const infor = await getAllTrips(currentAccount);
             console.log("infor:", infor)
             let temp = await getTrips(userinfor.accessToken, axiosJWT)
@@ -162,7 +165,7 @@ const Trips = () => {
     }
     const handleClose2 = async (event, action) => {
         event.preventDefault();
-        console.log(selectTrip)
+        console.log("selectTrip: ", selectTrip)
         if (action === 1) {
             let result = {
                 rate: rating,
@@ -173,7 +176,7 @@ const Trips = () => {
             // let review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
             // console.log("review:",review);
             let review = await toast.promise(
-                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title),
+                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title),
                 {
                     pending: 'Đang đợi xử lí',
                     // success: 'Lưu cảm nghĩ thành công !',
