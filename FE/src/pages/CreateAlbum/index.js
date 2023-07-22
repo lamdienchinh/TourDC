@@ -57,7 +57,7 @@ const CreateAlbum = () => {
             console.log("Get Trip from BE", temp.data)
             temp = temp.data
             const mergedArray = infor.map((item1) => {
-                const matchingElement = temp.find((item2) => item2.time === (item1.arrivalDate).toString());
+                const matchingElement = temp.find((item2) => item2.tripid === (item1.tripId).toString());
                 if (matchingElement) {
                     return { ...item1, ...matchingElement };
                 } else {

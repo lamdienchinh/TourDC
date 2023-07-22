@@ -92,8 +92,8 @@ const getAllReviewsInAllPlaces = async () => {
     return mergedArray
 }
 
-const getReviewsWithIds = async (idList) => {
-    return await contract.methods.getJourneyWithID(idList).call();
+const getReviewsWithIds = async (idList, currentAccount) => {
+    return await contract.methods.getJourneyWithID(idList).call({from: currentAccount});
 }
 
 const getAlbums = async (token, axiosJWT) => {

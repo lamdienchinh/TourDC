@@ -3,16 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import "./css/Album_Thumbnail.scss"
 import img from "../../assets/imgs/place2.jpg"
 import { getReviewsWithIds } from "../../service/api"
+import { useSelector } from 'react-redux';
+import { getUserData } from '../../state/selectors';
 const AlbumThumbnail = (props) => {
     let album = props.album;
     console.log(album)
     const navigate = useNavigate();
+    const walletAddress = useSelector(getUserData);
     const handleClick = async () => {
         let tripsid = album.list_trips.map((item) => item.tripid);
         console.log(tripsid);
-        let trips = await getReviewsWithIds(tripsid)
+        let trips = await getReviewsWithIds(tripsid, walletAddress);
         console.log(trips)
-        // navigate('/viewalbum', { state: album});
+        console.log(album)
+        const mergedTrips = album.list_trips.map((trip, index) => ({
+            ...trip,
+            ...trips[index]
+        }));
+        let result = {
+            ...album,
+            list_trips: mergedTrips,
+        }
+        console.log(result)
+        navigate('/viewalbum', { state: result });
     };
     let checkimg = img;
     try {
