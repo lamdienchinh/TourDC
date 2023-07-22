@@ -4,6 +4,8 @@ import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
 
 
+const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
+const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token);
 
 const getAllPlace = async () => {
     try {
@@ -80,10 +82,19 @@ const getPlace = async (placeid) => {
         console.log(err)
     }
 }
-
+const getAllReviewsInAllPlaces = async() => {
+    let mergedArray = [];
+    let numPlace = 20; // => lấy số lượng của place???
+    for (var i = 1; i <= numPlace; i++) {
+        let temp = await contract.methods.getReviewsInPlace(i).call();
+        mergedArray.push(temp);
+    }
+    return mergedArray
+}
 export {
     getAllPlace,
     reviewtoBE,
     getTrips,
-    getPlace
+    getPlace,
+    getAllReviewsInAllPlaces
 }
