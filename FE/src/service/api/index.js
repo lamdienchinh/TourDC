@@ -40,48 +40,38 @@ const getTrips = async (token, axiosJWT) => {
         console.log(err)
     }
 }
-// const getAllTrip = async (walletAddress) => {
-//     try {
-//         let alltrip = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/getalltrips`, { data: walletAddress })
-//         return alltrip.data;
-//     }
-//     catch (err) {
-//         console.log(err);
-//         return [];
-//     }
-// }
-// const reviewTrip = async (reviewdata) => {
-//     try {
-//         let review = await axios.post(`${process.env.REACT_APPOINT}`, { data: reviewdata })
-//         return review;
-//     }
-//     catch (err) {
-//         console.log(err);
-//     }
-// }
 
-// const getAllAlbums = async (walletAddress) => {
-//     try {
-//         let allalbums = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/album/getallalbums`, { data: walletAddress })
-//         return allalbums.data;
-//     }
-//     catch (err) {
-//         console.log(err);
-//         return [];
-//     }
-// }
+const getPlace = async (token, axiosJWT) => {
+    try {
+        console.log(token)
+        // From SC
+        let review1 = "";
+        // From BE
+        let review2 = await axiosJWT.get(`${process.env.REACT_APP_ENDPOINT}/v1/trip`, {
+            headers: {
+                token: `Bearer ${token}`,
+            },
+        })
+        //Merge
+        const mergedArray = review1.map((item1) => {
+            const matchingElement = review2.find((item2) => item2.time === (item1.tripid));
+            if (matchingElement) {
+                return { ...item1, ...matchingElement };
+            } else {
+                return item1;
+            }
+        });
+        console.log("Merge Array", mergedArray)
 
-// const removeAlbum = async (albumid) => {
-//     try {
-//         let album_del = await axios.delete(`${process.env.REACT_APP_ENDPOINT}/v1/album/remove`, { data: albumid })
-//         return album_del;
-//     }
-//     catch (err) {
-//         console.log(err)
-//     }
-// }
+        return mergedArray
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
-    getTrips
+    getTrips,
+    getPlace
 }

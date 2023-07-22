@@ -22,7 +22,7 @@ import { setInfor } from "../../state/userSlice";
 import { createAxios } from "../../utils/createInstance";
 import { getTrips, reviewtoBE } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
-
+import { Gallery, Item } from "react-photoswipe-gallery"
 
 function PaperComponent(props) {
     return (
@@ -137,6 +137,7 @@ const CreateAlbum = () => {
                             variant="standard"
                             // onChange={(event) => setInputSearch(event.target.value)}
                             placeholder="Tìm kiếm ở đây"
+                            fullWidth
                         />
                         {/* <FaSearch className="search-icon" onClick={() => search(inputsearch)}></FaSearch> */}
                         <div className="createalbum__search__btn">
@@ -170,23 +171,26 @@ const CreateAlbum = () => {
                 <div className="createalbum__contents">
                     <div className="createalbum__left">
                         <h2>Create Album</h2>
-                        <div>
+                        <div className="album__input">
                             <TextField
                                 label="Tiêu đề"
                                 id="standard-size-normal"
                                 variant="standard"
                                 onChange={(event) => setTitle(event.target.value)}
                                 placeholder="Tìm kiếm ở đây"
+                                fullWidth
                             />
                         </div>
-                        <div>
+                        <div className="album__input">
                             <TextField
                                 label="Nội dung"
                                 id="standard-size-normal"
                                 variant="standard"
-                                multiline={5}
+                                multiline
+                                minRows={5}
                                 onChange={(event) => setContent(event.target.value)}
                                 placeholder="Tìm kiếm ở đây"
+                                fullWidth
                             />
                         </div>
                         <div className="trips-list">
@@ -209,7 +213,7 @@ const CreateAlbum = () => {
                                                 }}
                                             >
                                                 <Typography sx={{ width: '33%', flexShrink: 0 }}>{currentTrip.title ? currentTrip.title : "Không có tiêu đề"}</Typography>
-                                                <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {Number(currentTrip.arrivalDate)}, Địa điểm: </Typography>
+                                                <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {convertTimestampToVietnamTime(Number(currentTrip.arrivalDate))}, Địa điểm: </Typography>
                                                 <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip._id)} variant="outlined">
                                                     Thêm
                                                 </Button>
