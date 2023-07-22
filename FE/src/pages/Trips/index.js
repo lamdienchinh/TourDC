@@ -30,7 +30,7 @@ import { createAxios } from "../../utils/createInstance";
 import { setInfor } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
 import { getPlace } from '../../service/api';
-
+import { getAllReviewsInAllPlaces } from '../../service/api';
 function PaperComponent(props) {
     return (
         <Draggable
@@ -57,9 +57,9 @@ const Trips = () => {
     useEffect(() => {
         const fetchData = async (currentAccount) => {
 
-            // Thực hiện các bước để lấy dữ liệu infor
-            // let getTripsInPlace = await getPlace(userinfor.accessToken,axiosJWT, 1)
-            // console.log("getPlace: ", getTripsInPlace)
+            //Thực hiện các bước để lấy dữ liệu infor
+            let getTripsInPlace = await getAllReviewsInAllPlaces()
+            console.log("getPlace: ", getTripsInPlace);
             const infor = await getAllTrips(currentAccount);
             console.log("infor:", infor)
             let temp = await getTrips(userinfor.accessToken, axiosJWT)
