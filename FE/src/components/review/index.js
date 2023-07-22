@@ -6,7 +6,7 @@ import "./css/Review.scss";
 import { Gallery, Item } from 'react-photoswipe-gallery'
 
 const Review = (props) => {
-    let listimg = [img1, img1, img1, img1];
+    // let listimg = [img1, img1, img1, img1];
     console.log(props.review.user)
     const user = props.review.user;
     const intValue = Number(props.review.time);

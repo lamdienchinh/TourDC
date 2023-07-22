@@ -9,7 +9,9 @@ const ReviewChart = (props) => {
     const [ratingCounts, setRatingCounts] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
     const [ratingPercent, setRatingPercent] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
     useEffect(() => {
-        let temp = { ...ratingCounts };
+        setRatingCounts({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
+        setRatingPercent({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 })
+        let temp = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
         let totalRatings = 0;
         props.reviews.forEach((item) => {
             const rate = Number(item.rate); // Chuyển BigInt sang number
@@ -20,13 +22,15 @@ const ReviewChart = (props) => {
         });
         setRatingCounts(temp)
         console.log(temp)
-        const ratingPercentages = {};
-        for (let i = 1; i <= 5; i++) {
-            const percentage = (temp[i] / totalRatings) * 100;
-            ratingPercentages[i] = percentage.toFixed(2); // Làm tròn đến 2 chữ số thập phân
+        const ratingPercentages = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+        if (totalRatings > 0) {
+            for (let i = 1; i <= 5; i++) {
+                const percentage = (temp[i] / totalRatings) * 100;
+                ratingPercentages[i] = percentage.toFixed(2); // Làm tròn đến 2 chữ số thập phân
+            }
+            console.log(ratingPercentages);
+            setRatingPercent(ratingPercentages)
         }
-        console.log(ratingPercentages);
-        setRatingPercent(ratingPercentages)
     }, [props])
     return (
         <div className="reviewchart">

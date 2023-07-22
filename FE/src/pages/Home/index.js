@@ -9,7 +9,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Typography from "@mui/material/Typography";
-import { getAllPlace } from "../../service/api";
+import { getAllPlace, getAllReviewsInAllPlaces } from "../../service/api";
 // import { getUserData } from '../../state/selectors';
 // import { useSelector } from 'react-redux';
 //import scss
@@ -41,10 +41,16 @@ const Home = () => {
 
     useEffect(() => {
         const fetchdata = async () => {
-            let fetch = await getAllPlace();
-            console.log(fetch)
-            setAllPlaces(fetch);
-            setPlaces(fetch);
+            let fetch1 = await getAllPlace();
+            console.log("Check1", fetch)
+            let fetch2 = await getAllReviewsInAllPlaces();
+            console.log("Check2 ", fetch2)
+            const mergedArray = fetch1.map((item, index) => {
+                return { ...item, reviews: fetch2[index] };
+            });
+            console.log("Merged Array", mergedArray)
+            setAllPlaces(mergedArray);
+            setPlaces(mergedArray);
             setIsLoading(false);
         }
         // let temp = types.types;
