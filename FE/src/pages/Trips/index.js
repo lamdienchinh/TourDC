@@ -183,6 +183,14 @@ const Trips = () => {
                     // error: 'Người dùng từ chối!',
                 }
             )
+            setSelectTrip("");
+            setImgs([]);
+            setRating(0);
+            setDescription("");
+            setTitle("");
+            setSelectedFiles([])
+            setOpen2(false);
+            setOpen1(false);
             if (review !== "") {
                 let formData = new FormData();
                 for (let i = 0; i < selectedFiles.length; i++) {
@@ -191,6 +199,7 @@ const Trips = () => {
                 formData.append("user", userinfor._id);
                 formData.append("time", selectTrip.arrivalDate)
                 formData.append("trHash", review)
+                formData.append("placeid", (selectTrip.placeId).toString())
                 formData.append("tripid", (selectTrip.tripId).toString())
                 console.log(selectedFiles)
                 await reviewtoBE(formData, userinfor.accessToken, axiosJWT)
@@ -201,15 +210,7 @@ const Trips = () => {
                     setUpdate(true)
                 }
             }
-            setSelectTrip("");
-            setImgs([]);
-            setRating(0);
-            setDescription("");
-            setTitle("");
-            setSelectedFiles([])
-            setOpen1(false);
         }
-        setOpen2(false);
         return action;
     }
 

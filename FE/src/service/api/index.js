@@ -82,7 +82,7 @@ const getPlace = async (placeid) => {
         console.log(err)
     }
 }
-const getAllReviewsInAllPlaces = async() => {
+const getAllReviewsInAllPlaces = async () => {
     let mergedArray = [];
     let numPlace = 20; // => lấy số lượng của place???
     for (var i = 1; i <= numPlace; i++) {
@@ -92,8 +92,17 @@ const getAllReviewsInAllPlaces = async() => {
     return mergedArray
 }
 
-const getReviewsWithIds = async(idList) => {
+const getReviewsWithIds = async (idList) => {
     return await contract.methods.getJourneyWithID(idList).call();
+}
+
+const getAlbums = async (token, axiosJWT) => {
+    const album = await axiosJWT.get(`${process.env.REACT_APP_ENDPOINT}/v1/album/`, {
+        headers: {
+            token: `Bearer ${token}`,
+        },
+    })
+    return album;
 }
 export {
     getAllPlace,
@@ -101,5 +110,6 @@ export {
     getTrips,
     getPlace,
     getAllReviewsInAllPlaces,
-    getReviewsWithIds
+    getReviewsWithIds,
+    getAlbums
 }

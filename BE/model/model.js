@@ -36,8 +36,8 @@ const albumSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
-  trips: {
-    type: mongoose.Schema.Types.ObjectId,
+  list_trips: {
+    type: [mongoose.Schema.Types.ObjectId],
     ref: "Trip"
   }
 })
@@ -91,11 +91,11 @@ const tripSchema = new mongoose.Schema({
     type: String,
   },
   like: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User'
   },
   dislike: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User'
   },
   tripid: {
@@ -104,8 +104,8 @@ const tripSchema = new mongoose.Schema({
 })
 
 let User = mongoose.model("User", userSchema);
-let Author = mongoose.model("Album", albumSchema);
+let Album = mongoose.model("Album", albumSchema);
 let Place = mongoose.model("Place", placeSchema);
 let Trip = mongoose.model("Trip", tripSchema);
 
-module.exports = { User, Author, Place, Trip };
+module.exports = { User, Album, Place, Trip };

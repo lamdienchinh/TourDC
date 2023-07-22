@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getUserData, getInfor } from '../../state/selectors';
 import { setInfor } from "../../state/userSlice";
 import { createAxios } from "../../utils/createInstance";
-import { getTrips, reviewtoBE } from '../../service/api';
+import { getTrips } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 import { Gallery, Item } from "react-photoswipe-gallery"
 
@@ -113,6 +113,24 @@ const CreateAlbum = () => {
     const handleCreateAlbum = async (event) => {
         event.preventDefault();
         console.log(selectedTrips)
+        const filteredData = selectedTrips.map(({ _id }) => ({
+            _id,
+        }));
+        let newAlbum = {
+            list_trips: filteredData,
+            title: title,
+            content: content,
+        }
+        console.log("NewAlbum", newAlbum);
+        let token = user.accessToken;
+        const create = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/album/`,
+            newAlbum, {
+            headers: {
+                token: `Bearer ${token}`,
+            },
+        }
+        )
+        console.log(create.data);
         toast.success('Tạo album mới thành công !')
     };
     return (

@@ -3,7 +3,7 @@ const middlewareController = require('../controllers/middlewareController');
 const router = require("express").Router();
 
 // ADD an album
-router.post("/", albumController.addAlbum);
+router.post("/", middlewareController.verifyToken, albumController.addAlbum);
 
 // Get Albums
 router.get("/", middlewareController.verifyToken, albumController.getAlbums);

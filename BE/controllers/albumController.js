@@ -6,7 +6,11 @@ const router = require("express").Router();
 const albumController = {
   addAlbum: async (req, res) => {
     try {
-      const newAlbum = new Album(req.body);
+      let temp = {
+        ...req.body,
+        user: req.user.id
+      }
+      const newAlbum = new Album(temp);
       const savedAlbum = await newAlbum.save();
       res.status(200).json(savedAlbum);
     } catch (error) {
@@ -16,7 +20,7 @@ const albumController = {
   getAlbums: async (req, res) => {
     try {
       let userid = req.user.id;
-      const Trips = await Album.find({ user: userid });
+      const Trips = await Album.find({ user: userid }).populate(["user", "list_trips"]);
       res.status(200).json(Trips);
     } catch (error) {
       console.error(error);
