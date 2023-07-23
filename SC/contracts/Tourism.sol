@@ -112,7 +112,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     // Destination[] private destinations;
     Tourist[] private tourists;
 
-    mapping(address => uint) private tripID;
+    uint private tripID;
     mapping(address => Tourist) public touristIdentify; // tra cứu định danh du khách bằng địa chỉ ví
     mapping(address => Journey[]) public touristJourneys; // tra cứu hành trình dư khách bằng địa chỉ ví
     mapping(address => Service[]) private enterpriseService; // tra cứu các dịch vụ du lịch của doanh nghiệp qua địa chỉ ví doanh nghiệp
@@ -268,8 +268,8 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         }
       }
       noPeopleCheckIn[placeID]++;
-      tripID[msg.sender]++;
-      touristJourneys[msg.sender].push(Journey(tripID[msg.sender],placeID, block.timestamp, "", 0, false, "")); // thêm vào mảng touristJourney
+      tripID++;
+      touristJourneys[msg.sender].push(Journey(tripID,placeID, block.timestamp, "", 0, false, "")); // thêm vào mảng touristJourney
       emit CheckIn(ticketID, placeID);
     }
 
