@@ -29,7 +29,7 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
                 method: "eth_requestAccounts",
             });
             console.log(accounts[0]);
-            let infor = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/login`, {
+            let infor = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/loginByMetamask`, {
                 walletAddress: accounts[0]
             });
             console.log(infor.data)

@@ -42,7 +42,7 @@ const userController = {
       { expiresIn: "365d" }
     )
   },
-  login: async (req, res) => {
+  loginByMetamask: async (req, res) => {
     try {
       let user = await User.findOne(req.body);
       if (!user) {
@@ -50,6 +50,24 @@ const userController = {
         let addUser = await newUser.save();
         user = addUser;
       }
+      const accessToken = userController.generateAccessToken(user)
+      const refreshToken = userController.generateRefreshToken(user)
+      refreshTokens.push(refreshToken)
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: "strict",
+        secure: false
+      })
+      const { ...others } = user._doc;
+      return res.status(200).json({ ...others, accessToken: accessToken });
+    }
+    catch (err) {
+      return res.status(500).json(err)
+    }
+  },
+  login: async (req, res) => {
+    try {
+      let user = await User.findOne(req.body);
       const accessToken = userController.generateAccessToken(user)
       const refreshToken = userController.generateRefreshToken(user)
       refreshTokens.push(refreshToken)

@@ -11,7 +11,10 @@ router.post("/", userController.addUser);
 // Get all users
 router.get("/", userController.getAllUsers);
 
-// Login
+// Login with metamask
+router.post("/loginByMetamask", userController.loginByMetamask);
+
+// Login with email and password
 router.post("/login", userController.login);
 
 // Logout 

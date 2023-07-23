@@ -107,6 +107,19 @@ const getAlbums = async (token, axiosJWT) => {
     })
     return album;
 }
+
+const login = async ( email, password) => {
+    try {
+        let user = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/login`, {
+            email: email,
+            password: password
+        })
+        // console.log("users: ", user);
+        return user;
+    } catch (error) {
+        return false;
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
@@ -114,5 +127,6 @@ export {
     getPlace,
     getAllReviewsInAllPlaces,
     getReviewsWithIds,
-    getAlbums
+    getAlbums,
+    login
 }

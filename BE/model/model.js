@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
   },
   walletAddress: {
     type: String
+  },
+  password: {
+    type: String
   }
 })
 
