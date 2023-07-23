@@ -18,10 +18,15 @@ import { useSelector } from "react-redux";
 import { getUserData } from "../state/selectors";
 import Error from "../pages/Error";
 import QrCode from "../pages/QRcode/qrCode";
+import Login from "../pages/login";
+import Register from "../pages/register/register";
 const RouterList = () => {
   const walletAddress = useSelector(getUserData);
   return (
     <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
       <Route element={<GeneralLayout />}>
         <Route path="/" element={<Intro />} />
         <Route path="/travel" element={<Home />} />

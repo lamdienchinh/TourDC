@@ -211,9 +211,11 @@ const Trips = () => {
                 }
             }
         }
+        else {
+            setOpen2(false)
+        }
         return action;
     }
-
     return (
         <div className="trip-wrapper">
             <div className="trip-slide">
