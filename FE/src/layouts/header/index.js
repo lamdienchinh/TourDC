@@ -50,9 +50,12 @@ const Header = () => {
     const user = useSelector(getInfor)
     let axiosJWT = createAxios(user, dispatch, setInfor);
     const login = async () => {
-        if (walletAddress === "" || walletAddress === undefined) {
-            console.log(walletAddress)
-            dispatch(connectWallet(dispatch));
+        // if (walletAddress === "" || walletAddress === undefined) {
+        //     console.log(walletAddress)
+        //     dispatch(connectWallet(dispatch));
+        // }
+        if (!walletAddress) {
+            navigate("/login");
         }
     };
     const openCamera = async () => {
