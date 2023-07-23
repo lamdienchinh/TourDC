@@ -58,6 +58,7 @@ const Review = (props) => {
             let find = allReviews.filter(item => item.user._id === currentuser._id);
             if (find) {
                 if (action === "dislike" && reaction !== "dislike") {
+                    setReaction(action)
                     setTrustRate(calculateTrustRate(like, dislike + 1))
                     if (reaction === "like") {
                         setTrustRate(calculateTrustRate(like - 1, dislike + 1))
@@ -74,9 +75,9 @@ const Review = (props) => {
                         },
                     })
                     console.log(check)
-                    setReaction(action)
                 }
                 else if (action === "like" && reaction !== "like") {
+                    setReaction(action)
                     setTrustRate(calculateTrustRate(like + 1, dislike))
                     if (reaction === "dislike") {
                         setTrustRate(calculateTrustRate(like + 1, dislike - 1))
@@ -93,7 +94,6 @@ const Review = (props) => {
                         },
                     })
                     console.log(check)
-                    setReaction(action)
                 }
                 else {
                     setReaction("")
