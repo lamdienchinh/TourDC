@@ -95,7 +95,8 @@ export const logout = createAsyncThunk('user/logout', async ({ token, axiosJWT }
         toast.success("Đăng xuất thành công")
     }
     catch (err) {
-
+        console.log(err)
+        dispatch(clearUser());
     }
 })
 

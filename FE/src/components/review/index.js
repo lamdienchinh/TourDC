@@ -154,7 +154,7 @@ const Review = (props) => {
                             <img src={user?.avatar} alt="Ảnh avatar"></img>
                         </div>
                         <div className="review__name">
-                            {`${user?.firstName} ${user?.lastname}`}
+                            {`${user?.firstName} ${user?.lastName}`}
                         </div>
                     </div>
                     <div className="review__verify">

@@ -30,7 +30,7 @@ const tripController = {
                 time: req.body.time,
                 trHash: req.body.trHash,
                 tripid: req.body.tripid,
-                placeid: req.body.placeid
+                placeid: req.body.placeid,
             });
             let result = await newTrip.save();
             console.log(files);
