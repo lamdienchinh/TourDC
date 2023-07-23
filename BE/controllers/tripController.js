@@ -29,7 +29,8 @@ const tripController = {
                 list_imgs: uploadedUrls,
                 time: req.body.time,
                 trHash: req.body.trHash,
-                tripid: req.body.tripid
+                tripid: req.body.tripid,
+                placeid: req.body.placeid,
             });
             let result = await newTrip.save();
             console.log(files);
