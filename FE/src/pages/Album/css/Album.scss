@@ -91,7 +91,7 @@
         // justify-content: flex-start;
         width: 100%;
         display: grid;
-        height: 25rem;
+        min-height: 30rem;
         grid-template-columns: repeat(2, 1fr); /* Tạo 4 cột có kích thước bằng nhau */
         grid-gap: 10px;
         & > div {
@@ -103,6 +103,7 @@
         display: flex;
         justify-content: center;
         padding-top: 20px;
+        min-height: 2rem;
     }
 }
 

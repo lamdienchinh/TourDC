@@ -4,13 +4,26 @@ import img1 from "../../assets/imgs/angiang.webp"
 import { ImageList, ImageListItem, Paper } from "@mui/material";
 import "./css/Review.scss";
 import { Gallery, Item } from 'react-photoswipe-gallery'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { useSelector } from 'react-redux';
+import { getInfor, getUserData } from '../../state/selectors';
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify";
+import { createAxios } from '../../utils/createInstance';
+import { setInfor } from '../../state/userSlice';
+import { useDispatch } from 'react-redux';
+import { current } from "@reduxjs/toolkit";
 
 const Review = (props) => {
     // let listimg = [img1, img1, img1, img1];
+    const walletAddress = useSelector(getUserData)
     console.log(props.review.user)
     const user = props.review.user;
     const intValue = Number(props.review.time);
-
+    const currentuser = useSelector(getInfor)
+    const dispatch = useDispatch();
+    let axiosJWT = createAxios(currentuser, dispatch, setInfor);
     // Tạo đối tượng Date từ số giây (intValue) để lấy ngày/tháng/năm và giờ/phút/giây
     const date = new Date(intValue * 1000); // *1000 để chuyển từ giây sang mili giây
 
@@ -23,7 +36,113 @@ const Review = (props) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
+    const [reaction, setReaction] = useState("")
+    const [like, setLike] = useState(0)
+    const [dislike, setDislike] = useState(0)
+    const [trustrate, setTrustRate] = useState(0)
+    const [allReviews, setAllReviews] = useState([])
+    const calculateTrustRate = (like, dislike) => {
+        // Chỉ tính trust rate nếu cả like và dislike đều khác 0
+        if (like !== 0 && like + dislike !== 0) {
+            return like * 100 / (like + dislike);
+        }
 
+        // Trường hợp like và dislike đều bằng 0 hoặc chia 0, trust rate sẽ là 0
+        return 0;
+    };
+    const handleReaction = async (action) => {
+        if (walletAddress == "") {
+            toast.error("Bạn chưa đăng nhập")
+        }
+        else {
+            let find = allReviews.filter(item => item.user._id === currentuser._id);
+            if (find) {
+                if (action === "dislike" && reaction !== "dislike") {
+                    setTrustRate(calculateTrustRate(like, dislike + 1))
+                    if (reaction === "like") {
+                        setTrustRate(calculateTrustRate(like - 1, dislike + 1))
+                        setLike(like - 1);
+                    }
+                    setDislike(dislike + 1)
+                    let token = currentuser.accessToken;
+                    let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
+                        action: action,
+                        tripId: props.review._id
+                    }, {
+                        headers: {
+                            token: `Bearer ${token}`
+                        },
+                    })
+                    console.log(check)
+                    setReaction(action)
+                }
+                else if (action === "like" && reaction !== "like") {
+                    setTrustRate(calculateTrustRate(like + 1, dislike))
+                    if (reaction === "dislike") {
+                        setTrustRate(calculateTrustRate(like + 1, dislike - 1))
+                        setDislike(dislike - 1);
+                    }
+                    setLike(like + 1)
+                    let token = currentuser.accessToken;
+                    let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
+                        action: action,
+                        tripId: props.review._id
+                    }, {
+                        headers: {
+                            token: `Bearer ${token}`
+                        },
+                    })
+                    console.log(check)
+                    setReaction(action)
+                }
+                else {
+                    setReaction("")
+                    if (action === "like") {
+                        setTrustRate(calculateTrustRate(like - 1, dislike))
+                        setLike(like - 1);
+                    }
+                    else if (action === "dislike") {
+                        setTrustRate(calculateTrustRate(like, dislike - 1))
+                        setDislike(dislike - 1);
+                    }
+                    let token = currentuser.accessToken;
+                    let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
+                        action: action,
+                        tripId: props.review._id
+                    }, {
+                        headers: {
+                            token: `Bearer ${token}`
+                        },
+                    })
+                    console.log(check)
+                    setReaction("")
+                }
+            }
+            else {
+                toast.error("Bạn chưa checkin nơi này")
+            }
+        }
+    }
+    useEffect(() => {
+        console.log("Check", props)
+        setAllReviews(props.place)
+        // Check xem đã like hay dislike chưa
+        let total = 0;
+        if (props.review?.like && props.review?.like.length > 0) {
+            setLike(props.review.like.length)
+            if (props.review.like.includes(currentuser._id)) setReaction("like")
+            total += props.review.like.length
+        }
+
+        else if (props.review?.dislike && props.review?.dislike.length > 0) {
+            setDislike(props.review.dislike.length)
+            if (props.review.dislike.includes(currentuser._id)) setReaction("dislike")
+            total += props.review.dislike.length
+        }
+        if (total > 0) {
+            setTrustRate(like / total * 100);
+        }
+    }, [])
     return (
         <div className="review">
             <div className="review__row1">
@@ -38,6 +157,9 @@ const Review = (props) => {
                     </div>
                     <div className="review__verify">
                         <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} target="_blank">Xác thực</a>
+                    </div>
+                    <div className="review__verify">
+                        {`Độ tin cậy: ${trustrate}`}
                     </div>
                     <div className="review__time">
                         {`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}
@@ -88,6 +210,24 @@ const Review = (props) => {
                                 ))
                             }
                         </Gallery>
+                    </div>
+                    <div className="review__reaction">
+                        <div className="review__reaction">
+                            <button
+                                className={`like-button ${reaction === "like" ? "active" : ""}`}
+                                onClick={() => handleReaction("like")}
+                            >
+                                <ThumbUpIcon />
+                                <span>{like}</span>
+                            </button>
+                            <button
+                                className={`dislike-button ${reaction === "dislike" ? "active" : ""}`}
+                                onClick={() => handleReaction("dislike")}
+                            >
+                                <ThumbDownIcon />
+                                <span>{dislike}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

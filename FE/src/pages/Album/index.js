@@ -14,6 +14,11 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
 import Skeleton from '@mui/material/Skeleton';
+import { getAlbums } from '../../service/api';
+import { createAxios } from "../../utils/createInstance";
+import { setInfor } from "../../state/userSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import { getInfor } from '../../state/selectors';
 
 const Album = () => {
     const [allalbums, setAllAlbums] = useState([])
@@ -21,6 +26,8 @@ const Album = () => {
     const [newAlbum, setNewAlbum] = useState('');
     const [row1, setRow1] = useState([]);
     const [row2, setRow2] = useState([]);
+    let user = useSelector(getInfor)
+    const dispatch = useDispatch()
     // const [row3, setRow3] = useState([]);
     // const [row4, setRow4] = useState([]);
     const [select, setSelect] = useState(1);
@@ -28,7 +35,7 @@ const Album = () => {
     const navigate = useNavigate();
     const [value, setValue] = useState(dayjs('2022-04-17T15:30'));
     const [isLoading, setIsLoading] = useState(true);
-
+    let axiosJWT = createAxios(user, dispatch, setInfor);
     const handleAddAlbum = () => {
         navigate("/createalbum");
         if (newAlbum) {
@@ -45,18 +52,26 @@ const Album = () => {
     }
 
     useEffect(() => {
-        let temp = {
-            title: "TITLE",
-            img: img,
-            rate: 5,
-            address: "ADDRESS",
-            comment: "COMMENT",
-            time: new Date(2023, 7, 13)
+        let fetchdata = async () => {
+            let token = user.accessToken;
+            let result = await getAlbums(token, axiosJWT);
+            console.log(result);
+            setAlbums(result.data);
+            setAllAlbums(result.data)
+            setIsLoading(false)
         }
-        let array = Array.from({ length: 32 }, () => ({ ...temp }));
-        setAlbums(array);
-        setAllAlbums(array)
-        setIsLoading(false)
+        fetchdata();
+        // let temp = {
+        //     title: "TITLE",
+        //     img: img,
+        //     rate: 5,
+        //     address: "ADDRESS",
+        //     comment: "COMMENT",
+        //     time: new Date(2023, 7, 13)
+        // }
+        // let array = Array.from({ length: 32 }, () => ({ ...temp }));
+        // setAlbums(array);
+        // setAllAlbums(array)
     }, []);
 
     useEffect(() => {
@@ -187,7 +202,7 @@ const Album = () => {
                                     <div><Skeleton height="100%" /></div>
                                 </div> : <div className="album__results--1">
                                     {row1 && row1.map((item, itemIndex) => (
-                                        <AlbumThumbnail key={itemIndex} place={item} />
+                                        <AlbumThumbnail key={itemIndex} album={item} />
                                     ))}
                                 </div>
                             }
@@ -197,7 +212,7 @@ const Album = () => {
                                     <div><Skeleton height="100%" /></div>
                                 </div> : <div className="album__results--2">
                                     {row2 && row2.map((item, itemIndex) => (
-                                        <AlbumThumbnail key={itemIndex} place={item} />
+                                        <AlbumThumbnail key={itemIndex} album={item} />
                                     ))}
                                 </div>
                             }

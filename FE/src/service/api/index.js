@@ -64,6 +64,7 @@ const getPlace = async (placeid) => {
             placeid: placeid
         })
         review2 = review2.data
+        console.log("Review 2", review2)
         //Merge
         const mergedArray = review1.map((item1) => {
             const matchingElement = review2.find((item2) => item2.tripid === (item1.tripId).toString());
@@ -77,13 +78,14 @@ const getPlace = async (placeid) => {
             placeinfor: place.data,
             reviews: mergedArray
         }
+        console.log("MergeArray", mergedArray);
         return result;
     }
     catch (err) {
         console.log(err)
     }
 }
-const getAllReviewsInAllPlaces = async() => {
+const getAllReviewsInAllPlaces = async () => {
     let mergedArray = [];
     let numPlace = 20; // => lấy số lượng của place???
     for (var i = 1; i <= numPlace; i++) {
@@ -93,8 +95,17 @@ const getAllReviewsInAllPlaces = async() => {
     return mergedArray
 }
 
-const getReviewsWithIds = async(idList, currentAccount) => {
-    return await contract.methods.getJourneyWithID(idList).call({from: currentAccount});
+const getReviewsWithIds = async (idList, currentAccount) => {
+    return await contract.methods.getJourneyWithID(idList).call({ from: currentAccount });
+}
+
+const getAlbums = async (token, axiosJWT) => {
+    const album = await axiosJWT.get(`${process.env.REACT_APP_ENDPOINT}/v1/album/`, {
+        headers: {
+            token: `Bearer ${token}`,
+        },
+    })
+    return album;
 }
 export {
     getAllPlace,
@@ -102,5 +113,6 @@ export {
     getTrips,
     getPlace,
     getAllReviewsInAllPlaces,
-    getReviewsWithIds
+    getReviewsWithIds,
+    getAlbums
 }
