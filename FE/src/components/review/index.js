@@ -59,6 +59,7 @@ const Review = (props) => {
             if (find) {
                 if (action === "dislike" && reaction !== "dislike") {
                     setReaction(action)
+                    await new Promise((resolve) => setTimeout(resolve, 0));
                     setTrustRate(calculateTrustRate(like, dislike + 1))
                     if (reaction === "like") {
                         setTrustRate(calculateTrustRate(like - 1, dislike + 1))
@@ -78,6 +79,7 @@ const Review = (props) => {
                 }
                 else if (action === "like" && reaction !== "like") {
                     setReaction(action)
+                    await new Promise((resolve) => setTimeout(resolve, 0));
                     setTrustRate(calculateTrustRate(like + 1, dislike))
                     if (reaction === "dislike") {
                         setTrustRate(calculateTrustRate(like + 1, dislike - 1))
