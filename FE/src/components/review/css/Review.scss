@@ -67,3 +67,73 @@
         }
     }
 }
+.review__reaction {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.like-button,
+.dislike-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
+}
+
+.like-button:hover,
+.dislike-button:hover {
+    background-color: #e0e0e0;
+}
+
+.like-button > svg,
+.dislike-button > svg {
+    font-size: 18px;
+}
+
+/* Phần đánh dấu số lượng like và dislike */
+.like-count,
+.dislike-count {
+    margin-left: 5px;
+}
+
+/* Tuỳ chỉnh màu cho nút Like */
+.like-button {
+}
+
+.like-button:hover {
+    background-color: #1976d2;
+}
+
+/* Tuỳ chỉnh màu cho nút Dislike */
+.dislike-button {
+}
+
+.dislike-button:hover {
+    background-color: #d32f2f;
+}
+
+.like-button.active {
+    background-color: #2196f3;
+    color: #fff;
+    border: none;
+}
+.dislike-button.active {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+}
+
+/* Hover state cho active nút */
+.like-button.active:hover,
+.dislike-button.active:hover {
+}

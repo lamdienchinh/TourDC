@@ -60,6 +60,63 @@ const tripController = {
             res.status(500).json({ error: 'Fail' });
         }
     },
+    controlReaction: async (req, res) => {
+        try {
+            const { action } = req.body;
+            const userId = req.user.id;
+
+            if (action === "like" || action === "dislike") {
+                const tripId = req.body.tripId; // Giả sử bạn có tham số trong URL là tripId để xác định trip cần thực hiện reaction
+                const trip = await Trip.findById(tripId);
+
+                if (!trip) {
+                    return res.status(404).json({ message: "Trip not found" });
+                }
+
+                const userLikes = trip.like || [];
+                const userDislikes = trip.dislike || [];
+
+                // Kiểm tra xem người dùng đã có trong bên like hoặc dislike chưa
+                const userInLikes = userLikes.includes(userId);
+                const userInDislikes = userDislikes.includes(userId);
+
+                if (action === "like") {
+                    if (userInDislikes) {
+                        // Nếu người dùng đã dislike thì xoá khỏi dislike trước khi thêm vào like
+                        await Trip.findByIdAndUpdate(tripId, { $pull: { dislike: userId } });
+                    }
+
+                    if (!userInLikes) {
+                        // Nếu người dùng chưa có trong like thì thêm vào
+                        await Trip.findByIdAndUpdate(tripId, { $push: { like: userId } });
+                    } else {
+                        // Nếu người dùng đã có trong like thì xoá khỏi like
+                        await Trip.findByIdAndUpdate(tripId, { $pull: { like: userId } });
+                    }
+                } else if (action === "dislike") {
+                    if (userInLikes) {
+                        // Nếu người dùng đã like thì xoá khỏi like trước khi thêm vào dislike
+                        await Trip.findByIdAndUpdate(tripId, { $pull: { like: userId } });
+                    }
+
+                    if (!userInDislikes) {
+                        // Nếu người dùng chưa có trong dislike thì thêm vào
+                        await Trip.findByIdAndUpdate(tripId, { $push: { dislike: userId } });
+                    } else {
+                        // Nếu người dùng đã có trong dislike thì xoá khỏi dislike
+                        await Trip.findByIdAndUpdate(tripId, { $pull: { dislike: userId } });
+                    }
+                }
+
+                return res.status(200).json({ message: "Reaction updated successfully" });
+            } else {
+                return res.status(400).json({ message: "Invalid action" });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json(error);
+        }
+    }
 };
 
 

@@ -63,6 +63,7 @@ const getPlace = async (placeid) => {
             placeid: placeid
         })
         review2 = review2.data
+        console.log("Review 2", review2)
         //Merge
         const mergedArray = review1.map((item1) => {
             const matchingElement = review2.find((item2) => item2.tripid === (item1.tripId).toString());
@@ -76,6 +77,7 @@ const getPlace = async (placeid) => {
             placeinfor: place.data,
             reviews: mergedArray
         }
+        console.log("MergeArray", mergedArray);
         return result;
     }
     catch (err) {
@@ -93,7 +95,7 @@ const getAllReviewsInAllPlaces = async () => {
 }
 
 const getReviewsWithIds = async (idList, currentAccount) => {
-    return await contract.methods.getJourneyWithID(idList).call({from: currentAccount});
+    return await contract.methods.getJourneyWithID(idList).call({ from: currentAccount });
 }
 
 const getAlbums = async (token, axiosJWT) => {
