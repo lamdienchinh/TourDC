@@ -2,6 +2,7 @@ import axios from "axios";
 import Web3 from 'web3'
 import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
+import { current } from "@reduxjs/toolkit";
 
 
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');

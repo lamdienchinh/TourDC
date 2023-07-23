@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?400&family=Inter+Tight:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
+:root {
+  --color-dark: #17252a;
+  --color-main: rgba(43, 122, 120, 1);
+  --color-main-btn: rgba(43, 122, 120, 0.8);
+  --color-main-black: rgb(21, 61, 60);
+  --color-box-shadow1: 0px 1px 3px 1px rgba(0, 0, 0, 0.25);
+  --border-size: 2px;
+  --color-background-main: #F5FBFB;
+  --color-box-shadow2: 0px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.post_layout {
+  width: 70%;
+  margin: 70px 30px 10px 10%;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #F5FFFA;
+  box-shadow: 3px 3px 3px 3px #969696;
+}
+
+.title {
+  font-size: 50px;
+  text-align: center;
+  font-weight: 500;
+  color: var(--color-main-black);
+  font-family: 'Inter Tight', sans-serif;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.img {
+  display: flex;
+  justify-content: center;
+}
+
+.img img {
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 5px;
+  width: auto;
+  height: auto;
+}
+
+.content {
+  text-align: justify;
+  margin: 10px 20%;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 500;
+}
+
+.like,
+.view {
+  margin-left: 75%;
+}
+
+.icon {
+  margin-left: 20%;
+  margin-top: 5px;
+  display: flex;
+  font-size: 15px;
+  border: none;
+  color: black;
+  background-color: transparent;
+  text-align: center;
+}
+
+.likes {
+  margin-top: 0;
+  margin-left: 20%;
+  font-weight: 1000;
+  font-size: 15px;
+}
+
+.report {
+  margin-bottom: 10px;
+  position: relative;
+  margin-left: 90%;
+  background-color: transparent;
+  border: none;
+}
+
+.like-inpost {
+  cursor: pointer;
+  font-size: 25px;
+  background-color: transparent;
+  border: none
+}
+
+.like-inpost:hover {
+  opacity: 0.5;
+}
+.report:hover{
+  
+  background-color: yellow;
+  border-radius: 25px;
+}
+
+
+
+.slider {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.right-arrow {
+  position: absolute;
+  font-size: 1.5rem;
+  color: #000;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+  top:50%;
+  right:20%;
+}
+
+.left-arrow {
+  position: absolute;
+  left: 20%;
+  top:50%;
+  font-size: 1.5rem;
+  color: #000;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
+
+.slide {
+  opacity: 0;
+  transition-duration: 1s ease;
+}
+
+.slide.active {
+  width: 60%;
+  height: auto;
+  opacity: 1;
+  transition-duration: 1s;
+}
+
+.right-arrow:hover, .left-arrow:hover{
+  opacity: 0.5;
+  color: gray
+  
+}
+

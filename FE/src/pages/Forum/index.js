@@ -4,9 +4,22 @@ import Link from '@mui/material/Link';
 import { useState, useEffect } from "react"
 import axios from 'axios';
 import LazyLoad from 'react-lazyload';
+import { createAxios } from "../../utils/createInstance";
+import { setInfor } from "../../state/userSlice";
+import { useDispatch } from "react-redux";
+import { getInfor, getUserData } from '../../state/selectors';
+import { useSelector } from 'react-redux'
+import FBPost from "../../components/widget/FBPost";
 const Forum = () => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
+
+
+    const dispatch = useDispatch();
+    const [userInfor, serUserInfor] = useState(useSelector(getInfor));
+    console.log("userInfor: ", userInfor);
+    let axiosJWT = createAxios(userInfor, dispatch, setInfor);
+
 
     useEffect(() => {
         fetchPosts();
@@ -20,6 +33,17 @@ const Forum = () => {
         setPosts(prevPosts => [...prevPosts, ...response.data]);
         setPage(prevPage => prevPage + 1);
     };
+    
+    const Album = {
+        title: "hello",
+        content: 'This is album content',
+        createdAt: '2023-07-22T10:48:34.127+00:00',
+        list_trips: [],
+        liked: false,
+        disliked: false,
+        likes: 10,
+        dislikes: 10
+    }
 
     const handleScroll = () => {
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -38,6 +62,7 @@ const Forum = () => {
         };
     }, []);
 
+    
     return (
         <div className="forum-wrapper">
             <div className="forum__slides">
@@ -63,17 +88,29 @@ const Forum = () => {
                     <h1>Danh sách bài viết</h1>
                     {posts.map(post => (
                         <LazyLoad key={post.id}>
-                            <div className="post">
-                                <div>{post}</div>
-                                {/* <h2>{post.title}</h2>
-                                <p>{post.content}</p> */}
-                            </div>
+                        
                         </LazyLoad>
                     ))}
                 </div>
                 <div className="forum__sidebar">
                     <div >
-
+                    <FBPost
+                        avtar={userInfor.avatar}
+                        name={userInfor.firstName + userInfor.lastName}
+                        time={Album.createdAt}
+                        // privacy={privacy}
+                        caption={Album.content}
+                        // images={images}
+                        likes={Album.likes}
+                        liked={Album.liked}
+                        disliked={Album.disliked}
+                        // includeLike={includeLike}
+                        // includeLove={includeLove}
+                        // includeHaha={includeHaha}
+                        // includeWow={includeWow}
+                        // includeSad={includeSad}
+                        // includeAngry={includeAngry}
+          />
                     </div>
                     <div>
 
