@@ -40,10 +40,11 @@ const Review = (props) => {
     const [like, setLike] = useState(0)
     const [dislike, setDislike] = useState(0)
     const [trustrate, setTrustRate] = useState(0)
+    const [allReviews, setAllReviews] = useState([])
     const calculateTrustRate = (like, dislike) => {
         // Chỉ tính trust rate nếu cả like và dislike đều khác 0
         if (like !== 0 && like + dislike !== 0) {
-            return like / (like + dislike);
+            return like * 100 / (like + dislike);
         }
 
         // Trường hợp like và dislike đều bằng 0 hoặc chia 0, trust rate sẽ là 0
@@ -54,70 +55,77 @@ const Review = (props) => {
             toast.error("Bạn chưa đăng nhập")
         }
         else {
-            if (action === "dislike" && reaction !== "dislike") {
-                setTrustRate(calculateTrustRate(like, dislike + 1))
-                if (reaction === "like") {
-                    setTrustRate(calculateTrustRate(like - 1, dislike + 1))
-                    setLike(like - 1);
+            let find = allReviews.filter(item => item.user._id === currentuser._id);
+            if (find) {
+                if (action === "dislike" && reaction !== "dislike") {
+                    setTrustRate(calculateTrustRate(like, dislike + 1))
+                    if (reaction === "like") {
+                        setTrustRate(calculateTrustRate(like - 1, dislike + 1))
+                        setLike(like - 1);
+                    }
+                    setDislike(dislike + 1)
+                    let token = currentuser.accessToken;
+                    let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
+                        action: action,
+                        tripId: props.review._id
+                    }, {
+                        headers: {
+                            token: `Bearer ${token}`
+                        },
+                    })
+                    console.log(check)
+                    setReaction(action)
                 }
-                setDislike(dislike + 1)
-                let token = currentuser.accessToken;
-                let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
-                    action: action,
-                    tripId: props.review._id
-                }, {
-                    headers: {
-                        token: `Bearer ${token}`
-                    },
-                })
-                console.log(check)
-                setReaction(action)
-            }
-            else if (action === "like" && reaction !== "like") {
-                setTrustRate(calculateTrustRate(like + 1, dislike))
-                if (reaction === "dislike") {
-                    setTrustRate(calculateTrustRate(like + 1, dislike - 1))
-                    setDislike(dislike - 1);
+                else if (action === "like" && reaction !== "like") {
+                    setTrustRate(calculateTrustRate(like + 1, dislike))
+                    if (reaction === "dislike") {
+                        setTrustRate(calculateTrustRate(like + 1, dislike - 1))
+                        setDislike(dislike - 1);
+                    }
+                    setLike(like + 1)
+                    let token = currentuser.accessToken;
+                    let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
+                        action: action,
+                        tripId: props.review._id
+                    }, {
+                        headers: {
+                            token: `Bearer ${token}`
+                        },
+                    })
+                    console.log(check)
+                    setReaction(action)
                 }
-                setLike(like + 1)
-                let token = currentuser.accessToken;
-                let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
-                    action: action,
-                    tripId: props.review._id
-                }, {
-                    headers: {
-                        token: `Bearer ${token}`
-                    },
-                })
-                console.log(check)
-                setReaction(action)
+                else {
+                    setReaction("")
+                    if (action === "like") {
+                        setTrustRate(calculateTrustRate(like - 1, dislike))
+                        setLike(like - 1);
+                    }
+                    else if (action === "dislike") {
+                        setTrustRate(calculateTrustRate(like, dislike - 1))
+                        setDislike(dislike - 1);
+                    }
+                    let token = currentuser.accessToken;
+                    let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
+                        action: action,
+                        tripId: props.review._id
+                    }, {
+                        headers: {
+                            token: `Bearer ${token}`
+                        },
+                    })
+                    console.log(check)
+                    setReaction("")
+                }
             }
             else {
-                setReaction("")
-                if (action === "like") {
-                    setTrustRate(calculateTrustRate(like - 1, dislike))
-                    setLike(like - 1);
-                }
-                else if (action === "dislike") {
-                    setTrustRate(calculateTrustRate(like, dislike - 1))
-                    setDislike(dislike - 1);
-                }
-                let token = currentuser.accessToken;
-                let check = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/trip/reaction`, {
-                    action: action,
-                    tripId: props.review._id
-                }, {
-                    headers: {
-                        token: `Bearer ${token}`
-                    },
-                })
-                console.log(check)
-                setReaction("")
+                toast.error("Bạn chưa checkin nơi này")
             }
         }
     }
     useEffect(() => {
-        console.log("Check", props.review)
+        console.log("Check", props)
+        setAllReviews(props.place)
         // Check xem đã like hay dislike chưa
         let total = 0;
         if (props.review?.like && props.review?.like.length > 0) {

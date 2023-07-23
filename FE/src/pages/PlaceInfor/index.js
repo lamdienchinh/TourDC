@@ -225,7 +225,7 @@ const PlaceInfor = () => {
                     <div className="placeinfor__reviewlist">
                         <div className="placeinfor__review">
                             {rates && rates.map((review, index) => (
-                                <Review key={index} review={review}></Review>
+                                <Review key={index} review={review} place={rates}></Review>
                             ))}
                         </div>
                     </div>
