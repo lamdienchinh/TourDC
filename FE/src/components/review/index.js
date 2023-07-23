@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import { createAxios } from '../../utils/createInstance';
 import { setInfor } from '../../state/userSlice';
 import { useDispatch } from 'react-redux';
-import { current } from "@reduxjs/toolkit";
 
 const Review = (props) => {
     // let listimg = [img1, img1, img1, img1];
@@ -136,7 +135,7 @@ const Review = (props) => {
             total += props.review.like.length
         }
 
-        else if (props.review?.dislike && props.review?.dislike.length > 0) {
+        if (props.review?.dislike && props.review?.dislike.length > 0) {
             setDislike(props.review.dislike.length)
             if (props.review.dislike.includes(currentuser._id)) setReaction("dislike")
             total += props.review.dislike.length

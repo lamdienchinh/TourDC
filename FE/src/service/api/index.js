@@ -2,7 +2,6 @@ import axios from "axios";
 import Web3 from 'web3'
 import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
-import { current } from "@reduxjs/toolkit";
 
 
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
@@ -107,6 +106,35 @@ const getAlbums = async (token, axiosJWT) => {
     })
     return album;
 }
+
+const addPost = async (data, token, axiosJWT) => {
+    try {
+        let post = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/post/add`, data, {
+            headers: {
+                token: `Bearer ${token}`,
+            },
+        })
+        console.log(post)
+        return 1;
+    }
+    catch (err) {
+        console.log(err)
+        return 0;
+    }
+}
+
+const getPosts = async () => {
+    try {
+        const posts = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/post/`, {
+        })
+        return posts;
+    }
+    catch (err) {
+        console.log(err);
+        return 0;
+    }
+}
+
 export {
     getAllPlace,
     reviewtoBE,
@@ -114,5 +142,7 @@ export {
     getPlace,
     getAllReviewsInAllPlaces,
     getReviewsWithIds,
-    getAlbums
+    getAlbums,
+    addPost,
+    getPosts
 }

@@ -10,6 +10,8 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Typography from "@mui/material/Typography";
 import { getAllPlace, getAllReviewsInAllPlaces } from "../../service/api";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 // import { getUserData } from '../../state/selectors';
 // import { useSelector } from 'react-redux';
 //import scss
@@ -18,7 +20,13 @@ import "./css/Home.scss"
 
 const Home = () => {
     // let walletAddress = useSelector(getUserData);
-
+    const [open, setOpen] = useState(true);
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleOpen = () => {
+        setOpen(true);
+    };
     const [inputsearch, setInputSearch] = useState("");
 
     // Lấy các places từ BE
@@ -52,6 +60,7 @@ const Home = () => {
             setAllPlaces(mergedArray);
             setPlaces(mergedArray);
             setIsLoading(false);
+            handleClose();
         }
         // let temp = types.types;
         // const array = Array.from({ length: 50 }, (_, index) =>
@@ -188,6 +197,13 @@ const Home = () => {
 
     return (
         <div className="home">
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={open}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className="home__slides">
                 <div className="home__slides__content">
                     Khám phá các địa điểm du lịch
