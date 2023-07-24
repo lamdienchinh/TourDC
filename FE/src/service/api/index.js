@@ -232,8 +232,7 @@ export {
     login,
     getMyPosts,
     deletePost,
-    editPost
-    login,
+    editPost,
     register,
     createAccountAddress
 }
