@@ -44,14 +44,18 @@ function Login() {
                 // Nếu có lỗi, setErrors để hiển thị thông báo lỗi
                 setErrors(validationErrors);
                 console.log(errors)
-            }
-            
-            // check with db
-            let user = await login(username, password);
-            console.log("datauser:", user.data);
-            if(user) {
-                dispatch(setUser({ address: user.data.walletAddress, infor: user.data }));
-                navigate('/');
+            } else {
+                // check with db
+                let user = await login(username, password);
+                console.log("datauser:", user.data);
+                if(user) {
+                    dispatch(setUser({ address: user.data.walletAddress, infor: user.data }));
+                    navigate('/');
+                }
+                else {
+                    validationErrors.invalid = "Email or password incorrect, please check!"
+                    setErrors(validationErrors);
+                }
             }
         }
         else if (buttonValue == 'metamask') {
@@ -66,9 +70,8 @@ function Login() {
         }
         
     };
-    const validator = () => {
 
-    }
+    
     return (
         <div className='login'>
             <section>
@@ -87,6 +90,7 @@ function Login() {
                                     <label>Password</label>
                                 </div>
                                 {errors.password ? <div className='error'>{errors.password}</div> : null}
+                                {errors.invalid ? <div className='error'>{errors.invalid}</div> : null}
                                 <button type="submit" value='normal' className='login-btn'>Log in</button>
                                 
                                 <button type="submit" value='metamask' className='login-btn1'>

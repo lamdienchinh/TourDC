@@ -7,12 +7,26 @@ let refreshTokens = []
 const userController = {
   //ADD user
   addUser: async (req, res) => {
-    res.status(200).json(req.body);
+    
     try {
-      const newUser = new User(req.body);
-      const saveUser = await newUser.save();
+      const existingUser = await User.findOne({ email: req.body.email });
+      const existingAddress = await User.findOne({walletAddress: req.body.walletAddress});
+      console.log(req.body)
+      if (existingUser) {
+        // Nếu email đã tồn tại, trả về mã lỗi 409 (Conflict) và thông báo lỗi
+        console.log('Email đã tồn tại: ')
+        console.log(existingUser)
+        res.status(409).json({ message: 'Email đã tồn tại.' });
+      } 
+      else if (existingAddress) {
+        res.status(409).json({ message: 'Địa chỉ ví đã tồn tại.' });
+      } else {
+        const newUser = new User(req.body);
+        const saveUser = await newUser.save();
+        res.status(200).json(req.body);
+      }
     } catch (error) {
-      res.status(500).json(err);
+      res.status(500).json(error);
     }
   },
   //GET ALL USERS

@@ -120,6 +120,32 @@ const login = async ( email, password) => {
         return false;
     }
 }
+
+const register = async (form) => {
+    try {
+        let user = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/`, {
+            email: form.email, 
+            password: form.password,
+            firstName: form.firstName,
+            lastName: form.lastName, 
+            phonenumber: form.phonenumber,
+            walletAddress: form.walletAddress,
+            privateKey: form.privateKey,
+        })
+        return user;
+    } catch (error) {
+        return error;
+    }
+}
+
+const createAccountAddress = async () => {
+    try {
+       let newAddress = web3.eth.accounts.create();
+       return newAddress
+    } catch (error) {
+        return false
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
@@ -128,5 +154,7 @@ export {
     getAllReviewsInAllPlaces,
     getReviewsWithIds,
     getAlbums,
-    login
+    login,
+    register,
+    createAccountAddress
 }
