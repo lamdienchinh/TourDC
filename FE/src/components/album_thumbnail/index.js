@@ -1,16 +1,11 @@
 // import { FaMapMarkerAlt, FaComments } from "react-icons/fa";
 import "./css/Album_Thumbnail.scss"
 import img from "../../assets/imgs/place2.jpg"
-import { getReviewsWithIds } from "../../service/api"
-import { useSelector } from 'react-redux';
-import { getUserData } from '../../state/selectors';
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 const AlbumThumbnail = (props) => {
     const album = props.album;
     console.log(album)
-    const walletAddress = useSelector(getUserData);
-    const [albumdata, setAlbumData] = useState(null)
     useEffect(() => {
 
     })

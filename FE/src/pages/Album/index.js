@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Pagination, NativeSelect, InputLabel, FormControl } from '@mui/material';
 import AlbumThumbnail from "../../components/album_thumbnail";
-import img from "../../assets/imgs/slider_banner_1.png";
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import './css/Album.scss';
@@ -13,14 +12,19 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
 import Link from '@mui/material/Link';
-import Skeleton from '@mui/material/Skeleton';
 import { getAlbums } from '../../service/api';
 import { createAxios } from "../../utils/createInstance";
 import { setInfor } from "../../state/userSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { getInfor } from '../../state/selectors';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Album = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const [allalbums, setAllAlbums] = useState([])
     const [albums, setAlbums] = useState([]);
     const [newAlbum, setNewAlbum] = useState('');
@@ -32,7 +36,6 @@ const Album = () => {
     const [totalPages, setTotalPages] = useState(0);
     const navigate = useNavigate();
     const [value, setValue] = useState(dayjs('2022-04-17T15:30'));
-    const [isLoading, setIsLoading] = useState(true);
     let axiosJWT = createAxios(user, dispatch, setInfor);
     const handleAddAlbum = () => {
         navigate("/createalbum");
@@ -56,10 +59,9 @@ const Album = () => {
             console.log(result);
             setAlbums(result.data);
             setAllAlbums(result.data)
-            setIsLoading(false)
         }
         fetchdata();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         let start = 4 * (select - 1);
@@ -72,6 +74,7 @@ const Album = () => {
         setRow1(row1);
         setRow2(row2);
         setTotalPages(totalPages);
+        setIsLoading(false)
     }, [albums, select]);
 
     useEffect(() => {
@@ -113,7 +116,6 @@ const Album = () => {
     function filterDate(date) {
         let arr = [...allalbums]
         let filteredArray = arr.filter(function (item) {
-            // var itemDate = new Date(item);
             return (
                 item.time.getDate() === date.getDate() &&
                 item.time.getMonth() - 1 === date.getMonth() &&
@@ -125,6 +127,13 @@ const Album = () => {
     }
     return (
         <div className="album">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className="album-slide">
                 Tạo Album, Chia sẻ khoảnh khắc
                 <Breadcrumbs aria-label="breadcrumb">
@@ -184,20 +193,14 @@ const Album = () => {
                     <div className="album__col col2">
                         <div className="album__results">
                             {
-                                isLoading === true ? <div>
-                                    <div><Skeleton height="100%" /></div>
-                                    <div><Skeleton height="100%" /></div>
-                                </div> : <div className="album__results--1">
+                                isLoading === false && <div className="album__results--1">
                                     {row1 && row1.map((item, itemIndex) => (
                                         <AlbumThumbnail key={itemIndex} album={item} />
                                     ))}
                                 </div>
                             }
                             {
-                                isLoading === true ? <div>
-                                    <div><Skeleton height="100%" /></div>
-                                    <div><Skeleton height="100%" /></div>
-                                </div> : <div className="album__results--2">
+                                isLoading === false && <div className="album__results--2">
                                     {row2 && row2.map((item, itemIndex) => (
                                         <AlbumThumbnail key={itemIndex} album={item} />
                                     ))}

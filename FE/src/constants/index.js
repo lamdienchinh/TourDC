@@ -93,4 +93,7 @@ const placenames = [
     "Lotte Cinema Mĩ Bình",
     "Công viên Mỹ Thới",
 ]
-export default { types, trips, placenames };
+const module = {
+    types, trips, placenames
+}
+export default module;

@@ -11,8 +11,15 @@ import axios from "axios";
 import { getReviewsWithIds } from '../../service/api';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../state/selectors';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 const ViewAlbum = () => {
     // const location = useLocation();
+    const [isLoading, setIsLoading] = useState(true);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [trips, setTrips] = useState([])
     const [album, setAlbum] = useState(null)
@@ -68,6 +75,7 @@ const ViewAlbum = () => {
                 ...trips[index]
             }));
             setTrips(mergedTrips);
+            setIsLoading(false);
         }
         fetchAlbum()
     }, [walletAddress]);
@@ -82,6 +90,13 @@ const ViewAlbum = () => {
 
     return (
         <div className="viewalbum">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className="viewalbum-slide">
                 Album lưu giữ kỷ niệm
                 <Breadcrumbs aria-label="breadcrumb">

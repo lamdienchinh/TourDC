@@ -9,9 +9,14 @@ import { useDispatch } from "react-redux";
 import { getInfor } from '../../state/selectors';
 import { useSelector } from 'react-redux'
 import FBPost from "../../components/post";
-
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import { getMyPosts } from "../../service/api";
 const MyPosts = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const [userInfor] = useState(useSelector(getInfor));
@@ -24,6 +29,7 @@ const MyPosts = () => {
             let allPost = await getMyPosts(token, axiosJWT);
             console.log(allPost)
             setPosts(allPost.data)
+            setIsLoading(false)
         }
         fetchPosts();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -50,6 +56,13 @@ const MyPosts = () => {
 
     return (
         <div className="myposts-wrapper">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className="myposts__slides">
                 <div className="myposts__slides__content">
                     Những bài posts của bạn
@@ -67,18 +80,20 @@ const MyPosts = () => {
                 </div>
             </div>
             <Container maxWidth="lg">
-                <div className="myposts__posts">
-                    <h1>Danh sách bài viết của bạn</h1>
-                    <LazyLoad>
-                        {poststoview.map((post, index) => (
-                            <FBPost
-                                key={index}
-                                data={post}
-                            />
-                        ))}
-                    </LazyLoad>
-                    <div className="myposts__pagination">
-                        <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
+                <div className="myposts__box">
+                    <div className="myposts__posts">
+                        <h1>Danh sách bài viết của bạn</h1>
+                        <LazyLoad>
+                            {poststoview.map((post, index) => (
+                                <FBPost
+                                    key={index}
+                                    data={post}
+                                />
+                            ))}
+                        </LazyLoad>
+                        <div className="myposts__pagination">
+                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
+                        </div>
                     </div>
                 </div>
             </Container >

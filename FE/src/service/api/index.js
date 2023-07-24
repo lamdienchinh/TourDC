@@ -196,10 +196,10 @@ const editPost = async (token, data, axiosJWT) => {
 const register = async (form) => {
     try {
         let user = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/`, {
-            email: form.email, 
+            email: form.email,
             password: form.password,
             firstName: form.firstName,
-            lastName: form.lastName, 
+            lastName: form.lastName,
             phonenumber: form.phonenumber,
             walletAddress: form.walletAddress,
             privateKey: form.privateKey,
@@ -212,8 +212,8 @@ const register = async (form) => {
 
 const createAccountAddress = async () => {
     try {
-       let newAddress = web3.eth.accounts.create();
-       return newAddress
+        let newAddress = web3.eth.accounts.create();
+        return newAddress
     } catch (error) {
         return false
     }
@@ -227,7 +227,6 @@ export {
     getReviewsWithIds,
     getPosts,
     addPost,
-    getPosts,
     getAlbums,
     login,
     getMyPosts,

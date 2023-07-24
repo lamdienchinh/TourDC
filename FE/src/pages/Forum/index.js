@@ -22,7 +22,14 @@ import FormHelperText from "@mui/material/FormHelperText";
 import { Chip } from '@mui/material';
 import { addPost, getAlbums, getPosts } from "../../service/api";
 import { toast } from "react-toastify";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 const Forum = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const [userInfor] = useState(useSelector(getInfor));
@@ -69,6 +76,7 @@ const Forum = () => {
             let albums = await getAlbums(token, axiosJWT);
             console.log("Album", albums);
             setAvailableAlbums(albums.data);
+            setIsLoading(false);
         }
         catch (error) {
             console.log("Error", error);
@@ -129,13 +137,20 @@ const Forum = () => {
     }
     return (
         <div className="forum-wrapper">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className="forum__slides">
                 <div className="forum__slides__content">
                     Cộng đồng giao lưu trao đổi
                 </div>
                 <div className="forum__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">
-                        <Link underline="hover" color="inherit" href="/">
+                        <Link underline="hover" color="black" href="/">
                             Home
                         </Link>
                         <Typography color="text.primary">Forum</Typography>

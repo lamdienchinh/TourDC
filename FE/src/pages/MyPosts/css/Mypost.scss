@@ -17,10 +17,15 @@
     background-size: cover;
 }
 
-.myposts_posts {
-    width: 100%;
+.myposts__posts {
+    width: 80%;
 }
 
+.myposts__box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .myposts-albums {
     width: 100%;
     height: 100%;

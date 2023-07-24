@@ -8,9 +8,9 @@ import Avatar from '@mui/material/Avatar';
 
 const Comment = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [avt, setAvt] = useState(props?.data?.user?.avatar ? props.data?.user.avatar : null)
-    const [fname, setFName] = useState(props?.data?.user?.firstName ? props.data.user.firstName : "Your name");
-    const [lname, setLName] = useState(props?.data?.user?.lastName ? props.data.user.lastName : "Your name");
+    const [avt] = useState(props?.data?.user?.avatar ? props.data?.user.avatar : null)
+    const [fname] = useState(props?.data?.user?.firstName ? props.data.user.firstName : "Your name");
+    const [lname] = useState(props?.data?.user?.lastName ? props.data.user.lastName : "Your name");
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };

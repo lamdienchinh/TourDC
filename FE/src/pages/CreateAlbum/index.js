@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Rating, Typography, ImageList, ImageListItem, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper } from "@mui/material";
+import { Rating, Typography, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper } from "@mui/material";
 import { NativeSelect, InputLabel, FormControl, TextField } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -23,6 +23,8 @@ import { createAxios } from "../../utils/createInstance";
 import { getTrips } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 import { Gallery, Item } from "react-photoswipe-gallery"
+import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from '@mui/material/Backdrop';
 
 function PaperComponent(props) {
     return (
@@ -36,15 +38,17 @@ function PaperComponent(props) {
 }
 
 const CreateAlbum = () => {
-
+    const [isLoading, setIsLoading] = useState(true);
+    const handleCloseLoading = () => {
+        setIsLoading(false);
+    };
     const [allTrips, setAllTrips] = useState([]);
-    const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
+    const [currentAccount] = useState(useSelector(getUserData));
     const dispatch = useDispatch();
     const user = useSelector(getInfor)
-    const [userinfor, getUserInfor] = useState(useSelector(getInfor))
-    const [imgs, setImgs] = useState([]);
+    const [userinfor] = useState(useSelector(getInfor))
     let axiosJWT = createAxios(user, dispatch, setInfor);
-    const [update, setUpdate] = useState(true)
+    const [update] = useState(true)
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     useEffect(() => {
@@ -69,9 +73,10 @@ const CreateAlbum = () => {
             setAllTrips(mergedArray)
             // setImgs(mergedArray.list_imgs)
             // console.log("imgs:", mergedArray.list_imgs)
+            setIsLoading(false)
         }
         fetchData(currentAccount);
-    }, [update]);
+    }, [update]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const [selectedTrips, setSelectedTrips] = useState([]);
 
@@ -135,6 +140,13 @@ const CreateAlbum = () => {
     };
     return (
         <div className="createalbum">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleCloseLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className="createalbum-slide">
                 Tạo Album của riêng bạn
                 <Breadcrumbs aria-label="breadcrumb">

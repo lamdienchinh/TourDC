@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { Pagination, NativeSelect, InputLabel, FormControl, TextField } from '@mui/material';
 // import types from "../../constants";
 import Container from '@mui/material/Container';
-import Skeleton from '@mui/material/Skeleton';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Typography from "@mui/material/Typography";
@@ -24,9 +23,9 @@ const Home = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    // const handleOpen = () => {
+    //     setOpen(true);
+    // };
     const [inputsearch, setInputSearch] = useState("");
 
     // Lấy các places từ BE
@@ -40,9 +39,7 @@ const Home = () => {
     const [getplaces, setGetPlaces] = useState(0);
     const [row1, setRow1] = useState([]);
     const [row2, setRow2] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(0);
-    // const [star, selectStar] = useState();
     const handlePageChange = (event, number) => {
         setSelect(number);
     }
@@ -59,7 +56,6 @@ const Home = () => {
             console.log("Merged Array", mergedArray)
             setAllPlaces(mergedArray);
             setPlaces(mergedArray);
-            setIsLoading(false);
             handleClose();
         }
         // let temp = types.types;
@@ -73,7 +69,7 @@ const Home = () => {
         // setAllPlaces(array);
         // setPlaces(array);
         console.log("allplace: ", allplaces)
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         const fetchData = async () => {
@@ -97,10 +93,6 @@ const Home = () => {
         };
         fetchData();
     }, [select, places]);
-
-    useEffect(() => {
-        console.log("isLoading", isLoading);
-    }, [isLoading]);
     const filter = (value) => {
         let currents = allplaces;
         if (getplaces !== value) {
@@ -198,7 +190,7 @@ const Home = () => {
     return (
         <div className="home">
             <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={open}
                 onClick={handleClose}
             >
@@ -279,22 +271,14 @@ const Home = () => {
                         </FormControl>
                     </div>
                     <div className="home__results">
-                        {isLoading === true ?
-                            <div>
-                                <Skeleton height="100%" />
-                                <Skeleton height="100%" />
-                            </div>
-                            : <div className="home__results--1">
+                        {open === false &&
+                            <div className="home__results--1">
                                 {row1 && row1.map((item, itemIndex) => (
                                     <PlaceThumbnail key={itemIndex} place={item}></PlaceThumbnail>
                                 ))}
                             </div>}
-                        {isLoading === true ?
-                            <div>
-                                <Skeleton height="100%" />
-                                <Skeleton height="100%" />
-                            </div>
-                            : <div className="home__results--2">
+                        {open === false &&
+                            <div className="home__results--2">
                                 {row2 && row2.map((item, itemIndex) => (
                                     <PlaceThumbnail key={itemIndex} place={item}></PlaceThumbnail>
                                 ))}

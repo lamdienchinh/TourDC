@@ -1,8 +1,7 @@
 import "./css/PlaceInfor.scss"
 import 'react-alice-carousel/lib/alice-carousel.css';
 import AliceCarousel from 'react-alice-carousel';
-import { useLocation } from 'react-router-dom';
-import { Rating, NativeSelect, FormControl, InputLabel, Button } from '@mui/material';
+import { NativeSelect, FormControl, InputLabel, Button } from '@mui/material';
 import ReviewChart from "../../components/review_chart";
 // import { useState } from "react";
 import Review from "../../components/review";
@@ -10,11 +9,8 @@ import Container from '@mui/material/Container';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getPlace } from "../../service/api";
-import { useSelector } from "react-redux";
-import { getInfor } from "../../state/selectors";
-const PlaceInfor = () => {
-    const user = useSelector(getInfor);
 
+const PlaceInfor = () => {
     const [place, setPlace] = useState();
     const [average, setAverage] = useState(0);
     const [rates, setRates] = useState([]);
@@ -60,25 +56,12 @@ const PlaceInfor = () => {
             ]);
         }
         fetchPlaceInfor()
-    }, [window.location.href])
+    }, [window.location.href]) // eslint-disable-line react-hooks/exhaustive-deps
     const navigate = useNavigate();
 
     const handleClicks = async (newplace) => {
         console.log("NEW", newplace);
         navigate(`/placeinfor?placeid=${newplace.placeid}`)
-        // let referP = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/place/get`, { name: newplace?.name });
-        // newplace?.referPlaces = referP.data.referPlaces;
-        // console.log("R", referP.data)
-        // navigate('.', { replace: true, state: { newplace, average, rates, reviewCount } });
-        // setAverage(average);
-        // setRates(rates);
-        // setReviewCount(reviewCount);
-        // setItems([
-        //     <img src={newplace?.list_imgs[0]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        //     <img src={newplace?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        //     <img src={newplace?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
-        // ]);
-        // setPlace(newplace);
     };
     //Xử lý filter
     // const [selectedValue, setSelectedValue] = useState('');

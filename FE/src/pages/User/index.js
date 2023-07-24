@@ -8,6 +8,7 @@ import { createAxios } from "../../utils/createInstance"
 import 'react-toastify/dist/ReactToastify.css';
 import { changeAvatar, changeInfor, setInfor } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
+
 // import img from "../../assets/imgs/avatar.png"
 const User = () => {
     let user = useSelector(getInfor);
@@ -48,7 +49,7 @@ const User = () => {
         event.preventDefault();
         const file = event.target.files[0];
         setAvatar(file);
-        if (typeof (file) !== "String")
+        if (typeof (file) !== String)
             setAvatarchange(URL.createObjectURL(file))
         else setAvatarchange("")
     };

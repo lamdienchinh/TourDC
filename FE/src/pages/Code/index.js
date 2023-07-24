@@ -10,7 +10,7 @@ import { getUserData } from "../../state/selectors";
 const Code = () => {
     const [input, setInput] = useState();
     const [placeId, setPlaceId] = useState();
-    const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
+    const [currentAccount] = useState(useSelector(getUserData));
     // setCurrentAccount()
     useEffect(() => {
       // Lấy đường link hiện tại

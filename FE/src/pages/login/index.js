@@ -23,14 +23,14 @@ function Login() {
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
+
 
         const buttonValue = event.nativeEvent.submitter?.getAttribute('value');
-        if(buttonValue == 'normal') {
+        if (buttonValue === 'normal') {
             const validationErrors = {};
             if (!username.trim()) {
                 validationErrors.email = 'Vui lòng nhập email.';
-            } else if (!emailPattern.test(username.trim())){
+            } else if (!emailPattern.test(username.trim())) {
                 validationErrors.email = 'Email không hợp lệ';
             }
             if (!password.trim()) {
@@ -48,7 +48,7 @@ function Login() {
                 // check with db
                 let user = await login(username, password);
                 console.log("datauser:", user.data);
-                if(user) {
+                if (user) {
                     dispatch(setUser({ address: user.data.walletAddress, infor: user.data }));
                     navigate('/');
                 }
@@ -58,7 +58,7 @@ function Login() {
                 }
             }
         }
-        else if (buttonValue == 'metamask') {
+        else if (buttonValue === 'metamask') {
             if (walletAddress === "" || walletAddress === undefined) {
                 console.log("walletAddress: ", walletAddress)
                 dispatch(connectWallet(dispatch));
@@ -68,36 +68,36 @@ function Login() {
             //     navigate('/')
             // }
         }
-        
+
     };
 
-    
+
     return (
         <div className='login'>
             <section>
                 <div className="form-loginbox">
                     <div className="form-value">
-                            <form onSubmit={handleSubmit}>
-                                <h2>Login</h2>
-                                <div className="inputbox">
-                                    <input id='email' type="text" onChange={(event) => setUsername(event.target.value)} />
-                                    <label>Email</label>
-                                    
-                                </div>
-                                {errors.email ? <div className='error'>{errors.email}</div> : null}
-                                <div className="inputbox">
-                                    <input id='password' type="password" onChange={(event) => setPassword(event.target.value)} />
-                                    <label>Password</label>
-                                </div>
-                                {errors.password ? <div className='error'>{errors.password}</div> : null}
-                                {errors.invalid ? <div className='error'>{errors.invalid}</div> : null}
-                                <button type="submit" value='normal' className='login-btn'>Log in</button>
-                                
-                                <button type="submit" value='metamask' className='login-btn1'>
-                                    Connect MetaMask Account
-                                    <img src={metamask} className='metamask' ></img>
-                                </button>
-                            <div className="register-block">        
+                        <form onSubmit={handleSubmit}>
+                            <h2>Login</h2>
+                            <div className="inputbox">
+                                <input id='email' type="text" onChange={(event) => setUsername(event.target.value)} />
+                                <label>Email</label>
+
+                            </div>
+                            {errors.email ? <div className='error'>{errors.email}</div> : null}
+                            <div className="inputbox">
+                                <input id='password' type="password" onChange={(event) => setPassword(event.target.value)} />
+                                <label>Password</label>
+                            </div>
+                            {errors.password ? <div className='error'>{errors.password}</div> : null}
+                            {errors.invalid ? <div className='error'>{errors.invalid}</div> : null}
+                            <button type="submit" value='normal' className='login-btn'>Log in</button>
+
+                            <button type="submit" value='metamask' className='login-btn1'>
+                                Connect MetaMask Account
+                                <img src={metamask} alt="Ảnh" className='metamask' ></img>
+                            </button>
+                            <div className="register-block">
                                 <p>Don't have an account <a href="/register">Register</a></p>
                             </div>
                         </form>
@@ -105,7 +105,7 @@ function Login() {
                 </div>
             </section>
         </div>
-        
+
     )
 }
 export default Login;

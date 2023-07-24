@@ -10,7 +10,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { TextField, Dialog, DialogActions, DialogContent, DialogTitle, Paper, DialogContentText } from '@mui/material'
 import Draggable from 'react-draggable';
-import Skeleton from '@mui/material/Skeleton';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import Rating from '@mui/material/Rating';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from "@mui/material/Typography";
@@ -43,6 +44,10 @@ function PaperComponent(props) {
 }
 
 const Trips = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const [allTrips, setAllTrips] = useState([]);
     const [select, setSelect] = useState(1);
     const dispatch = useDispatch();
@@ -50,9 +55,9 @@ const Trips = () => {
     let axiosJWT = createAxios(user, dispatch, setInfor);
 
     // Fetch data từ blockchain
-    const [journey, setJourneys] = useState([]);
-    const [currentAccount, setCurrentAccount] = useState(useSelector(getUserData));
-    const [userinfor, getUserInfor] = useState(useSelector(getInfor))
+    const [setJourneys] = useState([]);
+    const [currentAccount] = useState(useSelector(getUserData));
+    const [userinfor] = useState(useSelector(getInfor))
     const [update, setUpdate] = useState(true)
     useEffect(() => {
         const fetchData = async (currentAccount) => {
@@ -79,8 +84,7 @@ const Trips = () => {
         }
         fetchData(currentAccount);
         console.log("Trips: ", allTrips);
-    }, [update]);
-
+    }, [update]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     const [selectTrip, setSelectTrip] = useState("");
@@ -93,7 +97,6 @@ const Trips = () => {
     const [value, setValue] = useState(dayjs('2022-04-17T15:30'));
     const [scroll, setScroll] = useState('paper');
     //Lấy place để hiển thị
-    const [isLoading, setIsLoading] = useState(true)
     //handle chọn trang
     const handlePageChange = (event, number) => {
         setSelect(number);
@@ -112,9 +115,6 @@ const Trips = () => {
         event.preventDefault();
         setDescription(event.target.value);
     };
-    useEffect(() => {
-        setIsLoading(false)
-    }, []);
 
     useEffect(() => {
         let start = 4 * (select - 1);
@@ -133,6 +133,7 @@ const Trips = () => {
         // setRow3(row3);
         // setRow4(row4);
         setTotalPages(totalPages);
+        setIsLoading(false)
     }, [select, allTrips]);
 
     const [open1, setOpen1] = useState(false);
@@ -218,6 +219,13 @@ const Trips = () => {
     }
     return (
         <div className="trip-wrapper">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className="trip-slide">
                 Khám phá những chuyến đi của bạn
                 <Breadcrumbs aria-label="breadcrumb">
@@ -268,36 +276,20 @@ const Trips = () => {
                         </div>
                     </div>
                     <div className="trips-col2">
-                        {isLoading === true ? <div>
-                            <div><Skeleton height="100%" /></div>
-                            <div><Skeleton height="100%" /></div>
-                        </div> : <div className="trips__results--1">
+                        {isLoading === false && <div className="trips__results--1">
                             {row1 && row1.map((item, itemIndex) => (
                                 <div onClick={() => handleOpen1(item)} key={itemIndex}>
                                     <Trip trip={item}></Trip>
                                 </div>
                             ))}
                         </div>}
-                        {isLoading === true ? <div>
-                            <div><Skeleton height="100%" /></div>
-                            <div><Skeleton height="100%" /></div>
-                        </div> : <div className="trips__results--2">
+                        {isLoading === false && <div className="trips__results--2">
                             {row2 && row2.map((item, itemIndex) => (
                                 <div onClick={() => handleOpen1(item)} key={itemIndex}>
                                     <Trip trip={item}></Trip>
                                 </div>
                             ))}
                         </div>}
-                        {/* <div className="trips__results--3">
-                    {row3 && row3.map((item, itemIndex) => (
-                        <div onClick={() => handleOpen(item)}> <Trip trip={item}></Trip></div>
-                    ))}
-                </div>
-                <div className="trips__results--4">
-                    {row4 && row4.map((item, itemIndex) => (
-                        <div onClick={() => handleOpen(item)}> <Trip trip={item}></Trip></div>
-                    ))}
-                </div> */}
                         <div className="trips__results--pagination">
                             <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                         </div>
