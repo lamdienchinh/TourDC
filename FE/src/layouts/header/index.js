@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 // import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { connectWallet } from '../../state/userSlice';
+// import { connectWallet } from '../../state/userSlice';
 import { useSelector } from 'react-redux';
 import { getInfor, getUserData } from '../../state/selectors';
 import { useDispatch } from 'react-redux';
@@ -128,6 +128,11 @@ const Header = () => {
                     <div className="header__ele header__ele--home">
                         <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/travel'>
                             TRAVEL
+                        </NavLink>
+                    </div>
+                    <div className="header__ele header__ele--home">
+                        <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/forum'>
+                            FORUM
                         </NavLink>
                     </div>
                     {

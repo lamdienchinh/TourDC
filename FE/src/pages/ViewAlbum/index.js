@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
-import { TextField, Paper, Rating, Typography, ImageList, ImageListItem } from "@mui/material";
-import img from "../../assets/imgs/place1.png"
+import { TextField, Rating, Typography } from "@mui/material";
 import './css/ViewAlbum.scss';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import place from "../../constants";
-import { Gallery, Item } from "react-photoswipe-gallery"
+import { Gallery, Item } from "react-photoswipe-gallery";
+import axios from "axios";
+import { getReviewsWithIds } from '../../service/api';
+import { useSelector } from 'react-redux';
+import { getUserData } from '../../state/selectors';
 const ViewAlbum = () => {
-    const location = useLocation();
+    // const location = useLocation();
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [trips, setTrips] = useState([])
     const [album, setAlbum] = useState(null)
-    const [imgs] = useState([img, img, img, img]);
-    const [triptime, setTriptime] = useState(null)
+    const walletAddress = useSelector(getUserData)
     const handleLocationClick = (location) => {
         setSelectedLocation(location);
     };
@@ -48,11 +50,35 @@ const ViewAlbum = () => {
         return formattedDate;
     }
     useEffect(() => {
-        const result = location.state;
-        setAlbum(result);
-        setTrips(result.list_trips);
-        console.log(result);
-    })
+        const fetchAlbum = async () => {
+            const currentUrl = new URL(window.location.href);
+            const albumid = currentUrl.searchParams.get('id');
+            console.log("Albumid", albumid)
+            // Lấy trip từ BE
+            let getalbum = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/album/one`, {
+                albumid: albumid,
+            })
+            console.log("GetAlbum", getalbum)
+            getalbum = getalbum.data;
+            setAlbum(getalbum);
+            let tripsid = getalbum.list_trips.map((item) => item.tripid);
+            let trips = await getReviewsWithIds(tripsid, walletAddress);
+            const mergedTrips = getalbum.list_trips.map((trip, index) => ({
+                ...trip,
+                ...trips[index]
+            }));
+            setTrips(mergedTrips);
+        }
+        fetchAlbum()
+    }, [walletAddress]);
+    // useEffect(() => {
+
+
+    //     const result = location.state;
+    //     setAlbum(result);
+    //     setTrips(result.list_trips);
+    //     console.log(result);
+    // })
 
     return (
         <div className="viewalbum">

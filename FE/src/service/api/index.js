@@ -107,7 +107,7 @@ const getAlbums = async (token, axiosJWT) => {
     return album;
 }
 
-const login = async ( email, password) => {
+const login = async (email, password) => {
     try {
         let user = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/login`, {
             email: email,
@@ -148,6 +148,50 @@ const getPosts = async () => {
     }
 }
 
+const getMyPosts = async (token, axiosJWT) => {
+    try {
+        let posts = await axiosJWT.get(`${process.env.REACT_APP_ENDPOINT}/v1/post/mypost`, {
+            headers: {
+                token: `Bearer ${token}`
+            },
+        })
+        return posts;
+    }
+    catch (err) {
+        console.log(err);
+        return 0;
+    }
+}
+
+const deletePost = async (token, data, axiosJWT) => {
+    try {
+        let posts = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/post/delete`, data, {
+            headers: {
+                token: `Bearer ${token}`
+            },
+        })
+        return posts;
+    }
+    catch (err) {
+        console.log(err);
+        return 0;
+    }
+}
+
+const editPost = async (token, data, axiosJWT) => {
+    try {
+        let posts = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/post/edit`, data, {
+            headers: {
+                token: `Bearer ${token}`
+            },
+        })
+        return posts;
+    }
+    catch (err) {
+        console.log(err);
+        return 0;
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
@@ -155,9 +199,11 @@ export {
     getPlace,
     getAllReviewsInAllPlaces,
     getReviewsWithIds,
-    getAlbums,
     addPost,
-    getPosts
+    getPosts,
     getAlbums,
-    login
+    login,
+    getMyPosts,
+    deletePost,
+    editPost
 }
