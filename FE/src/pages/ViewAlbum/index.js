@@ -79,7 +79,7 @@ const ViewAlbum = () => {
                                     className={`viewalbum__location-item ${selectedLocation?._id === location._id ? 'active' : ''}`}
                                     onClick={() => handleLocationClick(location)}
                                 >
-                                    {place.placenames[Number(location.placeId)]}
+                                    {place.placenames[Number(location.placeId) - 1]}
                                 </div>
                             ))}
                         </ul>

@@ -28,8 +28,6 @@ const Album = () => {
     const [row2, setRow2] = useState([]);
     let user = useSelector(getInfor)
     const dispatch = useDispatch()
-    // const [row3, setRow3] = useState([]);
-    // const [row4, setRow4] = useState([]);
     const [select, setSelect] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const navigate = useNavigate();
@@ -61,17 +59,6 @@ const Album = () => {
             setIsLoading(false)
         }
         fetchdata();
-        // let temp = {
-        //     title: "TITLE",
-        //     img: img,
-        //     rate: 5,
-        //     address: "ADDRESS",
-        //     comment: "COMMENT",
-        //     time: new Date(2023, 7, 13)
-        // }
-        // let array = Array.from({ length: 32 }, () => ({ ...temp }));
-        // setAlbums(array);
-        // setAllAlbums(array)
     }, []);
 
     useEffect(() => {

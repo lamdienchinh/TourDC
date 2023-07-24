@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import { createAxios } from '../../utils/createInstance';
 import { setInfor } from '../../state/userSlice';
 import { useDispatch } from 'react-redux';
-import { current } from "@reduxjs/toolkit";
 
 const Review = (props) => {
     // let listimg = [img1, img1, img1, img1];
