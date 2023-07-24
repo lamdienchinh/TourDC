@@ -40,7 +40,7 @@
 .register .inputbox{
     position: relative;
     margin: 30px;
-    width: 100%;    
+    width: 90%;    
     border-bottom: 2px solid #fff;
 }
 .register .inputbox label{
@@ -99,3 +99,19 @@ top: -5px;
 .register-link:hover{
     text-decoration: underline;
 }
+.register .error {
+    color: #ff0000;
+    font-weight: 500;
+    margin-left: 30px;
+}
+/* .notify {
+    font-weight: bold;
+} */
+.custom-modal {
+   max-width: 800px; /* Chiều rộng tối đa của Modal là 800px */
+   min-width: 500px;
+}
+
+/* .register .notify {
+    font-weight: bold;
+} */

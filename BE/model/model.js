@@ -19,6 +19,9 @@ const userSchema = new mongoose.Schema({
   walletAddress: {
     type: String
   },
+  privateKey: {
+    type: String
+  },
   password: {
     type: String
   }
