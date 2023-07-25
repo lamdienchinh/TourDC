@@ -108,8 +108,8 @@ const postController = {
             await Post.findByIdAndUpdate(postId, {
                 $push: { comment: commentId },
             });
-            const result = await Comment.findById(commentId).populate("user").sort({ createdAt: -1 });
-            return res.status(200);
+            const result = await Comment.findById(commentId).populate("user");
+            return res.status(200).json(result);
         } catch (error) {
             return res.status(500).json(error);
         }
@@ -122,7 +122,7 @@ const postController = {
                 'like',
                 'dislike',
                 { path: 'comment', populate: { path: 'user' } }, // Populate trường user trong trường comment
-            ]);
+            ]).sort({ createdAt: -1 });
             return res.status(200).json(posts)
         } catch (error) {
             console.log(error);

@@ -13,12 +13,16 @@ const tripRoute = require("./routes/trip")
 const postRoute = require("./routes/post")
 dotenv.config();
 //CONNECT TO DATABASE
+const corsOptions = {
+  origin: 'http://localhost:3000', // Đặt origin của trang web frontend của bạn
+  credentials: true, // Cho phép gửi cookie
+};
 mongoose.connect(process.env.MONGODB_URL)
   .then(() => console.log('Connected!'));
 
+app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
-app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan("common"));

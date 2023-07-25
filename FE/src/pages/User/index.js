@@ -62,13 +62,15 @@ const User = () => {
                         <h1>THÔNG TIN NGƯỜI DÙNG</h1>
                     </div>
                     <div className='user__field1'>
-                        <Avatar className="user__avatar" alt="Remy Sharp" src={avatarchange ? avatarchange : avatar} sx={{ width: 200, height: 200 }} style={{ border: 0 }} />
-                        <div className="user__avatarchange">
-                            <Input
+                        <div className="user__avatarchange-container">
+                            <Avatar className="user__avatar" alt="Remy Sharp" src={avatarchange ? avatarchange : avatar} sx={{ width: 200, height: 200 }} style={{ border: 0 }} />
+                            <input
                                 type="file"
+                                className="user__avatarchange"
                                 onChange={(event) => handleFileChange(event)}
                                 accept="image/*"
                             />
+                            <p>Sửa ảnh</p>
                         </div>
                         <form ref={form1Ref} onSubmit={handleSubmit1}>
                             <Button type="submit" variant="contained" color="primary" fullWidth>

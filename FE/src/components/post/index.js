@@ -200,9 +200,21 @@ const FBPost = (props) => {
         setOpenConfirmDialog(false);
         setEdit(false);
     };
+    function formatDateTime(dateTimeString) {
+        const dateTime = new Date(dateTimeString);
 
+        const year = dateTime.getFullYear();
+        const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+        const day = dateTime.getDate().toString().padStart(2, '0');
+        const hours = dateTime.getHours().toString().padStart(2, '0');
+        const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+        const seconds = dateTime.getSeconds().toString().padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
     const handleFormSubmit = async () => {
         let token = currentuser.accessToken;
+        console.log("RUn")
         let comment = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/post/comment`, {
             content: content,
             postid: props.data._id,
@@ -212,6 +224,7 @@ const FBPost = (props) => {
             },
         })
         console.log(comment);
+        console.log("Comment", [comment.data, ...commentlist])
         setCommentlist([comment.data, ...commentlist])
         setComments(comments + 1)
         setContent("")
@@ -264,7 +277,7 @@ const FBPost = (props) => {
                 <div className="post__infors">
                     <div className="post__name">{`${fname} ${lname}`}</div>
                     <div className="post__time">
-                        {time}
+                        {formatDateTime(time)}
                     </div>
                 </div>
                 <div className="post__dots">
@@ -323,7 +336,7 @@ const FBPost = (props) => {
                 </div>
             </div>
             <div>
-                <Dialog open={openForm} onClose={handleFormClose} fullWidth maxWidth={'md'} scroll={'body'} disableScrollLock>
+                <Dialog open={openForm} onClose={handleFormClose} fullWidth maxWidth={'md'} scroll={'body'}>
                     <div className="post">
                         <div className="post__header">
                             <div className="post__avatar">

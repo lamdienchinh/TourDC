@@ -124,13 +124,13 @@ const Home = () => {
         }
     }
 
-    const search = (keyword) => {
+    const search = () => {
         let data = allplaces;
         const filteredData = data.filter((item) => {
             // Chuyển đổi tiêu đề và địa chỉ thành chữ thường để tìm kiếm không phân biệt hoa thường
-            const lowerCaseTitle = item.title.toLowerCase();
+            const lowerCaseTitle = item.name.toLowerCase();
             const lowerCasePlace = item.address.toLowerCase();
-            const lowerCaseKeyword = keyword.toLowerCase();
+            const lowerCaseKeyword = inputsearch.toLowerCase();
 
             // Sử dụng indexOf() để kiểm tra sự xuất hiện của từ khóa trong tiêu đề
             let index = lowerCaseTitle.indexOf(lowerCaseKeyword);
@@ -140,31 +140,15 @@ const Home = () => {
         setPlaces(filteredData);
     };
 
-    function sortArrayByRating(type) {
-        let arr = [...places];
-        if (type === "1") {
-            arr.sort(function (a, b) {
-                return a.rating - b.rating;
-            });
-        } else if (type === "2") {
-            arr.sort(function (a, b) {
-                return b.rating - a.rating;
-            });
-        } else {
-            console.log("Invalid sorting type");
-        }
-        setPlaces(arr);
-    }
-
     function sortArrayByReviews(type) {
         let arr = [...places];
         if (type === "1") {
             arr.sort(function (a, b) {
-                return a.comment - b.comment;
+                return a.reviews.length - b.reviews.length;
             });
         } else if (type === "2") {
             arr.sort(function (a, b) {
-                return b.comment - a.comment;
+                return b.reviews.length - a.reviews.length;
             });
         } else {
             console.log("Invalid sorting type");
@@ -175,7 +159,7 @@ const Home = () => {
     function sortArrayByWord(type) {
         let arr = [...places];
         arr.sort(function (a, b) {
-            return a.title.localeCompare(b.title);
+            return a.name.localeCompare(b.name);
         });
         console.log(typeof (type))
         if (type === "2") {
@@ -221,7 +205,7 @@ const Home = () => {
                                 onChange={(event) => setInputSearch(event.target.value)}
                                 placeholder="Tìm kiếm ở đây"
                             />
-                            <FaSearch className="search-icon" onClick={() => search(inputsearch)}></FaSearch>
+                            <FaSearch className="search-icon" onClick={() => search()}></FaSearch>
                         </div>
                         <h1>Loại địa điểm du lịch</h1>
                         <div className="type-wrapper">
@@ -239,16 +223,6 @@ const Home = () => {
                             </div>
                         </div>
                         <h1>Sắp xếp</h1>
-                        <FormControl fullWidth className="home-filter">
-                            <InputLabel variant="standard" htmlFor="uncontrolled-native">Số sao</InputLabel>
-                            <NativeSelect
-                                defaultValue={1}
-                                onChange={(event) => sortArrayByRating(event.target.value)}
-                            >
-                                <option value={1}>Tăng dần</option>
-                                <option value={2}>Giảm dần</option>
-                            </NativeSelect>
-                        </FormControl>
                         <FormControl fullWidth className="home-filter">
                             <InputLabel variant="standard" htmlFor="uncontrolled-native">Thứ tự tiêu đề </InputLabel>
                             <NativeSelect

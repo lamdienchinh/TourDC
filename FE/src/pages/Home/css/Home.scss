@@ -37,22 +37,21 @@
             width: 100%;
         }
         & .search-icon {
-            background-color: rgb(2, 179, 238);
-            color: white;
+            background-color: rgb(255, 255, 255);
+            color: rgb(34, 159, 255);
             box-sizing: border-box;
-            padding: 10px;
-            width: 42.5px;
-            height: 42.5px;
+            padding-top: 10px;
+            width: 35.5px;
+            height: 35.5px;
             position: absolute;
-            top: 0;
             right: 0;
+            bottom: 2px;
             border-radius: 50%;
             text-align: center;
-            font-size: 1.2em;
+            z-index: 3;
             cursor: pointer;
             transition: transform 0.3s ease-in-out;
             &:hover {
-                opacity: 0.8;
                 transform: scale(1.1);
                 will-change: transform;
             }

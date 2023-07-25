@@ -1,5 +1,4 @@
-const { model } = require("mongoose");
-const { Album, User } = require("../model/model")
+const { Album } = require("../model/model")
 
 const router = require("express").Router();
 

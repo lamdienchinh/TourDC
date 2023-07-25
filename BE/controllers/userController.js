@@ -2,22 +2,22 @@ const { User } = require("../model/model");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { cloudinary } = require('../utils/index.js')
-let refreshTokens = []
+var refreshTokens = []
 
 const userController = {
   //ADD user
   addUser: async (req, res) => {
-    
+
     try {
       const existingUser = await User.findOne({ email: req.body.email });
-      const existingAddress = await User.findOne({walletAddress: req.body.walletAddress});
+      const existingAddress = await User.findOne({ walletAddress: req.body.walletAddress });
       console.log(req.body)
       if (existingUser) {
         // Nếu email đã tồn tại, trả về mã lỗi 409 (Conflict) và thông báo lỗi
         console.log('Email đã tồn tại: ')
         console.log(existingUser)
         res.status(409).json({ message: 'Email đã tồn tại.' });
-      } 
+      }
       else if (existingAddress) {
         res.status(409).json({ message: 'Địa chỉ ví đã tồn tại.' });
       } else {
@@ -38,7 +38,7 @@ const userController = {
       res.status(500).json(error);
     }
   },
-  generateAccessToken: (user) => {
+  generateAccessToken: async (user) => {
     return jwt.sign(
       {
         id: user.id,
@@ -47,7 +47,7 @@ const userController = {
       { expiresIn: "24h" }
     )
   },
-  generateRefreshToken: (user) => {
+  generateRefreshToken: async (user) => {
     return jwt.sign(
       {
         id: user.id,
@@ -64,8 +64,8 @@ const userController = {
         let addUser = await newUser.save();
         user = addUser;
       }
-      const accessToken = userController.generateAccessToken(user)
-      const refreshToken = userController.generateRefreshToken(user)
+      const accessToken = await userController.generateAccessToken(user)
+      const refreshToken = await userController.generateRefreshToken(user)
       refreshTokens.push(refreshToken)
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
@@ -82,13 +82,13 @@ const userController = {
   login: async (req, res) => {
     try {
       let user = await User.findOne(req.body);
-      const accessToken = userController.generateAccessToken(user)
-      const refreshToken = userController.generateRefreshToken(user)
+      const accessToken = await userController.generateAccessToken(user)
+      const refreshToken = await userController.generateRefreshToken(user)
       refreshTokens.push(refreshToken)
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         sameSite: "strict",
-        secure: false
+        secure: true
       })
       const { ...others } = user._doc;
       return res.status(200).json({ ...others, accessToken: accessToken });
@@ -135,27 +135,54 @@ const userController = {
     }
   },
   requestRefreshToken: async (req, res) => {
-    // Take refresh token
-    const refreshToken = req.cookies.refreshToken
-    if (!refreshToken) return res.status(401).json("You're not authenticated");
-    if (!refreshTokens.includes(refreshToken)) {
-      return res.status(403).json("Refresh token is invalid")
-    }
-    jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
-      if (err) {
-        console.log(err)
+    try {
+      let refreshToken = req.cookies.refreshToken;
+      // Verify the refreshToken with the JWT_REFRESH_KEY
+      const user = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
+
+      // Check if the refreshToken exists in the refreshTokens list
+      if (!refreshTokens.includes(refreshToken)) {
+        return res.status(403).json({ error: "Invalid refresh token" });
       }
-      refreshTokens = refreshTokens.filter((token) => token !== refreshToken)
-      const newAccessToken = userController.generateAccessToken(user)
-      const newRefreshToken = userController.generateRefreshToken(user)
-      refreshTokens.push(newRefreshToken)
-      res.cookie('refreshToken', newRefreshToken, {
+
+      // Remove current refreshToken from refreshTokens list
+      refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+
+      // Create new accessToken, refreshToken
+      const newAccessToken = jwt.sign(
+        {
+          id: user.id,
+          isAdmin: user.isAdmin,
+        },
+        process.env.JWT_ACCESS_KEY,
+        { expiresIn: "24h" }
+      );
+
+      const newRefreshToken = jwt.sign(
+        {
+          id: user.id,
+          isAdmin: user.isAdmin,
+        },
+        process.env.JWT_REFRESH_KEY,
+        { expiresIn: "365d" }
+      );
+
+      // Add new refreshToken to refreshTokens list
+      refreshTokens.push(newRefreshToken);
+
+      // Send back the new refreshToken through cookie
+      res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
+        secure: false, // Set it to true for a production environment with HTTPS
         sameSite: "strict",
-        secure: false
-      })
-      res.status(200).json({ accessToken: newAccessToken })
-    })
+      });
+
+      // Send the new accessToken back to the client
+      return res.status(200).json({ accessToken: newAccessToken });
+    } catch (err) {
+      console.log(err); // Log the error for debugging purposes
+      return res.status(403).json({ error: "Invalid refresh token" });
+    }
   },
 };
 

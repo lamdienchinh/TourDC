@@ -92,7 +92,7 @@ const Header = () => {
 
     const confirmlogout = (event, check) => {
         if (check) {
-            let token = user.accessToken;
+            let token = user?.accessToken;
             dispatch(logout({ token, axiosJWT }, dispatch));
             navigate('/')
         }
@@ -101,18 +101,18 @@ const Header = () => {
 
     return (
         <header className="header">
-            <ToastContainer position="bottom-right"
-                type="success"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light" />
             <Container maxWidth="lg">
+                <ToastContainer position="bottom-right"
+                    type="success"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light" />
                 <div className="header__col1">
                     <NavLink className="header__link" to='/'>
                         <img src={logo} alt="App Logo" />
@@ -185,29 +185,29 @@ const Header = () => {
                         </Menu>
                     </div>
                 </div>
+                <Dialog
+                    disableScrollLock={true}
+                    open={clogout}
+                    onClose={confirmlogout}
+                    PaperComponent={PaperComponent}
+                    aria-labelledby="draggable-dialog-title"
+                >
+                    <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+                        Đăng xuất
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Bạn có muốn đăng xuất không, hãy xác nhận thật kỹ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={(event) => confirmlogout(event, 0)}>
+                            Huỷ
+                        </Button>
+                        <Button onClick={(event) => confirmlogout(event, 1)}>Xác nhận</Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
-            <Dialog
-                disableScrollLock={true}
-                open={clogout}
-                onClose={confirmlogout}
-                PaperComponent={PaperComponent}
-                aria-labelledby="draggable-dialog-title"
-            >
-                <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Đăng xuất
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Bạn có muốn đăng xuất không, hãy xác nhận thật kỹ?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={(event) => confirmlogout(event, 0)}>
-                        Huỷ
-                    </Button>
-                    <Button onClick={(event) => confirmlogout(event, 1)}>Xác nhận</Button>
-                </DialogActions>
-            </Dialog>
         </header >
     );
 }

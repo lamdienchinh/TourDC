@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const UserController = require('./userController')
 const middleware = {
     verifyToken: (req, res, next) => {
         const token = req.headers.token

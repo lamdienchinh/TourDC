@@ -21,6 +21,8 @@ import QrCode from "../pages/QRcode/qrCode";
 import Login from "../pages/login";
 import Register from "../pages/register/register";
 import MyPosts from "../pages/MyPosts";
+import VoucherShop from "../pages/Shop";
+import PurchasedVouchers from "../pages/PurchasedVouchers";
 const RouterList = () => {
   const walletAddress = useSelector(getUserData);
   return (
@@ -46,6 +48,8 @@ const RouterList = () => {
             <Route path="/forum" element={<Forum />}></Route>
             <Route path="/qrcode" element={<QrCode />} />
             <Route path="/myposts" element={<MyPosts />} />
+            <Route path="/shop" element={<VoucherShop />} />
+            <Route path="/vouchers" element={<PurchasedVouchers />} />
           </Route>
           :
           <Route path="*" element={<Error />} />

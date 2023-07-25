@@ -1,0 +1,101 @@
+/* PurchasedVouchers.scss */
+
+.purchased-vouchers {
+    padding: 20px;
+}
+
+.voucher-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.purchased-voucher-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    transition: box-shadow 0.3s ease-in-out;
+    text-align: center;
+    background-color: #f9f9f9;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.purchased-voucher-item:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.voucher-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.voucher-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.voucher-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.voucher-price {
+    font-size: 16px;
+}
+
+.voucher-description {
+    margin-top: 10px;
+}
+
+.use-button {
+    margin-top: 10px;
+    background-color: #1e90ff;
+    color: #fff;
+    &:hover {
+        background-color: #007bff;
+    }
+}
+
+.dialog-title {
+    background-color: #1e90ff;
+    color: #fff;
+}
+
+.dialog-content {
+    padding: 20px;
+}
+
+.dialog-actions {
+    padding: 10px 20px;
+}
+
+/* Filter bar styles */
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Search input styles */
+
+.search-input {
+    flex: 1;
+}
+
+/* Select styles */
+
+.filter-select {
+    min-width: 150px;
+}
+
+.purchased__voucher__pagi {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}

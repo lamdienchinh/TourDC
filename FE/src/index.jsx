@@ -6,12 +6,25 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import { store, persistor } from "./state/store";
 import { PersistGate } from 'redux-persist/integration/react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  components: {
+    MuiDialog: {
+      defaultProps: {
+        disableScrollLock: true,
+      },
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </PersistGate>
   </Provider>
 );

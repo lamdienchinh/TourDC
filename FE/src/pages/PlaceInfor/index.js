@@ -17,7 +17,10 @@ const PlaceInfor = () => {
     const [reviewCount, setReviewCount] = useState(0);
     const [items, setItems] = useState([]);
     const handleDragStart = (e) => e.preventDefault();
-
+    const [selectedFilter, setSelectedFilter] = useState(1);
+    const handleChangeFilter = (event) => {
+        setSelectedFilter(event.target.value);
+    };
     // const { place1, average1, rates1, reviewCount1 } = information.state;
     // setAverage(average1);
     // setRates(rates1);
@@ -33,6 +36,9 @@ const PlaceInfor = () => {
         // Làm tròn kết quả đến 0.5 gần nhất
         const roundedAverage = Math.round(average * 2) / 2;
         return roundedAverage;
+    };
+    const getFilteredReviews = () => {
+        return filterReviews(rates, selectedFilter);
     };
     useEffect(() => {
         const fetchPlaceInfor = async () => {
@@ -63,12 +69,18 @@ const PlaceInfor = () => {
         console.log("NEW", newplace);
         navigate(`/placeinfor?placeid=${newplace.placeid}`)
     };
-    //Xử lý filter
-    // const [selectedValue, setSelectedValue] = useState('');
-    // console.log(selectedValue)
-    // const handleChange = (event) => {
-    //     setSelectedValue(event.target.value);
-    // };
+    const filterReviews = (reviews, filterValue) => {
+        switch (filterValue) {
+            case "1":
+                // Số sao tăng dần
+                return reviews.sort((a, b) => Number(a.rate) - Number(b.rate));
+            case "2":
+                // Số sao giảm dần
+                return reviews.sort((a, b) => Number(b.rate) - Number(a.rate));
+            default:
+                return reviews;
+        }
+    };
     return (
         <div className="placeinfor">
             <div className="placeinfor__slide">
@@ -192,22 +204,21 @@ const PlaceInfor = () => {
                                 Sắp xếp theo
                             </InputLabel>
                             <NativeSelect
-                                defaultValue={30}
+                                value={selectedFilter}
+                                onChange={handleChangeFilter}
                                 inputProps={{
-                                    name: 'age',
+                                    name: 'filter',
                                     id: 'uncontrolled-native',
                                 }}
                             >
-                                <option value={1}>Số sao tăng dần</option>
-                                <option value={2}>Số sao giảm dần</option>
-                                <option value={3}>Thời gian gần nhất</option>
-                                <option value={4}>Thời gian xa nhất</option>
+                                <option value="1">Số sao tăng dần</option>
+                                <option value="2">Số sao giảm dần</option>
                             </NativeSelect>
                         </FormControl>
                     </div>
                     <div className="placeinfor__reviewlist">
                         <div className="placeinfor__review">
-                            {rates && rates.map((review, index) => (
+                            {getFilteredReviews().map((review, index) => (
                                 <Review key={index} review={review} place={rates}></Review>
                             ))}
                         </div>

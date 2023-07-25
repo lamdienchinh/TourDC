@@ -29,9 +29,19 @@ const Comment = (props) => {
         handleMenuClose();
         // Viết code xử lý khi người dùng chọn "Xoá" ở đây
     };
-    useEffect(() => {
-        // console.log("Props", props)
-    }, [props])
+    function formatDateTime(dateTimeString) {
+        const dateTime = new Date(dateTimeString);
+
+        const year = dateTime.getFullYear();
+        const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+        const day = dateTime.getDate().toString().padStart(2, '0');
+        const hours = dateTime.getHours().toString().padStart(2, '0');
+        const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+        const seconds = dateTime.getSeconds().toString().padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
+
     return (
         <div className="comment-wrapper">
             <div className="comment__header">
@@ -45,7 +55,7 @@ const Comment = (props) => {
                 <div className="comment__infors">
                     <div className="comment__name">{`${fname} ${lname}`}</div>
                     <div className="comment__time">
-                        {props?.data?.createdAt}
+                        {formatDateTime(props?.data?.createdAt)}
                     </div>
                 </div>
                 <div className="comment__content">
