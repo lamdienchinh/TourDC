@@ -44,7 +44,7 @@ const tripController = {
     getTrips: async (req, res) => {
         try {
             let userid = req.user.id;
-            const Trips = await Trip.find({ user: userid }).populate("user");
+            const Trips = await Trip.find({ user: userid }).populate("user").sort({ createdAt: -1 });
             res.status(200).json(Trips);
         } catch (error) {
             console.error(error);
@@ -54,7 +54,7 @@ const tripController = {
     getTripsofPlace: async (req, res) => {
         try {
             let place = req.body.placeid;
-            const Trips = await Trip.find({ placeid: place }).populate("user");
+            const Trips = await Trip.find({ placeid: place }).populate("user").sort({ createdAt: -1 });
             res.status(200).json(Trips);
         } catch (error) {
             console.error(error);

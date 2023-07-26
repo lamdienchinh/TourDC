@@ -8,6 +8,7 @@ import { createAxios } from "../../utils/createInstance"
 import 'react-toastify/dist/ReactToastify.css';
 import { changeAvatar, changeInfor, setInfor } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
+
 // import img from "../../assets/imgs/avatar.png"
 const User = () => {
     let user = useSelector(getInfor);
@@ -48,7 +49,7 @@ const User = () => {
         event.preventDefault();
         const file = event.target.files[0];
         setAvatar(file);
-        if (typeof (file) !== "String")
+        if (typeof (file) !== String)
             setAvatarchange(URL.createObjectURL(file))
         else setAvatarchange("")
     };
@@ -61,13 +62,15 @@ const User = () => {
                         <h1>THÔNG TIN NGƯỜI DÙNG</h1>
                     </div>
                     <div className='user__field1'>
-                        <Avatar className="user__avatar" alt="Remy Sharp" src={avatarchange ? avatarchange : avatar} sx={{ width: 200, height: 200 }} style={{ border: 0 }} />
-                        <div className="user__avatarchange">
-                            <Input
+                        <div className="user__avatarchange-container">
+                            <Avatar className="user__avatar" alt="Remy Sharp" src={avatarchange ? avatarchange : avatar} sx={{ width: 200, height: 200 }} style={{ border: 0 }} />
+                            <input
                                 type="file"
+                                className="user__avatarchange"
                                 onChange={(event) => handleFileChange(event)}
                                 accept="image/*"
                             />
+                            <p>Sửa ảnh</p>
                         </div>
                         <form ref={form1Ref} onSubmit={handleSubmit1}>
                             <Button type="submit" variant="contained" color="primary" fullWidth>

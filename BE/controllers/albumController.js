@@ -1,5 +1,4 @@
-const { model } = require("mongoose");
-const { Album, User } = require("../model/model")
+const { Album } = require("../model/model")
 
 const router = require("express").Router();
 
@@ -20,8 +19,17 @@ const albumController = {
   getAlbums: async (req, res) => {
     try {
       let userid = req.user.id;
-      const Trips = await Album.find({ user: userid }).populate(["user", "list_trips"]);
-      res.status(200).json(Trips);
+      const albums = await Album.find({ user: userid }).populate(["user", "list_trips"]);
+      res.status(200).json(albums);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Fail' });
+    }
+  },
+  getAlbum: async (req, res) => {
+    try {
+      const album = await Album.findById(req.body.albumid).populate(["user", "list_trips"]);
+      res.status(200).json(album);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Fail' });

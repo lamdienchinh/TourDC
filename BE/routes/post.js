@@ -16,4 +16,13 @@ router.post("/reaction", middlewareController.verifyToken, postController.contro
 
 // Comment
 router.post("/comment", middlewareController.verifyToken, postController.comment)
+
+// Get MyPost 
+router.get("/mypost", middlewareController.verifyToken, postController.getMyPosts)
+
+// Delete 
+router.post("/delete", middlewareController.verifyToken, postController.delete)
+
+// Edit
+router.post("/edit", middlewareController.verifyToken, postController.modify)
 module.exports = router;

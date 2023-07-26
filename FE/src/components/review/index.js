@@ -1,7 +1,4 @@
-import img from "../../assets/imgs/slider_banner_1.png";
 import { Rating } from "@mui/material";
-import img1 from "../../assets/imgs/angiang.webp"
-import { ImageList, ImageListItem, Paper } from "@mui/material";
 import "./css/Review.scss";
 import { Gallery, Item } from 'react-photoswipe-gallery'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -50,7 +47,7 @@ const Review = (props) => {
         return 0;
     };
     const handleReaction = async (action) => {
-        if (walletAddress == "") {
+        if (walletAddress === "") {
             toast.error("Bạn chưa đăng nhập")
         }
         else {
@@ -143,7 +140,7 @@ const Review = (props) => {
         if (total > 0) {
             setTrustRate(like / total * 100);
         }
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
     return (
         <div className="review">
             <div className="review__row1">
@@ -157,7 +154,7 @@ const Review = (props) => {
                         </div>
                     </div>
                     <div className="review__verify">
-                        <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} target="_blank">Xác thực</a>
+                        <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực</a>
                     </div>
                     <div className="review__verify">
                         {`Độ tin cậy: ${trustrate}`}
@@ -178,19 +175,6 @@ const Review = (props) => {
                     {props.review.review}
                 </div>
                 <div className="review__listimgs">
-                    {/* <ImageList cols={4}>
-                        {listimg && listimg.map((image, index) => (
-                            <ImageListItem key={index}>
-                                <Paper>
-                                    <img
-                                        src={image}
-                                        alt={`Ảnh ${index}`}
-                                        style={{ width: '100%' }}
-                                    />
-                                </Paper>
-                            </ImageListItem>
-                        ))}
-                    </ImageList> */}
                     <div className="review-img-wrapper">
                         <Gallery>
                             {

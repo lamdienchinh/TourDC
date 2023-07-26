@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 // import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { connectWallet } from '../../state/userSlice';
+// import { connectWallet } from '../../state/userSlice';
 import { useSelector } from 'react-redux';
 import { getInfor, getUserData } from '../../state/selectors';
 import { useDispatch } from 'react-redux';
@@ -92,7 +92,7 @@ const Header = () => {
 
     const confirmlogout = (event, check) => {
         if (check) {
-            let token = user.accessToken;
+            let token = user?.accessToken;
             dispatch(logout({ token, axiosJWT }, dispatch));
             navigate('/')
         }
@@ -101,18 +101,18 @@ const Header = () => {
 
     return (
         <header className="header">
-            <ToastContainer position="bottom-right"
-                type="success"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light" />
             <Container maxWidth="lg">
+                <ToastContainer position="bottom-right"
+                    type="success"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light" />
                 <div className="header__col1">
                     <NavLink className="header__link" to='/'>
                         <img src={logo} alt="App Logo" />
@@ -128,6 +128,11 @@ const Header = () => {
                     <div className="header__ele header__ele--home">
                         <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/travel'>
                             TRAVEL
+                        </NavLink>
+                    </div>
+                    <div className="header__ele header__ele--home">
+                        <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/forum'>
+                            FORUM
                         </NavLink>
                     </div>
                     {
@@ -180,29 +185,29 @@ const Header = () => {
                         </Menu>
                     </div>
                 </div>
+                <Dialog
+                    disableScrollLock={true}
+                    open={clogout}
+                    onClose={confirmlogout}
+                    PaperComponent={PaperComponent}
+                    aria-labelledby="draggable-dialog-title"
+                >
+                    <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+                        Đăng xuất
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Bạn có muốn đăng xuất không, hãy xác nhận thật kỹ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={(event) => confirmlogout(event, 0)}>
+                            Huỷ
+                        </Button>
+                        <Button onClick={(event) => confirmlogout(event, 1)}>Xác nhận</Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
-            <Dialog
-                disableScrollLock={true}
-                open={clogout}
-                onClose={confirmlogout}
-                PaperComponent={PaperComponent}
-                aria-labelledby="draggable-dialog-title"
-            >
-                <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                    Đăng xuất
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Bạn có muốn đăng xuất không, hãy xác nhận thật kỹ?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={(event) => confirmlogout(event, 0)}>
-                        Huỷ
-                    </Button>
-                    <Button onClick={(event) => confirmlogout(event, 1)}>Xác nhận</Button>
-                </DialogActions>
-            </Dialog>
         </header >
     );
 }

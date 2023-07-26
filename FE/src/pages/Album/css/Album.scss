@@ -93,7 +93,8 @@
         display: grid;
         min-height: 30rem;
         grid-template-columns: repeat(2, 1fr); /* Tạo 4 cột có kích thước bằng nhau */
-        grid-gap: 10px;
+        grid-gap: 20px;
+        margin: 20px 0px 20px 0;
         & > div {
             width: 90%;
         }

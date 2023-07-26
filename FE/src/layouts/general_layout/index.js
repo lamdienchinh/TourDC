@@ -7,9 +7,6 @@ import Fireflies from "../../components/fireflies";
 import "./css/General_layout.scss";
 
 const GeneralLayout = () => {
-
-
-
     useEffect(() => {
         const backToTopBtn = document.getElementById('back-to-top-btn');
 

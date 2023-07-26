@@ -2,7 +2,7 @@ import "./Register.css";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { register } from "../../service/api";
 import { createAccountAddress } from "../../service/api";
 import Button from 'react-bootstrap/Button';
@@ -19,7 +19,7 @@ function Register() {
     const [errors, setErrors] = useState({});
     const [valid, setValid] = useState("")
     const navigate = useNavigate()
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [show, setShow] = useState(false);
 
     const handleSubmit = async (event) => {
@@ -104,7 +104,7 @@ function Register() {
         if(address === undefined || address === '') {
             createNewAccount();
         }
-    }, [address]);
+    }, [address]); // eslint-disable-line react-hooks/exhaustive-deps
    
     const handleClose = () => setShow(false);
     

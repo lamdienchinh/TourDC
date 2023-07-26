@@ -3,7 +3,6 @@ import "./css/Review_Chart.scss";
 import { useEffect, useState } from "react";
 // import { useEffect } from "react";
 const ReviewChart = (props) => {
-    let reviews = props.reviews;
     console.log(props.reviews)
 
     const [ratingCounts, setRatingCounts] = useState({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });

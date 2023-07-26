@@ -7,4 +7,8 @@ router.post("/", middlewareController.verifyToken, albumController.addAlbum);
 
 // Get Albums
 router.get("/", middlewareController.verifyToken, albumController.getAlbums);
+
+// Get Album by ID
+router.post("/one", albumController.getAlbum)
+
 module.exports = router;

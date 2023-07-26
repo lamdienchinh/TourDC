@@ -21,11 +21,11 @@ const postController = {
         try {
             const posts = await Post.find().populate([
                 'user',
-                'albums',
+                { path: 'albums', populate: { path: 'list_trips' } },
                 'like',
                 'dislike',
                 { path: 'comment', populate: { path: 'user' } }, // Populate trường user trong trường comment
-            ]);
+            ]).sort({ createdAt: -1 });
             return res.status(200).json(posts)
         } catch (error) {
             console.log(error);
@@ -114,6 +114,39 @@ const postController = {
             return res.status(500).json(error);
         }
     },
+    getMyPosts: async (req, res) => {
+        try {
+            const posts = await Post.find({ user: req.user.id }).populate([
+                'user',
+                { path: 'albums', populate: { path: 'list_trips' } },
+                'like',
+                'dislike',
+                { path: 'comment', populate: { path: 'user' } }, // Populate trường user trong trường comment
+            ]).sort({ createdAt: -1 });
+            return res.status(200).json(posts)
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(error);
+        }
+    },
+    delete: async (req, res) => {
+        try {
+            const post = await Post.findOneAndDelete({ user: req.user.id, _id: req.body.postid });
+            return res.status(200).json(post)
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(error);
+        }
+    },
+    modify: async (req, res) => {
+        try {
+            let data = req.body;
+            const savePost = await Post.findOneAndUpdate({ user: req.user.id, _id: req.body.postid }, data);
+            return res.status(200).json(savePost);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    }
 }
 
 module.exports = postController;

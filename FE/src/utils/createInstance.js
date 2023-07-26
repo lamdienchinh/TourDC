@@ -3,10 +3,10 @@ import jwt_decode from "jwt-decode";
 
 const refreshToken = async () => {
     try {
-        const res = await axios.post("/v1/user/refresh", {
+        const res = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/refresh`, {}, {
             withCredentials: true,
         });
-        return res.data;
+        return res;
     } catch (err) {
         console.log(err);
     }
@@ -22,10 +22,11 @@ export const createAxios = (user, dispatch, stateSuccess) => {
                 const data = await refreshToken();
                 const refreshUser = {
                     ...user,
-                    accessToken: data.accessToken,
+                    accessToken: data.data.accessToken,
                 };
-                dispatch(stateSuccess(refreshUser));
-                config.headers["token"] = "Bearer " + data.accessToken;
+                console.log("Refresh User", refreshUser)
+                dispatch(stateSuccess({ infor: refreshUser }));
+                config.headers["token"] = "Bearer " + data.data.accessToken;
             }
             return config;
         },

@@ -14,35 +14,56 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import { Chip, Typography } from '@mui/material';
+import FormHelperText from '@mui/material/FormHelperText';
 // import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
 import { createAxios } from '../../utils/createInstance';
 import { setInfor } from '../../state/userSlice';
 import { useDispatch } from 'react-redux';
 import Comment from '../comment';
-
+import AlbumThumbnail from '../album_thumbnail';
+import { deletePost } from '../../service/api';
+import { getAlbums, editPost } from '../../service/api';
 const FBPost = (props) => {
     const walletAddress = useSelector(getUserData)
     const currentuser = useSelector(getInfor)
-    const [avtar, setAvtar] = useState(props.data.user.avatar ? props.data.user.avatar : false);
-    const [fname, setFName] = useState(props.data.user.firstName ? props.data.user.firstName : "Your name");
-    const [lname, setLName] = useState(props.data.user.lastName ? props.data.user.lastName : "Your name");
-    const [time, setTime] = useState(props.data.createdAt ? props.data.createdAt : "Just Now");
-    const [caption, setCaption] = useState(props.data.content ? props.data.content : "Some Awesome Caption");
+    const [avtar] = useState(props.data.user.avatar ? props.data.user.avatar : false);
+    const [fname] = useState(props.data.user.firstName ? props.data.user.firstName : "Your name");
+    const [lname] = useState(props.data.user.lastName ? props.data.user.lastName : "Your name");
+    const [time] = useState(props.data.createdAt ? props.data.createdAt : "Just Now");
+    const [caption] = useState(props.data.content ? props.data.content : "Some Awesome Caption");
     const [likes, setLikes] = useState(props.data.like.length ? props.data.like.length : 0);
     const [dislikes, setDislikes] = useState(props.data.dislike.length ? props.data.dislike.length : 0);
     const [comments, setComments] = useState(props.data.comment.length ? props.data.comment.length : 0);
     const [commentlist, setCommentlist] = useState(props.data.comment ? props.data.comment : []);
+    const [albums, setAlbums] = useState([]);
+    const [content, setContent] = useState("");
+    const [edit, setEdit] = useState(false)
+    const [type, setType] = useState("");
+    const [contentedit, setContentEdit] = useState("");
+    const [selectedAlbums, setSelectedAlbums] = useState([]);
+    const [availableAlbums, setAvailableAlbums] = useState([
+    ]);
     const dispatch = useDispatch();
     let axiosJWT = createAxios(currentuser, dispatch, setInfor);
     // const [Liked, setLiked] = useState(Album.liked) LẤY LIKED TRONG ALBUM TRUE/FALSE
     const [reaction, setReaction] = useState("");
     const [anchorEl, setAnchorEl] = useState(null);
+
+
+    const handleAlbumSelect = (event) => {
+        setSelectedAlbums(event.target.value);
+    };
+
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleReaction = async (action) => {
-        if (walletAddress == "") {
+        if (walletAddress === "") {
             toast.error("Bạn chưa đăng nhập")
         }
         else {
@@ -107,14 +128,35 @@ const FBPost = (props) => {
         setAnchorEl(null);
     };
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
+        let token = currentuser.accessToken;
+        let albums = await getAlbums(token, axiosJWT);
+        console.log("Album", albums);
+        setAvailableAlbums(albums.data);
+        setContentEdit(props.data.content);
+        setType(props.data.type)
+        setAlbums(props.data.albums)
+        setEdit(true)
         // Xử lý khi người dùng chọn tùy chọn "Chỉnh sửa"
-        handleMenuClose();
         // Viết code xử lý khi người dùng chọn "Chỉnh sửa" ở đây
     };
 
-    const handleDelete = () => {
+    const handleEditClose = () => {
+        setEdit(false);
+    };
+    const handleDelete = async () => {
         // Xử lý khi người dùng chọn tùy chọn "Xoá"
+        let token = currentuser.accessToken;
+        let data = {
+            postid: props.data._id
+        }
+        let check = await deletePost(token, data, axiosJWT)
+        if (check) {
+            toast.success("Xoá bài thành công !")
+        }
+        else {
+            toast.error("Xoá bài thất bại")
+        }
         handleMenuClose();
         // Viết code xử lý khi người dùng chọn "Xoá" ở đây
     };
@@ -130,16 +172,49 @@ const FBPost = (props) => {
     const handleFormClose = () => {
         setOpenForm(false);
     };
-    const handleOpenConfirmDialog = () => {
+    const handleOpenConfirmDialog = async () => {
         setOpenConfirmDialog(true);
     };
 
-    const handleCloseConfirmDialog = () => {
+    const handleConfirmClose = async () => {
         setOpenConfirmDialog(false);
+    }
+    const handleCloseConfirmDialog = async () => {
+        let newdata = {
+            postid: props.data._id,
+            content: contentedit,
+            type: type,
+            albums: selectedAlbums
+        }
+        let token = currentuser.accessToken;
+        let check = await editPost(token, newdata, axiosJWT)
+        console.log("Edit", check)
+        if (check) {
+            toast.success("Đổi thông tin post thành công")
+        }
+        else toast.error("Đổi thông tin post thất bại")
+        setType("")
+        setAlbums([])
+        setContentEdit("")
+        handleMenuClose();
+        setOpenConfirmDialog(false);
+        setEdit(false);
     };
-    const [content, setContent] = useState("");
+    function formatDateTime(dateTimeString) {
+        const dateTime = new Date(dateTimeString);
+
+        const year = dateTime.getFullYear();
+        const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+        const day = dateTime.getDate().toString().padStart(2, '0');
+        const hours = dateTime.getHours().toString().padStart(2, '0');
+        const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+        const seconds = dateTime.getSeconds().toString().padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
     const handleFormSubmit = async () => {
         let token = currentuser.accessToken;
+        console.log("RUn")
         let comment = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/post/comment`, {
             content: content,
             postid: props.data._id,
@@ -149,17 +224,15 @@ const FBPost = (props) => {
             },
         })
         console.log(comment);
-        setCommentlist([...commentlist, comment.data])
+        console.log("Comment", [comment.data, ...commentlist])
+        setCommentlist([comment.data, ...commentlist])
         setComments(comments + 1)
-        setContent("")
-        // setOpenForm(false);
-        // if (check) toast.success("Đăng bài thành công !")
-        // else toast.error("Đăng bài thất bại")
         setContent("")
     }
 
     useEffect(() => {
         console.log("Check", props.data);
+        setAlbums(props.data.albums)
         if (props.data?.like && props.data?.like.length >= 0) {
             setLikes(props.data.like.length)
             const likeArray = props.data.like;
@@ -189,7 +262,7 @@ const FBPost = (props) => {
                 setReaction("dislike");
             }
         }
-    }, [props])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="post">
@@ -204,7 +277,7 @@ const FBPost = (props) => {
                 <div className="post__infors">
                     <div className="post__name">{`${fname} ${lname}`}</div>
                     <div className="post__time">
-                        {time}
+                        {formatDateTime(time)}
                     </div>
                 </div>
                 <div className="post__dots">
@@ -223,18 +296,28 @@ const FBPost = (props) => {
 
             <div className="caption">{caption}</div>
             <div className="albumshare">
-                <div>
-                    <h2>Album chia sẻ</h2>
-                </div>
-                <div>
-
-                </div>
+                {albums.length > 0 &&
+                    <div>
+                        <div className="albumshares__list">
+                            <Typography>Album chia sẻ</Typography>
+                        </div>
+                        <div className="albums__share__list">
+                            {
+                                albums.map((album, index) => (
+                                    <div className="albumshare__item" key={index}>
+                                        <AlbumThumbnail album={album} />
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                }
             </div>
-            <div className="btns">
+            <div className="reaction__btns">
                 <div className="likes">
                     <button className='likebtns' onClick={() => handleReaction("like")}>
                         {
-                            reaction !== "like" ? <AiOutlineLike style={{ fontSize: `1rem` }} /> : <AiFillLike style={{ fontSize: `1rem` }} />
+                            reaction !== "like" ? <AiOutlineLike style={{ fontSize: `1.5rem` }} /> : <AiFillLike className="reaction-icon-active" style={{ fontSize: `1.5rem` }} />
                         }
                     </button>
                     {likes}
@@ -242,7 +325,7 @@ const FBPost = (props) => {
                 <div className="dislikes" style={{ marginLeft: "25px" }}>
                     <button className='likebtns' onClick={() => handleReaction("dislike")}>
                         {
-                            reaction !== "dislike" ? <AiOutlineDislike style={{ fontSize: `1rem` }} /> : <AiFillDislike style={{ fontSize: `1rem` }} />
+                            reaction !== "dislike" ? <AiOutlineDislike style={{ fontSize: `1.5rem` }} /> : <AiFillDislike className="reaction-icon-active" style={{ fontSize: `1.5rem` }} />
                         }
                     </button>
                     {dislikes}
@@ -253,7 +336,7 @@ const FBPost = (props) => {
                 </div>
             </div>
             <div>
-                <Dialog open={openForm} onClose={handleFormClose} fullWidth maxWidth={'xl'} scroll={'body'}>
+                <Dialog open={openForm} onClose={handleFormClose} fullWidth maxWidth={'md'} scroll={'body'}>
                     <div className="post">
                         <div className="post__header">
                             <div className="post__avatar">
@@ -285,18 +368,28 @@ const FBPost = (props) => {
 
                         <div className="caption">{caption}</div>
                         <div className="albumshare">
-                            <div>
-                                <h2>Album chia sẻ</h2>
-                            </div>
-                            <div>
-
-                            </div>
+                            {albums.length > 0 &&
+                                <div>
+                                    <div className="albumshares__list">
+                                        <Typography>Album chia sẻ</Typography>
+                                    </div>
+                                    <div className="albums__share__list">
+                                        {
+                                            albums.map((album, index) => (
+                                                <div className="albumshare__item" key={index}>
+                                                    <AlbumThumbnail album={album} />
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            }
                         </div>
-                        <div className="btns">
+                        <div className="reaction__btns">
                             <div className="likes">
                                 <button className='likebtns' onClick={() => handleReaction("like")}>
                                     {
-                                        reaction !== "like" ? <AiOutlineLike style={{ fontSize: `1rem` }} /> : <AiFillLike style={{ fontSize: `1rem` }} />
+                                        reaction !== "like" ? <AiOutlineLike style={{ fontSize: `1.5rem` }} /> : <AiFillLike className="reaction-icon-active" style={{ fontSize: `1.5rem` }} />
                                     }
                                 </button>
                                 {likes}
@@ -304,7 +397,7 @@ const FBPost = (props) => {
                             <div className="dislikes" style={{ marginLeft: "25px" }}>
                                 <button className='likebtns' onClick={() => handleReaction("dislike")}>
                                     {
-                                        reaction !== "dislike" ? <AiOutlineDislike style={{ fontSize: `1rem` }} /> : <AiFillDislike style={{ fontSize: `1rem` }} />
+                                        reaction !== "dislike" ? <AiOutlineDislike style={{ fontSize: `1.5rem` }} /> : <AiFillDislike className="reaction-icon-active" style={{ fontSize: `1.5rem` }} />
                                     }
                                 </button>
                                 {dislikes}
@@ -340,18 +433,97 @@ const FBPost = (props) => {
                         }
                     </div>
                 </Dialog>
-                {/* <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
-                    <DialogTitle>Xác nhận đăng bài</DialogTitle>
-                    <DialogContent>Bạn có chắc chắn muốn bình luận</DialogContent>
+
+                <Dialog open={edit} onClose={handleEditClose} disableScrollLock={true}>
+                    <DialogTitle>Chỉnh sửa bài viết</DialogTitle>
+                    <DialogContent>
+                        <FormControl fullWidth>
+                            <Typography>Chọn loại bài viết bạn muốn</Typography>
+                            <Select
+                                autoWidth={false}
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                                variant="standard"
+                                MenuProps={{ disableScrollLock: true }}
+                            >
+                                <MenuItem value="">
+                                    <em>Chọn loại</em>
+                                </MenuItem>
+                                <MenuItem value="Trò chuyện, tâm sự">Trò chuyện, tâm sự</MenuItem>
+                                <MenuItem value="Chia sẻ cảm nghĩ, kỷ niệm">Chia sẻ cảm nghĩ, kỷ niệm</MenuItem>
+                                <MenuItem value="Hỏi đáp, hỗ trợ">Hỏi đáp, hỗ trợ</MenuItem>
+                                <MenuItem value="Phản ánh những vấn đề">Phản ánh những vấn đề</MenuItem>
+                                <MenuItem value="Khác">Khác</MenuItem>
+                            </Select>
+                            <FormHelperText>Vui lòng chọn loại</FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth>
+                            <Typography>
+                                Nội dung
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                value={contentedit}
+                                id="standard-helperText"
+                                variant="standard"
+                                onChange={(e) => setContentEdit(e.target.value)}
+                                MenuProps={{ disableScrollLock: true }}
+                            />
+                            <FormHelperText>Vui lòng nhập nội dung</FormHelperText>
+                        </FormControl>
+                        <FormControl fullWidth>
+                            {/* TextField Multiple Select */}
+                            <div>
+                                <Typography>Chọn Album muốn chia sẻ</Typography>
+                            </div>
+                            <Select
+                                multiple
+                                variant="standard"
+                                value={selectedAlbums}
+                                onChange={handleAlbumSelect}
+                                renderValue={(selected) => (
+                                    <div>
+                                        {selected.map((value, index) => (
+                                            <Chip
+                                                key={index}
+                                                label={value.title}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            >
+                                {availableAlbums && availableAlbums.map((album, index) => (
+                                    <MenuItem key={index} value={album}>
+                                        <Chip
+                                            label={album.title}
+                                            color={selectedAlbums.some((selected) => selected._id === album._id) ? 'primary' : 'default'}
+                                        />
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseConfirmDialog} color="primary">
+                        <Button onClick={handleEditClose} color="primary">
                             Hủy
                         </Button>
-                        <Button onClick={handleFormSubmit} color="primary">
+                        <Button onClick={handleOpenConfirmDialog} color="primary">
                             Đăng bài
                         </Button>
                     </DialogActions>
-                </Dialog> */}
+                </Dialog>
+                <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
+                    <DialogTitle>Xác nhận chỉnh sửa</DialogTitle>
+                    <DialogContent>Bạn có chắc chắn muốn sửa đổi thông tin</DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleConfirmClose} color="primary">
+                            Hủy
+                        </Button>
+                        <Button onClick={handleCloseConfirmDialog} color="primary">
+                            Sửa bài
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         </div>
     );
