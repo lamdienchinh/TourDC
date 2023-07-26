@@ -51,6 +51,8 @@ const Review = (props) => {
             toast.error("Bạn chưa đăng nhập")
         }
         else {
+            console.log("Current", currentuser)
+            console.log("All Reviews", allReviews)
             let find = allReviews.filter(item => item.user._id === currentuser._id);
             if (find) {
                 if (action === "dislike" && reaction !== "dislike") {

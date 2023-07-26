@@ -6,36 +6,38 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 import Row from "react-bootstrap/Row";
-import "./qrCode.css";
+import "./qrCode.scss";
 
 const QrCode = () => {
   return (
     <Container className="mb-5 mt-5">
-      <Row>
-        <Col xs={6} md={4}>
-          <Image src={QRcode_1} thumbnail />
-        </Col>
-        <Col xs={6} md={4}>
-          <Image src={QRcode_2} thumbnail />
-        </Col>
-        <Col xs={6} md={4}>
-          <Image src={QRcode_3} thumbnail />
-        </Col>
-      </Row>
-      <Row className="justify-content-md-center">
-        <Col xs={6} md={4}>
-          {" "}
-          Place ID 1
-        </Col>
-        <Col xs={6} md={4}>
-          {" "}
-          Place ID 2
-        </Col>
-        <Col xs={6} md={4}>
-          {" "}
-          Place ID 3
-        </Col>
-      </Row>
+      <div className="qr-code">
+        <Row>
+          <Col xs={6} md={4}>
+            <Image src={QRcode_1} thumbnail />
+          </Col>
+          <Col xs={6} md={4}>
+            <Image src={QRcode_2} thumbnail />
+          </Col>
+          <Col xs={6} md={4}>
+            <Image src={QRcode_3} thumbnail />
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col xs={6} md={4}>
+            {" "}
+            Place ID 1
+          </Col>
+          <Col xs={6} md={4}>
+            {" "}
+            Place ID 2
+          </Col>
+          <Col xs={6} md={4}>
+            {" "}
+            Place ID 3
+          </Col>
+        </Row>
+      </div>
     </Container>
   );
 };

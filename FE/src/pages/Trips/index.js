@@ -55,7 +55,7 @@ const Trips = () => {
     let axiosJWT = createAxios(user, dispatch, setInfor);
 
     // Fetch data từ blockchain
-    const [setJourneys] = useState([]);
+    const [journeys, setJourneys] = useState([]);
     const [currentAccount] = useState(useSelector(getUserData));
     const [userinfor] = useState(useSelector(getInfor))
     const [update, setUpdate] = useState(true)
@@ -84,6 +84,7 @@ const Trips = () => {
         }
         fetchData(currentAccount);
         console.log("Trips: ", allTrips);
+        setIsLoading(false)
     }, [update]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -133,7 +134,6 @@ const Trips = () => {
         // setRow3(row3);
         // setRow4(row4);
         setTotalPages(totalPages);
-        setIsLoading(false)
     }, [select, allTrips]);
 
     const [open1, setOpen1] = useState(false);
