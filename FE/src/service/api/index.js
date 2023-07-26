@@ -174,6 +174,22 @@ const createAccountAddress = async () => {
         return false
     }
 }
+
+const autoCheckIn = async(user, ticketId, placeId) => {
+    const publicKey = user.walletAddress;
+    const privateKey = user.privateKey;
+	try {
+        let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autocheckin`, {
+            publicKey: publicKey,
+            privateKey: privateKey,
+            ticketId: ticketId,
+            placeId: placeId
+        })
+        console("Check-in Hash: ", check)
+    } catch (error) {
+        console.log("error: ", error)
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
@@ -186,5 +202,6 @@ export {
     addPost,
     login,
     register,
-    createAccountAddress
+    createAccountAddress,
+    autoCheckIn
 }
