@@ -15,7 +15,7 @@ const transactionRoute = require("./routes/transaction")
 dotenv.config();
 //CONNECT TO DATABASE
 const corsOptions = {
-  origin: 'http://localhost:3000', // Đặt origin của trang web frontend của bạn
+  origin: 'http://localhost:3002', // Đặt origin của trang web frontend của bạn
   credentials: true, // Cho phép gửi cookie
 };
 mongoose.connect(process.env.MONGODB_URL)
@@ -40,6 +40,6 @@ app.use("/v1/place", placeRoute);
 app.use("/v1/trip", tripRoute);
 app.use("/v1/post", postRoute);
 app.use("/v1/transaction", transactionRoute);
-app.listen(8000, () => {
+app.listen(8001, () => {
   console.log("Server is running...")
 })
