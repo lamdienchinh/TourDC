@@ -11,6 +11,7 @@ const albumRoute = require("./routes/album")
 const placeRoute = require("./routes/place")
 const tripRoute = require("./routes/trip")
 const postRoute = require("./routes/post")
+const transactionRoute = require("./routes/transaction")
 dotenv.config();
 //CONNECT TO DATABASE
 const corsOptions = {
@@ -38,6 +39,7 @@ app.use("/v1/album", albumRoute);
 app.use("/v1/place", placeRoute);
 app.use("/v1/trip", tripRoute);
 app.use("/v1/post", postRoute);
+app.use("/v1/transaction", transactionRoute);
 app.listen(8000, () => {
   console.log("Server is running...")
 })

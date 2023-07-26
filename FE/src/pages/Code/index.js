@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { Connect } from "../../components/dapp/connected";
 import "./css/Code.scss";
 import { checkIn } from "../../components/dapp/checkIn";
 import { checkValidTicket } from "../../components/dapp/checkValidTicket";
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import { getUserData } from "../../state/selectors";
+import { getUserData, getInfor } from "../../state/selectors";
+import { autoCheckIn } from "../../service/api";
+
 const Code = () => {
     const [input, setInput] = useState();
     const [placeId, setPlaceId] = useState();
@@ -37,6 +38,7 @@ const Code = () => {
         .then((result)=>{
             console.log("result: ", result);
             if(result) {
+              if (!user.privateKey) {
                 toast.promise(
                   checkIn(currentAccount, input, placeId),
                   {
@@ -52,6 +54,10 @@ const Code = () => {
                      }
                   }
               )
+              } else {
+                console.log("hello")
+                autoCheckIn(user, input, placeId)
+              }
             } else {
                 toast.error('Ticket not avaiable or used!', {
                     position: "bottom-right",
@@ -69,7 +75,6 @@ const Code = () => {
     }
     return (
         <section className="code-page">
-            <Connect />
             <div className="code-wrapper">
                 <h1>Nhập mã vé để xác nhận checkin</h1>
                 <div className="code-box">
