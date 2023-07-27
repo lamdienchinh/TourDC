@@ -12,6 +12,7 @@ const placeRoute = require("./routes/place")
 const tripRoute = require("./routes/trip")
 const postRoute = require("./routes/post")
 const transactionRoute = require("./routes/transaction")
+const voucherRoute = require("./routes/voucher")
 dotenv.config();
 //CONNECT TO DATABASE
 const corsOptions = {
@@ -40,6 +41,7 @@ app.use("/v1/place", placeRoute);
 app.use("/v1/trip", tripRoute);
 app.use("/v1/post", postRoute);
 app.use("/v1/transaction", transactionRoute);
+app.use("/v1/voucher", voucherRoute)
 app.listen(8001, () => {
   console.log("Server is running...")
 })

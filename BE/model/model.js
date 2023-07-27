@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String
+  },
+  vouchers: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Voucher"
   }
 })
 
@@ -154,10 +158,53 @@ const commentSchema = new mongoose.Schema({
     type: String,
   }
 })
+
+const vouchersaleSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  number: {
+    type: Number,
+  },
+  img: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  }
+})
+
+const voucherSchema = new mongoose.Schema({
+  detail: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'VoucherSale'
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  trHash: {
+    type: String
+  },
+  isUsed: {
+    type: String,
+    default: "Available"
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+})
+
 let User = mongoose.model("User", userSchema);
 let Album = mongoose.model("Album", albumSchema);
 let Place = mongoose.model("Place", placeSchema);
 let Trip = mongoose.model("Trip", tripSchema);
 let Post = mongoose.model("Post", postSchema);
 let Comment = mongoose.model("Comment", commentSchema);
-module.exports = { User, Album, Place, Trip, Post, Comment };
+let VoucherSale = mongoose.model("VoucherSale", vouchersaleSchema);
+let Voucher = mongoose.model("Voucher", voucherSchema);
+module.exports = { User, Album, Place, Trip, Post, Comment, VoucherSale, Voucher };

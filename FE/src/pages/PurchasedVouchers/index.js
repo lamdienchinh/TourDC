@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import PurchasedVoucherItem from '../../components/purchasedvoucher';
-import list from "../../constants";
+// import list from "../../constants";
 import "./css/PurchasedVouchers.scss";
+import { useSelector } from "react-redux";
+import { getInfor } from "../../state/selectors"
 import {
     Box,
     Typography,
@@ -17,8 +19,9 @@ import {
 const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
 
 const PurchasedVouchers = () => {
+    const user = useSelector(getInfor)
     const [currentPage, setCurrentPage] = useState(1);
-    const [purchasedVouchers, setPurchasedVouchers] = useState(list.products);
+    const [purchasedVouchers, setPurchasedVouchers] = useState(user?.vouchers?user.vouchers:[]);
 
     const totalPages = Math.ceil(purchasedVouchers.length / itemsPerPage);
 
@@ -32,8 +35,8 @@ const PurchasedVouchers = () => {
         setCurrentPage(newPage);
     };
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+    // const startIndex = (currentPage - 1) * itemsPerPage;
+    // const endIndex = startIndex + itemsPerPage;
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filterUsed, setFilterUsed] = useState('all');

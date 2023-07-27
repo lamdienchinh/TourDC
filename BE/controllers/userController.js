@@ -81,7 +81,7 @@ const userController = {
   },
   login: async (req, res) => {
     try {
-      let user = await User.findOne(req.body);
+      const user = await User.findOne(req.body).populate('vouchers');
       const accessToken = await userController.generateAccessToken(user)
       const refreshToken = await userController.generateRefreshToken(user)
       refreshTokens.push(refreshToken)

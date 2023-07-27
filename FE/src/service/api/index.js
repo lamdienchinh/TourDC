@@ -219,10 +219,10 @@ const createAccountAddress = async () => {
     }
 }
 
-const autoCheckIn = async(user, ticketId, placeId) => {
+const autoCheckIn = async (user, ticketId, placeId) => {
     const publicKey = user.walletAddress;
     const privateKey = user.privateKey;
-	try {
+    try {
         let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autocheckin`, {
             publicKey: publicKey,
             privateKey: privateKey,
@@ -232,6 +232,43 @@ const autoCheckIn = async(user, ticketId, placeId) => {
         console("Check-in Hash: ", check)
     } catch (error) {
         console.log("error: ", error)
+    }
+}
+
+const getAllVouchers = async () => {
+    try {
+        let vouchers = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/voucher/`);
+        return vouchers.data;
+    }
+    catch (error) {
+        console.log("error: ", error)
+    }
+}
+
+const saleVoucher = async (data, token, axiosJWT) => {
+    try {
+        let sale = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/voucher/sale`, data, {
+            headers: {
+                token: `Bearer ${token}`
+            },
+        });
+        return sale;
+    }
+    catch (error) {
+        console.log("error: ", error)
+    }
+}
+
+const checkVoucher = async (id) => {
+    try {
+        await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/voucher/sale`, {
+            id: id
+        });
+        return 1;
+    }
+    catch (error) {
+        console.log("error: ", error)
+        return 0;
     }
 }
 export {
@@ -250,5 +287,8 @@ export {
     editPost,
     register,
     createAccountAddress,
-    autoCheckIn
+    autoCheckIn,
+    getAllVouchers,
+    saleVoucher,
+    checkVoucher
 }
