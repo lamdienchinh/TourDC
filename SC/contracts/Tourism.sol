@@ -11,34 +11,25 @@ contract ERC20WithAutoMinerReward is ERC20("DCToken", "Xu"),  VerifySignature{
         string memory _message,
         uint _nonce,
         bytes memory signature) public {
-        if(verify(_signer, _to, _amount, _message, _nonce, signature)){
-          _mint(_to, 1000);
-        }
+        require(verify(_signer, _to, _amount, _message, _nonce, signature), 'Invalid Signature');
+        _mint(_to, _amount * (10 ** 18));
     }
+
+    function _exchangeReward(
+        address _signer,
+        address _to,
+        uint _amount,
+        string memory _message,
+        uint _nonce,
+        bytes memory signature
+    )  public {
+        require(verify(_signer, _to, _amount, _message, _nonce, signature), 'Invalid Signature');
+        _burn(_to, _amount * (10 ** 18));
+    } 
 }
 
 contract TouristConTract is ERC20WithAutoMinerReward {
     constructor()  {
-        // destinations.push(Destination(1, unicode"Rừng Tràm Trà Sư"));
-        // destinations.push(Destination(2, unicode"Hồ & Chùa Tà Pạ"));
-        // destinations.push(Destination(3, unicode"Hồ Latina"));
-        // destinations.push(Destination(4, unicode"Chùa Koh Kas"));
-        // destinations.push(Destination(6, unicode"Bún cá Hiếu Thuận"));
-        // destinations.push(Destination(5, unicode"Miếu Bà Chúa Xứ Núi Sam"));
-        // destinations.push(Destination(7, unicode"Quán nướng 368 (Thành phố Long Xuyên)"));
-        // destinations.push(Destination(8, unicode"Lẩu mắm Hiếu Miênn (Thành phố Long Xuyên)"));
-        // destinations.push(Destination(9, unicode"Quán bò Tư Thiêng (Thành phố Châu Đốc)"));
-        // destinations.push(Destination(10, unicode"Bánh bò Út Dứt (Huyện An Phú)"));
-        // destinations.push(Destination(11, unicode"Little Sài Gòn Hostel (Little Saigon Hostel)"));
-        // destinations.push(Destination(12, unicode"SANG NHU NGOC RESORT"));
-        // destinations.push(Destination(13, unicode"Khách sạn châu tiến"));
-        // destinations.push(Destination(14, unicode"Khách Sạn The Luxe Châu Đốc (The Luxe Hotel Chau Doc)"));
-        // destinations.push(Destination(15, unicode"Dong Bao Hotel An Giang"));
-        // destinations.push(Destination(16, unicode"Trại Cá Sấu Long Xuyên"));
-        // destinations.push(Destination(17, unicode"Flyhigh Trampoline Park Vietnam"));
-        // destinations.push(Destination(18, unicode"Thanh Long Water Park"));
-        // destinations.push(Destination(19, unicode"Lotte Cinema Mỹ Bình Long Xuyên"));
-        // destinations.push(Destination(20, unicode"Công viên Mỹ Thới"));
         tickets.push(Ticket(1, false));
         tickets.push(Ticket(2, false));
         tickets.push(Ticket(3, false));
@@ -79,12 +70,6 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       uint id;
       string name;
     }
-
-    // struct Destination {
-    //     uint256 index; // identifier
-    //     string desName;
-    // }
-
     struct Journey {
         uint tripId;
         uint placeId;
@@ -107,7 +92,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     address[] private enterpise; // mảng địa chỉ cho doanh nghiệp 
     // Token private erc20Token; // Token Diem Thuong erc20Token
     ERC20 private erc20Token;
-
+    // Voucher private vouchers;
     Ticket[] private tickets;
     // Destination[] private destinations;
     Tourist[] private tourists;
@@ -130,15 +115,27 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     // mapping(uint => uint256[]) public timeReview; // thoi gian du khach review tai dia diem index 
     mapping (uint => Journey[]) destinationJourney; 
 
-    function getAllRates(uint placeid) public view returns(uint [] memory ) {
+    event ExchangeVoucher(uint256 voucherID, uint256 amount);
+    function exchangeVoucher(
+        uint256 voucherID, 
+        address _signer,
+        address _to,
+        uint _amount,
+        string memory _message,
+        uint _nonce,
+        bytes memory signature) public {
+        _exchangeReward(_signer, _to, _amount, _message, _nonce, signature);
+        emit ExchangeVoucher(voucherID, _amount);
+    } 
+    function getAllRates(uint placeid) public view returns(uint [] memory ) { // Lấy tất cả rates của 1 place theo placeID
       return destinationRates[placeid];
     }  
 
-    function getReviewsInPlace(uint placeid) public view returns(Journey [] memory ) {
+    function getReviewsInPlace(uint placeid) public view returns(Journey [] memory ) { // Lấy tất cả Reviews của một place theo placeID
       return destinationJourney[placeid]; 
     }
     
-    function getJourneyWithID(uint[] memory idTrip) public view returns (Journey[] memory) {
+    function getJourneyWithID(uint[] memory idTrip) public view returns (Journey[] memory) { // Lấy ra một mảng các Journey theo list IDtrip
       Journey[] memory lstJourney = new Journey[](idTrip.length);
       uint256 count = 0;
 
@@ -155,13 +152,6 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       return lstJourney;
     }
 
-    // function getTouristReview(uint placeid) public view returns(address [] memory ) {
-    //   return touristReview[placeid]; 
-    // }
-    // function getTimeReview(uint placeid) public view returns(uint256 [] memory ) {
-    //   return timeReview[placeid]; 
-    // }
-
     event CreateAlbum(uint _id, string _name);
     function createAlbum(uint _id,string memory _name) public {
         touristAlbums[msg.sender].push(Album(_id, _name)); // thêm vào mảng touristAlbums của địa chỉ người dùng
@@ -175,30 +165,10 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         }
       }
     }
-
-    // event AddDestinationInAlbum(string nameDestination, string nameAlbum);
-    // function addDestinationInAlbum(uint desIndex, uint albumId) public {
-    //   string memory name; 
-    //   for (uint i = 0; i < destinations.length; ++i) {  // thực hiện vòng lặp để tìm index của Destination trong mảng destinations
-    //     if (desIndex == destinations[i].index) { 
-    //       name = destinations[i].desName;
-    //       albumDestination[msg.sender][albumId].push(destinations[i]); // thêm địa điểm vào album
-    //       break;
-    //     }
-    //   }
-    //   emit AddDestinationInAlbum(name, getNameAlbum(desIndex));
-    // }
-
     event AddJourneyInAlbum(string AlbumName, Journey journey);
     function addAlbumJourney(uint placeId, uint albumId, uint256 date) public { // thêm địa điểm check-in vào album
       bool isSuccess = false;
       Journey memory journey;
-      // for (uint i = 0; i < destinations.length; i++) { // thực hiện vòng lặp để lấy ra tên của destination thông qua index
-      //   if(index == destinations[i].index) { 
-      //     name = destinations[i].desName;
-      //     break;
-      //   }
-      // }
       for (uint i = 0; i < touristJourneys[msg.sender].length; i++)
       {
         if ((placeId == touristJourneys[msg.sender][i].placeId) // check ID của destination và placeID trong Journey 
@@ -221,10 +191,6 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       emit AddJourneyInAlbum(getNameAlbum(albumId),journey);
     }
 
-    // function getAlbumNotCheckIn(uint id) public view returns (Destination[] memory) {
-    //   return albumDestination[msg.sender][id];
-    // }
-
     function getAlbumCheckIn(uint id) public view returns (Journey[] memory){
       return albumJourneys[msg.sender][id];
     }
@@ -241,14 +207,13 @@ contract TouristConTract is ERC20WithAutoMinerReward {
             tourists.push(newTourist); // Thêm vào mảng
             touristIdentify[msg.sender].signup = true; // set true cho signup
         }
-    
     emit AddTourist(name, age);
     }
 
     function getBalance(address add) public view returns (uint256) {
       // return erc20Token.balanceOf(add);
     }
-    function checkValidTicket(uint ticketID) public view returns(bool) {
+    function checkValidTicket(uint ticketID) public view returns(bool) { // check xem một tấm vé đã được dùng hay chưa
       for (uint i = 0; i < tickets.length;i++) {
         if (ticketID == tickets[i].id) {
           if(tickets[i].isUsed == true) return false;
@@ -257,7 +222,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       return true;
     }
     event CheckIn(uint ticketId, uint placeId);
-    function checkIn(uint ticketID, uint placeID) public {
+    function checkIn(uint ticketID, uint placeID) public { // Hàm thực hiện việc check-in của du khách
       //check ticketID
       bool validTicket = false;
       for (uint i = 0; i < tickets.length;i++) {
@@ -272,35 +237,27 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       touristJourneys[msg.sender].push(Journey(tripID,placeID, block.timestamp, "", 0, false, "")); // thêm vào mảng touristJourney
       emit CheckIn(ticketID, placeID);
     }
-
-  function review(uint placeId, uint idTrip, string memory comment, uint rate, string memory title) public {
-    for (uint i = 0; i < touristJourneys[msg.sender].length; i++){
-      if(idTrip == touristJourneys[msg.sender][i].tripId) {
-        require(touristJourneys[msg.sender][i].isReview == false, 'You had been reviewed this trip');
-        touristJourneys[msg.sender][i].review = comment;
-        touristJourneys[msg.sender][i].rate = rate;
-        touristJourneys[msg.sender][i].isReview = true;
-        touristJourneys[msg.sender][i].title = title; 
-        destinationJourney[placeId].push(touristJourneys[msg.sender][i]);
+  event Review(uint placeId, uint idTrip, string comment, uint rate, string title);
+  function review(uint placeId, uint idTrip, string memory comment, uint rate, string memory title) public { // hàm thực hiện cho việc review của du khách
+    for (uint i = 0; i < touristJourneys[msg.sender].length; i++){ // vòng lặp để lấy ra Journey tương ứng với tripID
+      if(idTrip == touristJourneys[msg.sender][i].tripId) { 
+        require(touristJourneys[msg.sender][i].isReview == false, 'You had been reviewed this trip'); // yêu cầu là phải chưa review lần nào
+        touristJourneys[msg.sender][i].review = comment; // thêm comment vào cho Journey có tripID tương ứng
+        touristJourneys[msg.sender][i].rate = rate; // thêm rate vào cho Journey có tripID tương ứng
+        touristJourneys[msg.sender][i].isReview = true; // set lại biến isReview thành true
+        touristJourneys[msg.sender][i].title = title;  // set title cho journey có tripID tương ứng
+        destinationJourney[placeId].push(touristJourneys[msg.sender][i]); // Thêm vào mảng các Journey của địa danh có placeID tương ứng
         break;
       }
     } 
-        destinationRates[placeId].push(rate);
+        destinationRates[placeId].push(rate);// them vào mảng các đánh giá của địa danh tương ứng
         noPeopleRate[placeId]++;
+        emit Review(placeId, idTrip, comment, rate, title);
     }
 
-    // function tokenTransfer() private returns (bool) {
-    //   return erc20Token.transfer(msg.sender, 1000000000000000000);
-    // }
-
-    function getAllJourney () public view returns(Journey[] memory) {
+    function getAllJourney () public view returns(Journey[] memory) { // lấy ra tất cả hành trình của du khách
       return touristJourneys[msg.sender];
     }
-    
-
-    // function getAllDestination() public view returns (Destination[] memory) {
-    //     return destinations;
-    // }
 
     modifier onlyAdmin {
       bool isAdmin = false;
@@ -334,19 +291,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       }
     }
 
-    // function validIndex(uint index) private view returns(bool) {
-    //     for (uint i = 0; i < destinations.length;++i){
-    //       if(index == destinations[i].index) return false;
-    //     }
-    //     return true;
-    // }
-
-    // function addDestination(uint index, string memory name) external onlyAdmin {
-    //   require(validIndex(index) == true, "Index has been already existed"); 
-    //   destinations.push(Destination(index, name));  
-    // }
-
-    function validAddIDTicket(uint256 id) public view returns (bool) {
+    function validAddIDTicket(uint256 id) public view onlyAdmin returns (bool) { // check xem thử là idticket hợp lệ không 
       for (uint i = 0; i < tickets.length;i++) {
         if (id == tickets[i].id) return false;
       }
@@ -355,30 +300,5 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     function addTicket(uint256 id) external onlyAdmin {
       require(validAddIDTicket(id), "This ID already existed");
       tickets.push(Ticket(id, false)); 
-    }
-    // function signService(string memory name, ServiceType serTyp) public view onlyEnterpirse {
-    //   enterpiseService[msg.sender].push(Service(serTyp,name,))
-    // }
-     function claimPrize(bytes32 _hashedMessage, uint8 _v, bytes32 _r, bytes32 _s) public view returns (bool) {
-        bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-        bytes32 prefixedHashMessage = keccak256(abi.encodePacked(prefix, _hashedMessage));
-        address signer = ecrecover(prefixedHashMessage, _v, _r, _s);
-
-        // if the signature is signed by the owner
-        if (signer == owner) {
-            // give player (msg.sender) a prize
-            return true;
-        }
-
-        return false;
-    }
-    
+    }  
 }
-
-// hình ảnh chụp của du khách? 
-// hình ảnh của destination? (string: url)  
-// điểm thưởng cố định? Cách sử dụng điểm thưởng? 
-// QR leak -> không ở đó nhưng mà vẫn check-in được.
-
-
-// tính điểm trung bình

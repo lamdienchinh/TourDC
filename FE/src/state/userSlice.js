@@ -29,12 +29,10 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
                 method: "eth_requestAccounts",
             });
             console.log(accounts[0]);
+            axios.defaults.withCredentials=true;
             let infor = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/loginByMetamask`, {
                 walletAddress: accounts[0]
-            },
-                {
-                    withCredentials: true
-                });
+            });
             console.log(infor)
             console.log(infor.data)
             dispatch(setUser({ address: accounts[0], infor: infor.data }));

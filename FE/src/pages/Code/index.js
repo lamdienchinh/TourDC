@@ -12,6 +12,7 @@ const Code = () => {
     const [input, setInput] = useState();
     const [placeId, setPlaceId] = useState();
     const [currentAccount] = useState(useSelector(getUserData));
+    const user = useSelector(getInfor);
     // setCurrentAccount()
     useEffect(() => {
       // Lấy đường link hiện tại
