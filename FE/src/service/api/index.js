@@ -2,6 +2,7 @@ import axios from "axios";
 import Web3 from 'web3'
 import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
+import { toast } from "react-toastify";
 import { PopoverPaper } from "@mui/material";
 
 
@@ -312,6 +313,33 @@ const purchaseVoucher = async (voucherID,
             return -1;
         }
 }
+const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title,
+    _signer, _to, _amount, _message,_nonce, signature) => {
+    try {
+        let txHash = await window.ethereum
+        .request({
+            method: 'eth_sendTransaction',
+            params: [
+                {
+                    from: currentAccount,
+                    to: contractAddress.Token,
+                    gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
+                    maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
+                    maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
+                    data: contract.methods.review(placeID, tripId, comment, rate, title, _signer, _to, _amount, _message, _nonce, signature).encodeABI()
+                },
+            ],
+        });
+        console.log("txHash: ", txHash);
+        toast.success("Lưu cảm nghĩ thành công! Bạn nhận được 10 Xu.")
+        return txHash;
+    } catch (error) {
+        toast.error(error)
+        return -1;
+    }
+}
+
+
 export {
     getAllPlace,
     reviewtoBE,
@@ -333,5 +361,6 @@ export {
     saleVoucher,
     checkVoucher,
     getBalanceOf,
-    purchaseVoucher
+    purchaseVoucher,
+    reviewTrip
 }

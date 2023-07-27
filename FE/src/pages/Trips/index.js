@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Pagination, Box, Button, NativeSelect, InputLabel, FormControl } from '@mui/material';
 import Trip from "../../components/trip";
-// import trips from "../../constants";
 import "./css/Trips.scss";
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -19,19 +18,18 @@ import Link from '@mui/material/Link';
 import { toast } from "react-toastify"
 import 'photoswipe/dist/photoswipe.css'
 import { Gallery, Item } from 'react-photoswipe-gallery'
-// import axios from 'axios';
-// import { doesSectionFormatHaveLeadingZeros } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
 import { useSelector } from 'react-redux'
 import { getInfor, getUserData } from '../../state/selectors';
 import { getAllTrips } from '../../components/dapp/getAllTrips';
-import reviewTrip from '../../components/dapp/reviewTrip';
+import { reviewTrip } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 import { getTrips, reviewtoBE } from '../../service/api';
 import { createAxios } from "../../utils/createInstance";
 import { setInfor } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
-// import { getPlace } from '../../service/api';
 import { getAllReviewsInAllPlaces } from '../../service/api';
+import Web3 from 'web3';
+const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 function PaperComponent(props) {
     return (
         <Draggable
@@ -176,8 +174,17 @@ const Trips = () => {
             }
             // let review = await reviewTrip(currentAccount, selectTrip.placeId, selectTrip.arrivalDate, result.description, result.rate, result.title)
             // console.log("review:",review);
+            // Tạo chữ kí
+            // create signature
+            const hashedMessage = web3.utils.soliditySha3(currentAccount, 10, result.description + result.rate + result.title, 0);  
+            console.log("Hashed Message: ", hashedMessage)
+            const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
+            console.log("signature: ", signatureObj.signature);
+            const signature = signatureObj.signature
+
             let review = await toast.promise(
-                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title),
+                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
+                    "0xcbffe3fa9226a7cD7CfFC770103299B83518F538",currentAccount,10,result.description + result.rate + result.title,0,signature),
                 {
                     pending: 'Đang đợi xử lí',
                     // success: 'Lưu cảm nghĩ thành công !',

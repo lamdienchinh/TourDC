@@ -45,16 +45,15 @@ const VoucherDetail = ({ product }) => {
                 
                 // create signature
                 const hashedMessage = web3.utils.soliditySha3(currentAccount, product.price,product.name, 0);
-                
                 console.log("Hashed Message: ", hashedMessage)
                 const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
                 console.log("signature: ", signatureObj.signature);
                 const signature = signatureObj.signature
 
-                const r = signature.slice(0, 66);
-                const s = "0x" + signature.slice(66, 130);
-                const v = parseInt(signature.slice(130, 132), 16);
-                console.log({ r, s, v });
+                // const r = signature.slice(0, 66);
+                // const s = "0x" + signature.slice(66, 130);
+                // const v = parseInt(signature.slice(130, 132), 16);
+                // console.log({ r, s, v });
                 // gọi SC thực hiện hàm mua voucher
                 try {
                     let trHash = await purchaseVoucher(product._id,"0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount,product.price,product.name,0,signature);
