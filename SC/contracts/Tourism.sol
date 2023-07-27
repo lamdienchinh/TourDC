@@ -115,15 +115,9 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     // mapping(uint => uint256[]) public timeReview; // thoi gian du khach review tai dia diem index 
     mapping (uint => Journey[]) destinationJourney; 
 
-    event ExchangeVoucher(uint256 voucherID, uint256 amount);
-    function exchangeVoucher(
-        uint256 voucherID, 
-        address _signer,
-        address _to,
-        uint _amount,
-        string memory _message,
-        uint _nonce,
-        bytes memory signature) public {
+    event ExchangeVoucher(string voucherID, uint256 amount);
+    function exchangeVoucher(string memory voucherID, address _signer,address _to,uint _amount,string memory _message,uint _nonce,bytes memory signature) public {
+        require(balanceOf(msg.sender) >= _amount, 'You not have enough money to purchase');
         _exchangeReward(_signer, _to, _amount, _message, _nonce, signature);
         emit ExchangeVoucher(voucherID, _amount);
     } 
@@ -158,57 +152,57 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         emit CreateAlbum(_id, _name);
     }
 
-    function getNameAlbum(uint _id) private view returns (string memory name) {
-      for(uint i = 0; i < touristAlbums[msg.sender].length; i++) {
-        if(_id == touristAlbums[msg.sender][i].id) {
-          return touristAlbums[msg.sender][i].name;
-        }
-      }
-    }
-    event AddJourneyInAlbum(string AlbumName, Journey journey);
-    function addAlbumJourney(uint placeId, uint albumId, uint256 date) public { // thêm địa điểm check-in vào album
-      bool isSuccess = false;
-      Journey memory journey;
-      for (uint i = 0; i < touristJourneys[msg.sender].length; i++)
-      {
-        if ((placeId == touristJourneys[msg.sender][i].placeId) // check ID của destination và placeID trong Journey 
-          && (touristJourneys[msg.sender][i].arrivalDate == date)) { // check date
-          journey = Journey({
-            tripId: touristJourneys[msg.sender][i].tripId,
-            placeId: placeId,
-            arrivalDate: date,
-            review: touristJourneys[msg.sender][i].review,
-            rate: touristJourneys[msg.sender][i].rate,
-            isReview: touristJourneys[msg.sender][i].isReview,
-            title: ""
-            });
-          albumJourneys[msg.sender][albumId].push(journey); //thêm Journey vào mảng albumJourneys có albumId của du khách);    
-            isSuccess = true;
-            break;
-        }
-      }
-      require(isSuccess, "This Destination was not checkin");
-      emit AddJourneyInAlbum(getNameAlbum(albumId),journey);
-    }
+    // function getNameAlbum(uint _id) private view returns (string memory name) {
+    //   for(uint i = 0; i < touristAlbums[msg.sender].length; i++) {
+    //     if(_id == touristAlbums[msg.sender][i].id) {
+    //       return touristAlbums[msg.sender][i].name;
+    //     }
+    //   }
+    // }
+    // event AddJourneyInAlbum(string AlbumName, Journey journey);
+    // function addAlbumJourney(uint placeId, uint albumId, uint256 date) public { // thêm địa điểm check-in vào album
+    //   bool isSuccess = false;
+    //   Journey memory journey;
+    //   for (uint i = 0; i < touristJourneys[msg.sender].length; i++)
+    //   {
+    //     if ((placeId == touristJourneys[msg.sender][i].placeId) // check ID của destination và placeID trong Journey 
+    //       && (touristJourneys[msg.sender][i].arrivalDate == date)) { // check date
+    //       journey = Journey({
+    //         tripId: touristJourneys[msg.sender][i].tripId,
+    //         placeId: placeId,
+    //         arrivalDate: date,
+    //         review: touristJourneys[msg.sender][i].review,
+    //         rate: touristJourneys[msg.sender][i].rate,
+    //         isReview: touristJourneys[msg.sender][i].isReview,
+    //         title: ""
+    //         });
+    //       albumJourneys[msg.sender][albumId].push(journey); //thêm Journey vào mảng albumJourneys có albumId của du khách);    
+    //         isSuccess = true;
+    //         break;
+    //     }
+    //   }
+    //   require(isSuccess, "This Destination was not checkin");
+    //   emit AddJourneyInAlbum(getNameAlbum(albumId),journey);
+    // // }
 
-    function getAlbumCheckIn(uint id) public view returns (Journey[] memory){
-      return albumJourneys[msg.sender][id];
-    }
+    // function getAlbumCheckIn(uint id) public view returns (Journey[] memory){
+    //   return albumJourneys[msg.sender][id];
+    // }
 
-    event AddTourist(string name, uint256 age);
-    function register(string memory name, uint256 age) public {
-        // Hàm để add một du khách mới
-        Tourist memory newTourist = Tourist(name, age, true, msg.sender);
-        touristIdentify[msg.sender].name = name; // lưu vào tên
-        touristIdentify[msg.sender].age = age; // lưu vào tuổi
-        touristIdentify[msg.sender].touristAddress = msg.sender;
-        if (!touristIdentify[msg.sender].signup) {
-            // nếu đăng nhập lần đầu tiên sẽ được thêm vào mảng
-            tourists.push(newTourist); // Thêm vào mảng
-            touristIdentify[msg.sender].signup = true; // set true cho signup
-        }
-    emit AddTourist(name, age);
-    }
+    // event AddTourist(string name, uint256 age);
+    // function register(string memory name, uint256 age) public {
+    //     // Hàm để add một du khách mới
+    //     Tourist memory newTourist = Tourist(name, age, true, msg.sender);
+    //     touristIdentify[msg.sender].name = name; // lưu vào tên
+    //     touristIdentify[msg.sender].age = age; // lưu vào tuổi
+    //     touristIdentify[msg.sender].touristAddress = msg.sender;
+    //     if (!touristIdentify[msg.sender].signup) {
+    //         // nếu đăng nhập lần đầu tiên sẽ được thêm vào mảng
+    //         tourists.push(newTourist); // Thêm vào mảng
+    //         touristIdentify[msg.sender].signup = true; // set true cho signup
+    //     }
+    // emit AddTourist(name, age);
+    // }
 
     function getBalance(address add) public view returns (uint256) {
       // return erc20Token.balanceOf(add);

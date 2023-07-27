@@ -2,6 +2,7 @@ import axios from "axios";
 import Web3 from 'web3'
 import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
+import { PopoverPaper } from "@mui/material";
 
 
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
@@ -219,10 +220,10 @@ const createAccountAddress = async () => {
     }
 }
 
-const autoCheckIn = async(user, ticketId, placeId) => {
+const autoCheckIn = async (user, ticketId, placeId) => {
     const publicKey = user.walletAddress;
     const privateKey = user.privateKey;
-	try {
+    try {
         let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autocheckin`, {
             publicKey: publicKey,
             privateKey: privateKey,
@@ -233,6 +234,83 @@ const autoCheckIn = async(user, ticketId, placeId) => {
     } catch (error) {
         console.log("error: ", error)
     }
+}
+
+const getAllVouchers = async () => {
+    try {
+        let vouchers = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/voucher/`);
+        return vouchers.data;
+    }
+    catch (error) {
+        console.log("error: ", error)
+    }
+}
+
+const saleVoucher = async (data, token, axiosJWT) => {
+    try {
+        let sale = await axiosJWT.post(`${process.env.REACT_APP_ENDPOINT}/v1/voucher/sale`, data, {
+            headers: {
+                token: `Bearer ${token}`
+            },
+        });
+        return sale;
+    }
+    catch (error) {
+        console.log("error: ", error)
+    }
+}
+
+const checkVoucher = async (id) => {
+    try {
+        await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/voucher/check    `, {
+            id: id
+        });
+        return 1;
+    }
+    catch (error) {
+        console.log("error: ", error)
+        return 0;
+    }
+}
+
+const getBalanceOf = async (currentAccount) => {
+    try {
+        const balance = await contract.methods.balanceOf(currentAccount).call();
+        return balance;
+    } catch (error) {
+        console.log("error: ", error)
+        return 0;
+    }
+}
+const purchaseVoucher = async (voucherID,
+    _signer,
+    currentAccount,
+    _amount,
+    _message,
+    _nonce,
+    signature) => {
+        try {
+            let txHash = await window.ethereum
+                .request({
+                    method: 'eth_sendTransaction',
+                    params: [
+                        {
+                            from: currentAccount,
+                            to: contractAddress.Token,
+                            gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
+                            maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
+                            maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
+                            data: contract.methods.exchangeVoucher(voucherID, _signer, currentAccount, _amount, _message, _nonce, signature).encodeABI()
+                        },
+                    ],
+                });
+    
+            console.log("txHash: ", txHash);
+            return txHash; // Trả về giá trị txHash
+        } catch (error) {
+            console.error("error: ", error)
+            return -1;
+        }
 }
 export {
     getAllPlace,
@@ -250,5 +328,10 @@ export {
     editPost,
     register,
     createAccountAddress,
-    autoCheckIn
+    autoCheckIn,
+    getAllVouchers,
+    saleVoucher,
+    checkVoucher,
+    getBalanceOf,
+    purchaseVoucher
 }

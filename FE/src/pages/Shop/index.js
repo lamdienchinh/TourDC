@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Pagination, Box, TextField, Button } from '@mui/material';
 import VoucherDetail from '../../components/voucherdetail';
 import list from "../../constants";
 import './css/Shop.scss';
 import { Container } from '@mui/material';
+import { getAllVouchers } from '../../service/api';
 
 const VoucherShop = () => {
+    const [allVouchers, setAllVouchers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [products, setProducts] = useState(list.products);
     const [filterPriceMin, setFilterPriceMin] = useState('');
     const [filterPriceMax, setFilterPriceMax] = useState('');
     const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
     const totalPages = Math.ceil(products.length / itemsPerPage);
-
+    
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };
@@ -44,6 +46,13 @@ const VoucherShop = () => {
         setCurrentPage(1); // Reset lại trang khi thực hiện tìm kiếm
     };
 
+    useEffect(() => {
+        const fetchVouchers = async () => {
+            let data = await getAllVouchers();
+            setAllVouchers(data);
+        }
+        fetchVouchers();
+    },[])
     return (
         <Container maxWidth="lg">
             <Box className="product-list-container">
@@ -79,10 +88,10 @@ const VoucherShop = () => {
                         </Button>
                     </div>
                     <Grid container spacing={2}>
-                        {products.slice(startIndex, endIndex).map((product) => (
-                            <Grid key={product.id} item xs={12} sm={6} md={3}>
+                        {allVouchers.slice(startIndex, endIndex).map((voucher, index) => (
+                            <Grid key={index} item xs={12} sm={6} md={3}>
                                 <div className="product-item">
-                                    <VoucherDetail product={product} />
+                                    <VoucherDetail product={voucher} />
                                 </div>
                             </Grid>
                         ))}
@@ -90,7 +99,6 @@ const VoucherShop = () => {
                     {/* Hiển thị phân trang */}
                     <div className="shop__pagination">
                         <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} sx={{ marginTop: 2 }} />
-
                     </div>
                 </div>
             </Box>

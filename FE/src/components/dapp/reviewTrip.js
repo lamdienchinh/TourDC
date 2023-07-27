@@ -51,7 +51,7 @@ const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title)
   try {
     let temp = await review(currentAccount, placeID, tripId, comment, rate, title)
     .then(() => {
-      const hashedMessage = web3.utils.soliditySha3(currentAccount, 10, "check-in", 0);
+      const hashedMessage = web3.utils.soliditySha3(currentAccount, 10, comment + rate + title, 0);
       console.log("Hashed Message: ", hashedMessage)
       const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
       console.log("signature: ", signatureObj.signature);
@@ -62,8 +62,8 @@ const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title)
       const v = parseInt(signature.slice(130, 132), 16);
       console.log({ r, s, v });
 
-      alert(signature);
-      reward(currentAccount, '0xcbffe3fa9226a7cD7CfFC770103299B83518F538', 10, "check-in", 0, signature)
+      // alert(signature);
+      reward(currentAccount, '0xcbffe3fa9226a7cD7CfFC770103299B83518F538', 10, comment + rate + title, 0, signature)
     })
     return temp.toString();
   } catch (error) {
