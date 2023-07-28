@@ -5,7 +5,7 @@ import Footer from "../footer";
 import { Outlet } from "react-router-dom";
 import Fireflies from "../../components/fireflies";
 import "./css/General_layout.scss";
-
+import { ToastContainer} from 'react-toastify';
 const GeneralLayout = () => {
     useEffect(() => {
         const backToTopBtn = document.getElementById('back-to-top-btn');
@@ -38,6 +38,17 @@ const GeneralLayout = () => {
 
     return (
         <div className="wrapper">
+            <ToastContainer position="bottom-right"
+                type="success"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light" />
             <Header />
             <Outlet />
             <Fireflies />

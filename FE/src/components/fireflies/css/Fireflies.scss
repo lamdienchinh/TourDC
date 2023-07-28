@@ -1,6 +1,6 @@
 // Quantity should be the same in SCSS
 $quantity: 150;
-
+$animationDuration: 5000s;
 .firefly {
   position: fixed;
   left: 50%;
@@ -8,9 +8,8 @@ $quantity: 150;
   width: 0.2vw;
   height: 0.2vw;
   margin: -0.2vw 0 0 9.8vw;
-  animation: drift 200s alternate infinite;
+  animation: drift $animationDuration alternate infinite;
   pointer-events: none;
-
   &::before,
   &::after {
     content: "";
@@ -31,7 +30,9 @@ $quantity: 150;
     background: white;
     opacity: 0;
     box-shadow: 0 0 0vw 0vw pink;
-    animation: drift ease alternate infinite, flash ease infinite;
+    animation:
+      drift ease alternate infinite,
+      flash ease infinite;
   }
 }
 
@@ -42,14 +43,17 @@ $quantity: 150;
 
   .firefly:nth-child(#{$i}) {
     animation-name: move#{$i};
-
     &::before {
       animation-duration: #{$rotationSpeed};
     }
 
     &::after {
-      animation-duration: #{$rotationSpeed}, #{random(6000) + 5000ms};
-      animation-delay: 0ms, #{random(8000) + 500ms};
+      animation-duration:
+        #{$rotationSpeed},
+        #{random(6000) + 5000ms};
+      animation-delay:
+        0ms,
+        #{random(8000) + 500ms};
     }
   }
 

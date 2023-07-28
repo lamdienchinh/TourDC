@@ -31,20 +31,14 @@ const RouterList = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
+      <Route element={<GeneralLayout />}>
+        <Route path="/" element={<Intro />} />
+        <Route path="/travel" element={<Home />} />
+        <Route path="/placeinfor" element={<PlaceInfor />} />
+        <Route path="*" element={<Error />} />
+      </Route>
       {
-        !walletAddress ? <Route element={<GeneralLayout />}>
-          <Route path="/" element={<Intro />} />
-          <Route path="/travel" element={<Home />} />
-          <Route path="/placeinfor" element={<PlaceInfor />} />
-          <Route path="*" element={<Error />} />
-        </Route> : ""
-      }
-      {
-        walletAddress && (userinfor?.lastName === "" && userinfor?.firstName === "") ?
-          <Route element={<UserLayout />}>
-            <Route path="*" element={<User />} />
-          </Route> :
+        walletAddress !== "" && (userinfor?.lastName !== "" || userinfor?.firstName !== "") ?
           <Route element={<UserLayout />}>
             <Route path="/" element={<Intro />} />
             <Route path="/travel" element={<Home />} />
@@ -61,6 +55,9 @@ const RouterList = () => {
             <Route path="/shop" element={<VoucherShop />} />
             <Route path="/vouchers" element={<PurchasedVouchers />} />
             <Route path="*" element={<Error />} />
+          </Route> :
+          <Route element={<UserLayout />}>
+            <Route path="*" element={<User />} />
           </Route>
       }
       {/* {

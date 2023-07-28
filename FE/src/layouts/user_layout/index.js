@@ -6,7 +6,7 @@ import Header from "../header";
 import Footer from "../footer";
 import Fireflies from "../../components/fireflies";
 import "./css/UserLayout.scss";
-
+import { ToastContainer } from 'react-toastify';
 
 const UserLayout = () => {
     useEffect(() => {
@@ -39,6 +39,17 @@ const UserLayout = () => {
     }, []);
     return (
         <div className="userlayout">
+            <ToastContainer position="bottom-right"
+                type="success"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light" />
             <Fireflies />
             <Header></Header>
             <div className="userlayout__body">
