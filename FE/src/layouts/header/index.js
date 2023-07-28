@@ -8,7 +8,7 @@ import { getBalance, getInfor, getUserData } from '../../state/selectors';
 import { useDispatch } from 'react-redux';
 import { Avatar } from "@mui/material";
 import Container from '@mui/material/Container';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./css/Header.scss";
 import logo from "../../assets/imgs/logo1.png"
@@ -123,7 +123,7 @@ const Header = () => {
     return (
         <header className={`header ${scrolled ? 'scrolled' : ''}`}>
             <Container maxWidth="lg">
-                <ToastContainer position="bottom-right"
+                {/* <ToastContainer position="bottom-right"
                     type="success"
                     autoClose={3000}
                     hideProgressBar={false}
@@ -133,7 +133,7 @@ const Header = () => {
                     pauseOnFocusLoss
                     draggable
                     pauseOnHover
-                    theme="light" />
+                    theme="light" /> */}
                 <div className="header__col1">
                     <NavLink className="header__link" to='/'>
                         <img src={logo} alt="App Logo" />
@@ -226,7 +226,7 @@ const Header = () => {
                             <div className='balance-active'> {balance/(10**18)} </div>
                             <img className='token' src={DCToken}></img>
                         </div> : null}
-                        
+
                     </div>
                 </div>
                 <Dialog
@@ -252,7 +252,7 @@ const Header = () => {
                     </DialogActions>
                 </Dialog>
             </Container>
-            
+
         </header >
     );
 }

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { getInfor } from '../../state/selectors';
-
 const Footer = () => {
     const walletAddress = useSelector(getInfor);
     return (
@@ -29,7 +28,7 @@ const Footer = () => {
                             <ul>
                                 <li><Link to="/">Home</Link></li>
                                 <li><Link to="/travel">Travel</Link></li>
-                                <li><Link to="/placeinfor">Place Information</Link></li>
+                                {/* <li><Link to="/placeinfor">Place Information</Link></li> */}
                                 {/* Add more links here */}
                                 {walletAddress && (
                                     <React.Fragment>

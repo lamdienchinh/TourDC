@@ -2,17 +2,17 @@
 import "./css/Album_Thumbnail.scss"
 import img from "../../assets/imgs/place2.jpg"
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 const AlbumThumbnail = (props) => {
     const album = props.album;
     console.log(album)
     useEffect(() => {
 
     })
-    let checkimg = img;
+    const [checkimg, setImg] = useState(img);
     try {
         if (album.list_trips.list_imgs) {
-            checkimg = album.list_trips.list_imgs[0]
+            setImg(album.list_trips.list_imgs[0])
         }
     }
     catch (err) {
