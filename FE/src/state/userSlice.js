@@ -115,7 +115,7 @@ export const updateBalance = createAsyncThunk('getBalance', async(currentAccount
     try {
         let balance = await getBalanceOf(currentAccount);
         console.log("balance: ", balance)
-        dispatch(setBalance({balance: balance}))
+        dispatch(setBalance({balance: Number(balance/(10**18))}))
     } catch (error) {
         
     }
