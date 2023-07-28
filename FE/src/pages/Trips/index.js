@@ -194,7 +194,7 @@ const Trips = () => {
             )
             if (review != -1) {
                 // let balance = await getBalanceOf(currentAccount);
-                dispatch(updateBalance(currentAccount, {dispatch}))
+                dispatch(updateBalance(currentAccount, { dispatch }))
             }
             setSelectTrip("");
             setImgs([]);
@@ -309,7 +309,7 @@ const Trips = () => {
                             </div> : ""
                         }
                         {
-                            isLoading === false ? <div className="trips__results--pagination">
+                            isLoading === false && row1.length > 0 ? <div className="trips__results--pagination">
                                 <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                             </div> : ""
                         }
