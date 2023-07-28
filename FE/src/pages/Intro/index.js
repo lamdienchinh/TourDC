@@ -8,6 +8,8 @@ import avt from "../../assets/imgs/avatar.png"
 import Slider from 'react-slick';
 import { Avatar } from "@mui/material";
 import Container from "@mui/material/Container";
+import DCToken from '../../assets/imgs/DCToken-home.svg'
+
 const Review = () => {
     return (
         <div className="review-wrapper">
@@ -38,12 +40,25 @@ const Intro = () => {
             <section className="intro-section intro-first">
                 <div className="bg-img">
                     <Container maxWidth="lg">
-                        <div className="intro-content">
-                            {/* <div className="intro-plane"><img src={plane} alt="Máy bay"></img></div> */}
-                            <h1 className="intro-name">TOURDC</h1>
-                            <h6>Ứng dụng du lịch áp dụng công nghệ Blockchain</h6>
-                            <button className="intro-tohome" onClick={() => window.location.replace('/home')}>Khám phá ngay</button>
+                        <div className="intro-flex">
+                            <div className="intro-content">
+                                {/* <div className="intro-plane"><img src={plane} alt="Máy bay"></img></div> */}
+                                {/* <div className="name-home"> */}
+                                <h1 className="intro-name">TOURDC</h1>
+                                {/* </div> */}
+                                <h6>Ứng dụng du lịch áp dụng công nghệ Blockchain</h6>
+                               {/* <button className="intro-tohome btn-home" onClick={() => window.location.replace('/home')}>Khám phá ngay</button> */}
+                               <a href="/travel" class="animated-button1 ">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                 <div className="button-text">Khám phá ngay</div>
+                               </a>
+                            </div>
+                            <div ><img className='token-home' src={DCToken}></img></div> 
                         </div>
+                        
                         {/* <div className="intro-img1">
                             <img src={place1} alt="Ảnh"></img>
                         </div>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { connectWallet } from '../../state/userSlice';
 import { useSelector } from 'react-redux';
-import { getInfor, getUserData } from '../../state/selectors';
+import { getBalance, getInfor, getUserData } from '../../state/selectors';
 import { useDispatch } from 'react-redux';
 import { Avatar } from "@mui/material";
 import Container from '@mui/material/Container';
@@ -26,7 +26,7 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { createAxios } from '../../utils/createInstance';
 import { setInfor } from '../../state/userSlice';
-
+import DCToken from '../../assets/imgs/DCToken.svg'
 function PaperComponent(props) {
     return (
         <Draggable
@@ -48,6 +48,8 @@ const Header = () => {
     const navigate = useNavigate();
     const [clogout, setClogout] = useState(false);
     const user = useSelector(getInfor)
+    const balance = useSelector(getBalance)
+    console.log("balance: ", balance)
     let axiosJWT = createAxios(user, dispatch, setInfor);
     const login = async () => {
         // if (walletAddress === "" || walletAddress === undefined) {
@@ -120,6 +122,7 @@ const Header = () => {
                     </NavLink>
                 </div>
                 <div className="header__col2">
+
                     <div className="header__ele header__ele--aboutus">
                         <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/'>
                             HOME
@@ -135,6 +138,7 @@ const Header = () => {
                             FORUM
                         </NavLink>
                     </div>
+                    
                     {
                         walletAddress && walletAddress.length > 0 ?
                             <div>
@@ -183,6 +187,12 @@ const Header = () => {
                                 </div>
                             </MenuItem>
                         </Menu>
+                        {walletAddress ? <div className='balance'>
+                            <div >Balance:</div>
+                            <div className='balance-active'> {balance} </div>
+                            <img className='token' src={DCToken}></img>
+                        </div> : null}
+                        
                     </div>
                 </div>
                 <Dialog
@@ -208,6 +218,7 @@ const Header = () => {
                     </DialogActions>
                 </Dialog>
             </Container>
+            
         </header >
     );
 }

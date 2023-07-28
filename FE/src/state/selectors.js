@@ -11,3 +11,8 @@ export const getInfor = createSelector(
     userSelector,
     (user) => user.infor
 )
+
+export const getBalance = createSelector(
+    userSelector,
+    (user) => user.balance
+)

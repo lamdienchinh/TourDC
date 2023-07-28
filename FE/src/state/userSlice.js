@@ -1,22 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { getBalanceOf } from '../service/api';
+
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
         address: "",
-        infor: {}
+        infor: {},
+        balance: 0,
     },
     reducers: {
         setUser: (state, action) => {
             state.address = action.payload.address;
             state.infor = action.payload.infor;
+            state.balance = action.payload.balance
         },
         clearUser: (state) => {
             state.address = "";
         },
         setInfor: (state, action) => {
             state.infor = action.payload.infor;
+        },
+        setBalance: (state, action) => {
+            state.balance = action.payload.balance;
         }
     },
 });
@@ -35,7 +43,9 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
             });
             console.log(infor)
             console.log(infor.data)
-            dispatch(setUser({ address: accounts[0], infor: infor.data }));
+            let balance = await getBalanceOf(accounts[0]);
+            console.log(balance);
+            dispatch(setUser({ address: accounts[0], infor: infor.data, balance: Number(balance) }));
             toast.success("Kết nối ví Metamask thành công")
         } catch (err) {
             console.log(err.message);
@@ -99,6 +109,14 @@ export const logout = createAsyncThunk('user/logout', async ({ token, axiosJWT }
     catch (err) {
         console.log(err)
         dispatch(clearUser());
+    }
+})
+export const updateBalance = createAsyncThunk('getBalance', async(currentAccount) =>{
+    try {
+        let balance = await getBalanceOf(currentAccount);
+        // dispatch(setBalance({balance: balance}))
+    } catch (error) {
+        
     }
 })
 

@@ -339,7 +339,6 @@ const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title,
     }
 }
 
-
 export {
     getAllPlace,
     reviewtoBE,

@@ -113,6 +113,22 @@
     flex-direction: row;
     gap: 1rem;
 }
+.token{
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    // margin-top: 5px;
+    float: right;
+}
+.balance {
+    margin-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.balance-active{
+    margin-left: 5px;
+}
 // .camera-button:hover {
 //     background-color: #ffffff;
 //     color: #57b5fa;
