@@ -25,11 +25,12 @@ import { reviewTrip } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 import { getTrips, reviewtoBE } from '../../service/api';
 import { createAxios } from "../../utils/createInstance";
-import { setInfor, updateBalance } from "../../state/userSlice";
+import { setBalance, setInfor, updateBalance } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
 import { getAllReviewsInAllPlaces } from '../../service/api';
 import { getBalanceOf } from '../../service/api';
 import Web3 from 'web3';
+import { getBalance } from '../../state/selectors';
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 function PaperComponent(props) {
     return (
@@ -52,7 +53,8 @@ const Trips = () => {
     const dispatch = useDispatch();
     const user = useSelector(getInfor)
     let axiosJWT = createAxios(user, dispatch, setInfor);
-
+    const balance = useSelector(getBalance)
+    console.log(balance)
     // Fetch data từ blockchain
     const [journeys, setJourneys] = useState([]);
     const [currentAccount] = useState(useSelector(getUserData));
@@ -63,11 +65,11 @@ const Trips = () => {
 
             //Thực hiện các bước để lấy dữ liệu infor
             let getTripsInPlace = await getAllReviewsInAllPlaces()
-            console.log("getPlace: ", getTripsInPlace);
+            // console.log("getPlace: ", getTripsInPlace);
             const infor = await getAllTrips(currentAccount);
-            console.log("infor:", infor)
+            // console.log("infor:", infor)
             let temp = await getTrips(userinfor.accessToken, axiosJWT)
-            console.log("Get Trip from BE", temp.data)
+            // console.log("Get Trip from BE", temp.data)
             temp = temp.data
             const mergedArray = infor.map((item1) => {
                 const matchingElement = temp.find((item2) => item2.tripid === (item1.tripId).toString());
@@ -77,13 +79,13 @@ const Trips = () => {
                     return item1;
                 }
             });
-            console.log("Merge Array", mergedArray)
+            // console.log("Merge Array", mergedArray)
             setJourneys(mergedArray)
             setAllTrips(mergedArray)
             setIsLoading(false)
         }
         fetchData(currentAccount);
-        console.log("Trips: ", allTrips);
+        // console.log("Trips: ", allTrips);
     }, [update]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -165,7 +167,7 @@ const Trips = () => {
     }
     const handleClose2 = async (event, action) => {
         event.preventDefault();
-        console.log("selectTrip: ", selectTrip)
+        // console.log("selectTrip: ", selectTrip)
         if (action === 1) {
             let result = {
                 rate: rating,
@@ -193,8 +195,9 @@ const Trips = () => {
                 }
             )
             if (review != -1) {
-                // let balance = await getBalanceOf(currentAccount);
-                dispatch(updateBalance(currentAccount, {dispatch}))
+                console.log("heelo");
+                let type = 1
+                dispatch(updateBalance({type, balance}, dispatch));
             }
             setSelectTrip("");
             setImgs([]);

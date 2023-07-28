@@ -50,7 +50,7 @@ const Header = () => {
     const [clogout, setClogout] = useState(false);
     const user = useSelector(getInfor)
     const balance = useSelector(getBalance)
-    console.log("balance: ", balance)
+    // console.log("balance: ", balance)
     let axiosJWT = createAxios(user, dispatch, setInfor);
     const login = async () => {
         // if (walletAddress === "" || walletAddress === undefined) {
@@ -223,7 +223,7 @@ const Header = () => {
                         </Menu>
                         {walletAddress ? <div className='balance'>
                             <div >Balance:</div>
-                            <div className='balance-active'> {balance/(10**18)} </div>
+                            <div className='balance-active'> {balance} </div>
                             <img className='token' src={DCToken}></img>
                         </div> : null}
 

@@ -111,13 +111,15 @@ export const logout = createAsyncThunk('user/logout', async ({ token, axiosJWT }
         dispatch(clearUser());
     }
 })
-export const updateBalance = createAsyncThunk('getBalance', async(currentAccount, {dispatch}) =>{
-    try {
-        let balance = await getBalanceOf(currentAccount);
+export const updateBalance = createAsyncThunk('getBalance', async({type,balance}, {dispatch}) =>{
+    if (type === 1) {
+        console.log(typeof balance)
         console.log("balance: ", balance)
-        dispatch(setBalance({balance: Number(balance/(10**18))}))
-    } catch (error) {
-        
+        console.log("balance:", balance + 10)
+        dispatch(setBalance({balance: balance + 10}))
+    } else {
+        console.log("type!=1")
+        dispatch(setBalance({balance: balance - 10}))
     }
 })
 
