@@ -35,7 +35,6 @@ const RouterList = () => {
         <Route path="/" element={<Intro />} />
         <Route path="/travel" element={<Home />} />
         <Route path="/placeinfor" element={<PlaceInfor />} />
-        <Route path="*" element={<Error />} />
       </Route>
       {
         walletAddress !== "" && (userinfor?.lastName !== "" || userinfor?.firstName !== "") ?
@@ -60,6 +59,9 @@ const RouterList = () => {
             <Route path="*" element={<User />} />
           </Route>
       }
+      <Route element={<GeneralLayout />}>
+        <Route path="*" element={<Error />} />
+      </Route>
       {/* {
         walletAddress ?
           <Route element={<UserLayout />}>
