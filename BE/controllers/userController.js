@@ -58,7 +58,7 @@ const userController = {
   },
   loginByMetamask: async (req, res) => {
     try {
-      let user = await User.findOne(req.body);
+      let user = await User.findOne(req.body).populate('vouchers');
       if (!user) {
         let newUser = new User(req.body);
         let addUser = await newUser.save();
