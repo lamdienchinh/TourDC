@@ -184,7 +184,7 @@ const Trips = () => {
             const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
             console.log("signature: ", signatureObj.signature);
             const signature = signatureObj.signature
-
+            
             let review = await toast.promise(
                 reviewTrip(currentAccount, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
                     "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature),
@@ -312,7 +312,7 @@ const Trips = () => {
                             </div> : ""
                         }
                         {
-                            isLoading === false ? <div className="trips__results--pagination">
+                            isLoading === false && row1.length > 0 ? <div className="trips__results--pagination">
                                 <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                             </div> : ""
                         }

@@ -97,6 +97,7 @@ const Home = () => {
         let currents = allplaces;
         if (getplaces !== value) {
             setGetPlaces(value);
+            setSelect(1);
             switch (value) {
                 case 1:
                     currents = allplaces.filter(item => item.type === 'danhlam')
@@ -120,6 +121,7 @@ const Home = () => {
         }
         else {
             setGetPlaces(0);
+            setSelect(1);
             setPlaces(allplaces);
         }
     }

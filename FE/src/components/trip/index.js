@@ -30,7 +30,7 @@ const Trip = (props) => {
     return (
         <div className="tripinfor-wrapper">
             <div className="trip__img">
-                <img src={trip.list_imgs ? trip.list_imgs[0] : img} alt="Ảnh Chuyến Đi"></img>
+                <img src={trip?.list_imgs?.length > 0 ? trip.list_imgs[0] : img} alt="Ảnh Chuyến Đi"></img>
             </div>
             <div className="trip__information">
                 {trip.title ? <Typography variant="h6">{trip.title}</Typography> : <Typography variant="h6">Chưa có cảm nghĩ</Typography>}

@@ -74,30 +74,38 @@ const transactionController = {
     console.log("privateKey: ", privateKey)
     console.log("data: ", contract.methods.checkIn(req.body.ticketId, req.body.placeId).encodeABI());
     console.log("privateKeyBuffer: ", privateKeyBuffer)
-    web3.eth.getTransactionCount(publicKey,'latest', (err, txCount) => {
-      console.log("hello")
+    let nonce = await web3.eth.getTransactionCount(publicKey,'latest');
+    console.log("nonce:", nonce)
+    let data = contract.methods.checkIn(req.body.ticketId, req.body.placeId).encodeABI();
+    console.log("data", data)
+    let gas = web3.utils.toHex(web3.utils.toWei('1', 'gwei'));
+    let estimateGas = await contract.methods.checkIn(req.body.ticketId, req.body.placeId).estimateGas({gas: 1000000000});
+    
       const txObject = {
-        nonce:    web3.utils.toHex(txCount),
+        nonce: web3.utils.toHex(nonce),
         from: publicKey,
-        gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
+        gasLimit: web3.utils.toHex(estimateGas), // Raise the gas limit to a much higher amount
         // gasPrice: web3.eth.getGasPrice(),
         // gasPrice: '0x09184e72a000',
         // gasLimit: '0x2710',
-        gasPrice: web3.utils.toHex(web3.utils.toWei('100000', 'gwei')),
+        gasPrice: 1000000000,
         to: contractAddress.Token,
-        data: contract.methods.checkIn(req.body.ticketId, req.body.placeId).encodeABI()
+        data: data,
+        
       }
+      console.log("txObj", txObject)
+      
       const tx = new Tx(txObject)
+      console.log("newtxObj", tx)
       tx.sign(privateKeyBuffer)
     
       const serializedTx = tx.serialize()
       const raw = '0x' + serializedTx.toString('hex')	
     
-        web3.eth.sendSignedTransaction(raw, (err, txHash) => {
+      await web3.eth.sendSignedTransaction(raw, (err, txHash) => {
         console.log('err:', err, 'txHash:', txHash)
         })
-    })
-  }
+      }
 }
 
 module.exports = transactionController;

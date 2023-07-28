@@ -116,10 +116,10 @@ export const updateBalance = createAsyncThunk('getBalance', async({type,balance}
         console.log(typeof balance)
         console.log("balance: ", balance)
         console.log("balance:", balance + 10)
-        dispatch(setBalance({balance: balance + 10}))
+        dispatch(setBalance({balance: (balance + 10)*(10**18)}))
     } else {
         console.log("type!=1")
-        dispatch(setBalance({balance: balance - 10}))
+        dispatch(setBalance({balance: (balance - 10)*(10**18)}))
     }
 })
 

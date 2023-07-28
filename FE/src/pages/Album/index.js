@@ -211,7 +211,7 @@ const Album = () => {
                                 </div> : ""
                             }
                             {
-                                isLoading === false ? <div className="album__results--pagination">
+                                isLoading === false && row1.length > 0 ? <div className="album__results--pagination">
                                     <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
                                 </div> : ""
                             }
