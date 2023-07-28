@@ -112,7 +112,7 @@ const ViewAlbum = () => {
             <Container maxWidth="lg">
                 <div className="viewalbum__body">
                     <div className="viewalbum__sidebar">
-                        <h2 className="viewalbum__title">Danh sách địa điểm</h2>
+                        <h2 className="viewalbum__title">Các chuyến đi</h2>
                         <ul className="viewalbum__location-list">
                             {trips && trips.map((location) => (
                                 <div
@@ -144,7 +144,13 @@ const ViewAlbum = () => {
                                             readOnly
                                         />
                                     </label>
-                                    <label>
+                                    <div className="viewalbum__title">
+                                        {selectedLocation?.title}
+                                    </div>
+                                    <div>
+                                        {selectedLocation?.review}
+                                    </div>
+                                    {/* <label>
                                         <TextField
                                             disabled
                                             id="outlined-controlled"
@@ -162,7 +168,7 @@ const ViewAlbum = () => {
                                             multiline
 
                                         />
-                                    </label>
+                                    </label> */}
                                     <label>
                                         <div className="viewealbum-img-wrapper">
                                             <Gallery>
@@ -187,7 +193,7 @@ const ViewAlbum = () => {
                                 </div>
                             </div>
                         ) : (
-                            <p className="viewalbum__empty-message">Chọn một địa điểm để xem thông tin chi tiết</p>
+                            <p className="viewalbum__empty-message">Chọn một chuyến đi để xem thông tin chi tiết</p>
                         )}
                     </div>
                 </div>

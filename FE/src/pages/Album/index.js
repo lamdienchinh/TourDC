@@ -59,6 +59,7 @@ const Album = () => {
             console.log(result);
             setAlbums(result.data);
             setAllAlbums(result.data)
+            setIsLoading(false)
         }
         fetchdata();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -74,7 +75,6 @@ const Album = () => {
         setRow1(row1);
         setRow2(row2);
         setTotalPages(totalPages);
-        setIsLoading(false)
     }, [albums, select]);
 
     useEffect(() => {
@@ -193,27 +193,33 @@ const Album = () => {
                     <div className="album__col col2">
                         <div className="album__results">
                             {
-                                isLoading === false && <div className="album__results--1">
+                                isLoading === false && row1.length > 0 ? < div className="album__results--1">
                                     {row1 && row1.map((item, itemIndex) => (
-                                        <AlbumThumbnail key={itemIndex} album={item} />
+                                        <div className="album__items" key={itemIndex}>
+                                            <AlbumThumbnail album={item} />
+                                        </div>
                                     ))}
-                                </div>
+                                </div> : ""
                             }
                             {
-                                isLoading === false && <div className="album__results--2">
+                                isLoading === false && row2.length > 0 ? <div className="album__results--2">
                                     {row2 && row2.map((item, itemIndex) => (
-                                        <AlbumThumbnail key={itemIndex} album={item} />
+                                        <div className="album__items" key={itemIndex}>
+                                            <AlbumThumbnail album={item} />
+                                        </div>
                                     ))}
-                                </div>
+                                </div> : ""
                             }
-                            <div className="album__results--pagination">
-                                <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
-                            </div>
+                            {
+                                isLoading === false ? <div className="album__results--pagination">
+                                    <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
+                                </div> : ""
+                            }
                         </div>
                     </div>
                 </div>
-            </Container>
-        </div>
+            </Container >
+        </div >
     );
 };
 

@@ -1,5 +1,5 @@
 import "./css/User.scss";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Container from "@mui/material/Container";
 import { TextField, Button, Avatar, Input } from '@mui/material';
 import { getInfor } from "../../state/selectors";
@@ -8,6 +8,7 @@ import { createAxios } from "../../utils/createInstance"
 import 'react-toastify/dist/ReactToastify.css';
 import { changeAvatar, changeInfor, setInfor } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 // import img from "../../assets/imgs/avatar.png"
 const User = () => {
@@ -53,7 +54,11 @@ const User = () => {
             setAvatarchange(URL.createObjectURL(file))
         else setAvatarchange("")
     };
-
+    useEffect(() => {
+        if (user.firstName === "" || user.lastname === "") {
+            toast.error("Cần nhập đủ thông tin để thực hiện các chức năng khác")
+        }
+    }, [user])
     return (
         <section className='user-page'>
             <Container maxWidth="lg">
@@ -82,7 +87,7 @@ const User = () => {
                         <form ref={form2Ref} onSubmit={handleSubmit2}>
                             <TextField
                                 id="firstname"
-                                label="Firstname"
+                                label="Tên"
                                 type="text"
                                 value={firstname}
                                 onChange={(e) => setFirstname(e.target.value)}
@@ -93,7 +98,7 @@ const User = () => {
                             />
                             <TextField
                                 id="lastname"
-                                label="Lastname"
+                                label="Họ và tên lót"
                                 type="text"
                                 value={lastname}
                                 onChange={(e) => setLastname(e.target.value)}
@@ -115,7 +120,7 @@ const User = () => {
                             />
                             <TextField
                                 id="phonenumber"
-                                label="Phonenumber"
+                                label="Số điện thoại"
                                 type="text"
                                 value={phonenumber}
                                 onChange={(e) => setPhonenumber(e.target.value)}

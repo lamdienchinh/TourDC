@@ -79,10 +79,10 @@ const Trips = () => {
             console.log("Merge Array", mergedArray)
             setJourneys(mergedArray)
             setAllTrips(mergedArray)
+            setIsLoading(false)
         }
         fetchData(currentAccount);
         console.log("Trips: ", allTrips);
-        setIsLoading(false)
     }, [update]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -93,7 +93,7 @@ const Trips = () => {
     const [row1, setRow1] = useState([]);
     const [row2, setRow2] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
-    const [value, setValue] = useState(dayjs('2022-04-17T15:30'));
+    const [value, setValue] = useState(dayjs());
     const [scroll, setScroll] = useState('paper');
     //Lấy place để hiển thị
     //handle chọn trang
@@ -176,7 +176,7 @@ const Trips = () => {
             // console.log("review:",review);
             // Tạo chữ kí
             // create signature
-            const hashedMessage = web3.utils.soliditySha3(currentAccount, 10, result.description + result.rate + result.title, 0);  
+            const hashedMessage = web3.utils.soliditySha3(currentAccount, 10, result.description + result.rate + result.title, 0);
             console.log("Hashed Message: ", hashedMessage)
             const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
             console.log("signature: ", signatureObj.signature);
@@ -184,7 +184,7 @@ const Trips = () => {
 
             let review = await toast.promise(
                 reviewTrip(currentAccount, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
-                    "0xcbffe3fa9226a7cD7CfFC770103299B83518F538",currentAccount,10,result.description + result.rate + result.title,0,signature),
+                    "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature),
                 {
                     pending: 'Đang đợi xử lí',
                     // success: 'Lưu cảm nghĩ thành công !',
@@ -277,29 +277,37 @@ const Trips = () => {
                                         label="Chọn ngày"
                                         value={value}
                                         onChange={(newValue) => setValue(newValue)}
+                                        renderInput={(params) => <TextField {...params} />}
+                                        views={['year', 'month', 'day']}
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
                         </div>
                     </div>
                     <div className="trips-col2">
-                        {isLoading === false && <div className="trips__results--1">
-                            {row1 && row1.map((item, itemIndex) => (
-                                <div onClick={() => handleOpen1(item)} key={itemIndex}>
-                                    <Trip trip={item}></Trip>
-                                </div>
-                            ))}
-                        </div>}
-                        {isLoading === false && <div className="trips__results--2">
-                            {row2 && row2.map((item, itemIndex) => (
-                                <div onClick={() => handleOpen1(item)} key={itemIndex}>
-                                    <Trip trip={item}></Trip>
-                                </div>
-                            ))}
-                        </div>}
-                        <div className="trips__results--pagination">
-                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
-                        </div>
+                        {
+                            row1 && row1.length > 0 && isLoading === false ? <div className="trips__results--1">
+                                {row1 && row1.map((item, itemIndex) => (
+                                    <div onClick={() => handleOpen1(item)} key={itemIndex}>
+                                        <Trip trip={item}></Trip>
+                                    </div>
+                                ))}
+                            </div> : ""
+                        }
+                        {
+                            row2 && row2.length > 0 && isLoading === false ? <div className="trips__results--1">
+                                {row2 && row2.map((item, itemIndex) => (
+                                    <div onClick={() => handleOpen1(item)} key={itemIndex}>
+                                        <Trip trip={item}></Trip>
+                                    </div>
+                                ))}
+                            </div> : ""
+                        }
+                        {
+                            isLoading === false ? <div className="trips__results--pagination">
+                                <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
+                            </div> : ""
+                        }
                     </div>
                 </div>
                 <div>
@@ -376,7 +384,7 @@ const Trips = () => {
                                                     key={index}
                                                 >
                                                     {({ ref, open }) => (
-                                                        <img ref={ref} onClick={open} src={window.URL.createObjectURL(item)} alt="ảnh" />
+                                                        <img className="trip-img-inside" ref={ref} onClick={open} src={window.URL.createObjectURL(item)} alt="ảnh" />
                                                     )}
                                                 </Item>
                                             ))
@@ -391,7 +399,7 @@ const Trips = () => {
                                                     key={index}
                                                 >
                                                     {({ ref, open }) => (
-                                                        <img ref={ref} onClick={open} src={item} alt="ảnh" />
+                                                        <img className="trip-img-inside" ref={ref} onClick={open} src={item} alt="ảnh" />
                                                     )}
                                                 </Item>
                                             ))
@@ -404,7 +412,9 @@ const Trips = () => {
                             <Button autoFocus onClick={(event) => handleClose1(event, 0)}>
                                 Huỷ
                             </Button>
-                            <Button onClick={(event) => handleClose1(event, 1)}>Lưu</Button>
+                            {
+                                selectTrip.isReview === false ? <Button onClick={(event) => handleClose1(event, 1)}>Lưu</Button> : ""
+                            }
                         </DialogActions>
                     </Dialog>
                     <Dialog

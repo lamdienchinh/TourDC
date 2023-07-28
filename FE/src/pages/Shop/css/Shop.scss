@@ -9,7 +9,20 @@
     max-width: 1200px;
     width: 100%;
 }
-
+.shop__slides {
+    width: 100%;
+    font-size: 60px;
+    font-family: Lobster, sans-serif;
+    color: white;
+    height: 18rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../../assets/imgs/shop_slide.jpg");
+    margin-bottom: 30px;
+    background-size: cover;
+}
 .filter-bar {
     display: flex;
     align-items: center;

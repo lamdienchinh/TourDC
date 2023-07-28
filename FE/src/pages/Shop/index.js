@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Pagination, Box, TextField, Button } from '@mui/material';
+import { Grid, Pagination, Box, TextField, Button, Breadcrumbs, Link, Typography } from '@mui/material';
 import VoucherDetail from '../../components/voucherdetail';
 import list from "../../constants";
 import './css/Shop.scss';
@@ -14,7 +14,7 @@ const VoucherShop = () => {
     const [filterPriceMax, setFilterPriceMax] = useState('');
     const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
     const totalPages = Math.ceil(products.length / itemsPerPage);
-    
+
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
     };
@@ -52,57 +52,72 @@ const VoucherShop = () => {
             setAllVouchers(data);
         }
         fetchVouchers();
-    },[])
+    }, [])
     return (
-        <Container maxWidth="lg">
-            <Box className="product-list-container">
-                <div className="sidebar">
-                    {/* Thêm các loại sản phẩm vào đây */}
+        <div className="shop-wrapper">
+            <div className="shop__slides">
+                <div className="shop__slides__content">
+                    Mua sắm vouchers
                 </div>
-                <div className="product-list">
-                    <div className="filter-bar">
-                        <TextField
-                            type="number"
-                            label="Giá từ"
-                            variant="outlined"
-                            size="small"
-                            value={filterPriceMin}
-                            onChange={(e) => setFilterPriceMin(e.target.value)}
-                        />
-                        <TextField
-                            type="number"
-                            label="Giá đến"
-                            variant="outlined"
-                            size="small"
-                            value={filterPriceMax}
-                            onChange={(e) => setFilterPriceMax(e.target.value)}
-                        />
-                        <TextField
-                            label="Tìm kiếm theo tên"
-                            variant="outlined"
-                            size="small"
-                            onChange={handleSearchByName}
-                        />
-                        <Button variant="contained" color="primary" onClick={handleFilterByPriceRange}>
-                            Lọc giá
-                        </Button>
-                    </div>
-                    <Grid container spacing={2}>
-                        {allVouchers.slice(startIndex, endIndex).map((voucher, index) => (
-                            <Grid key={index} item xs={12} sm={6} md={3}>
-                                <div className="product-item">
-                                    <VoucherDetail product={voucher} />
-                                </div>
-                            </Grid>
-                        ))}
-                    </Grid>
-                    {/* Hiển thị phân trang */}
-                    <div className="shop__pagination">
-                        <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} sx={{ marginTop: 2 }} />
-                    </div>
+                <div className="shop__slides_breadcumb">
+                    <Breadcrumbs aria-label="breadcrumb">
+                        <Link underline="hover" color="black" href="/">
+                            Home
+                        </Link>
+                        <Typography color="text.primary">Shop</Typography>
+                    </Breadcrumbs>
                 </div>
-            </Box>
-        </Container>
+            </div>
+            <Container maxWidth="lg">
+                <Box className="product-list-container">
+                    <div className="sidebar">
+                        {/* Thêm các loại sản phẩm vào đây */}
+                    </div>
+                    <div className="product-list">
+                        <div className="filter-bar">
+                            <TextField
+                                type="number"
+                                label="Giá từ"
+                                variant="outlined"
+                                size="small"
+                                value={filterPriceMin}
+                                onChange={(e) => setFilterPriceMin(e.target.value)}
+                            />
+                            <TextField
+                                type="number"
+                                label="Giá đến"
+                                variant="outlined"
+                                size="small"
+                                value={filterPriceMax}
+                                onChange={(e) => setFilterPriceMax(e.target.value)}
+                            />
+                            <TextField
+                                label="Tìm kiếm theo tên"
+                                variant="outlined"
+                                size="small"
+                                onChange={handleSearchByName}
+                            />
+                            <Button variant="contained" color="primary" onClick={handleFilterByPriceRange}>
+                                Lọc giá
+                            </Button>
+                        </div>
+                        <Grid container spacing={2}>
+                            {allVouchers.slice(startIndex, endIndex).map((voucher, index) => (
+                                <Grid key={index} item xs={12} sm={6} md={3}>
+                                    <div className="product-item">
+                                        <VoucherDetail product={voucher} />
+                                    </div>
+                                </Grid>
+                            ))}
+                        </Grid>
+                        {/* Hiển thị phân trang */}
+                        <div className="shop__pagination">
+                            <Pagination count={totalPages} page={currentPage} onChange={handleChangePage} sx={{ marginTop: 2 }} />
+                        </div>
+                    </div>
+                </Box>
+            </Container>
+        </div>
     );
 };
 

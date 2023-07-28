@@ -76,6 +76,11 @@
     z-index: 1;
     color: white;
     font-size: 2rem;
+    &:focus {
+        /* Định dạng cho trạng thái active của input */
+        /* Ví dụ: thay đổi màu nền và màu chữ khi input được nhấn vào */
+        outline: none;
+    }
 }
 
 .code-btn {

@@ -140,7 +140,7 @@ const Review = (props) => {
             total += props.review.dislike.length
         }
         if (total > 0) {
-            setTrustRate(like / total * 100);
+            setTrustRate(props.review?.like.length * 100 / total);
         }
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
     return (
@@ -156,7 +156,7 @@ const Review = (props) => {
                         </div>
                     </div>
                     <div className="review__verify">
-                        <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực</a>
+                        <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực cảm nghĩ</a>
                     </div>
                     <div className="review__verify">
                         {`Độ tin cậy: ${trustrate}`}
@@ -181,7 +181,7 @@ const Review = (props) => {
                         <Gallery>
                             {
                                 props.review?.list_imgs && props.review.list_imgs.map((item, index) => (
-                                    <div>
+                                    <div className="review-img">
                                         <Item
                                             original={item}
                                             thumbnail={item}
@@ -190,7 +190,7 @@ const Review = (props) => {
                                             key={index}
                                         >
                                             {({ ref, open }) => (
-                                                <img ref={ref} onClick={open} src={item} alt="ảnh" />
+                                                <img className="review-img-inside" ref={ref} onClick={open} src={item} alt="ảnh" />
                                             )}
                                         </Item>
                                     </div>

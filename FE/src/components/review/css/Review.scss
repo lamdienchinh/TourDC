@@ -30,6 +30,9 @@
                 color: #62b966;
                 font-weight: 500;
                 padding-bottom: 5px;
+                & > a {
+                    text-decoration: none;
+                }
             }
         }
         & .review__column2 {
@@ -83,15 +86,11 @@
     align-items: center;
     gap: 5px;
     padding: 8px 15px;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
     cursor: pointer;
     color: #333;
     font-size: 14px;
-    transition:
-        background-color 0.3s,
-        color 0.3s;
+    border: none;
+    background-color: transparent;
 }
 
 .like-button:hover,
@@ -111,33 +110,24 @@
 }
 
 /* Tuỳ chỉnh màu cho nút Like */
-.like-button {
-}
 
 .like-button:hover {
-    background-color: #1976d2;
-}
-
-/* Tuỳ chỉnh màu cho nút Dislike */
-.dislike-button {
+    border-radius: 10px;
+    // background-color: #1976d2;
 }
 
 .dislike-button:hover {
-    background-color: #d32f2f;
+    // background-color: #d32f2f;
+    border-radius: 10px;
 }
 
 .like-button.active {
-    background-color: #2196f3;
-    color: #fff;
-    border: none;
+    color: #04a2f0;
 }
 .dislike-button.active {
-    background-color: #f44336;
-    color: #fff;
-    border: none;
+    color: #04a2f0;
 }
 
-/* Hover state cho active nút */
-.like-button.active:hover,
-.dislike-button.active:hover {
+.review-img-inside {
+    object-fit: cover;
 }

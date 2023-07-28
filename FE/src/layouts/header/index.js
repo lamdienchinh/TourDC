@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 // import { connectWallet } from '../../state/userSlice';
@@ -24,6 +24,7 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, P
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import LogoutIcon from '@mui/icons-material/Logout';
+import BackpackIcon from '@mui/icons-material/Backpack';
 import { createAxios } from '../../utils/createInstance';
 import { setInfor } from '../../state/userSlice';
 
@@ -87,6 +88,9 @@ const Header = () => {
         else if (selection === "logout") {
             setClogout(true);
         }
+        else if (selection === "vouchers") {
+            navigate("/vouchers")
+        }
         setAnchorEl(null);
     };
 
@@ -98,9 +102,24 @@ const Header = () => {
         }
         setClogout(false);
     }
+    const [scrolled, setScrolled] = useState(false);
 
+    const handleScroll = () => {
+        if (window.scrollY > 0) {
+            setScrolled(true);
+        } else {
+            setScrolled(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
     return (
-        <header className="header">
+        <header className={`header ${scrolled ? 'scrolled' : ''}`}>
             <Container maxWidth="lg">
                 <ToastContainer position="bottom-right"
                     type="success"
@@ -130,14 +149,24 @@ const Header = () => {
                             TRAVEL
                         </NavLink>
                     </div>
-                    <div className="header__ele header__ele--home">
-                        <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/forum'>
-                            FORUM
-                        </NavLink>
-                    </div>
                     {
                         walletAddress && walletAddress.length > 0 ?
-                            <div>
+                            <>
+                                <div className="header__ele header__ele--forum">
+                                    <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/forum'>
+                                        FORUM
+                                    </NavLink>
+                                </div>
+                                <div className="header__ele header__ele--shop">
+                                    <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/shop'>
+                                        SHOP
+                                    </NavLink>
+                                </div>
+                            </> : ""
+                    }
+                    {
+                        walletAddress && walletAddress.length > 0 ?
+                            <div className="header__login__eles">
                                 <div className="user__camera">
                                     <button className="camera-button" onClick={openCamera}>
                                         <FaCamera className="camera-icon" />
@@ -174,6 +203,12 @@ const Header = () => {
                                 <div className="menu-wrapper">
                                     <CollectionsIcon />
                                     Album
+                                </div>
+                            </MenuItem>
+                            <MenuItem onClick={(event) => handleClose(event, "vouchers")}>
+                                <div className="menu-wrapper">
+                                    <BackpackIcon />
+                                    Vouchers
                                 </div>
                             </MenuItem>
                             <MenuItem onClick={(event) => handleClose(event, "logout")}>

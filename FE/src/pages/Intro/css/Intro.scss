@@ -1,5 +1,5 @@
 .intro-section {
-    height: 50rem;
+    height: 46.5rem;
     // overflow: auto;
     // padding-top: 120px;
     display: flex;
@@ -104,15 +104,16 @@
     justify-content: center;
     align-items: center;
     padding: 0.8rem 0.5em;
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
+    font-size: 20px;
     transition:
         color 0.3s,
         background-color;
 }
 .intro-tohome:hover {
-    scale: 1.02;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
 }
 
 .intro-plane {
@@ -264,7 +265,9 @@
 }
 
 .review-wrapper {
-    background-color: #70c1fb;
+    backdrop-filter: blur(50px);
+    background-color: transparent;
+    color: rgb(255, 255, 255);
     border-width: 0px 0px 0px 0px;
     border-radius: 15px;
     padding: 50px 50px 50px 50px;

@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 .home {
-    padding-top: 60px;
+    background-color: #f0f2f5;
     & .home__slides {
         width: 100%;
         font-size: 60px;
@@ -30,6 +30,7 @@
         box-sizing: border-box;
         border-radius: 25px;
         padding: 5px;
+        margin-bottom: 1rem;
         & > div {
             width: 100%;
         }
@@ -37,7 +38,7 @@
             width: 100%;
         }
         & .search-icon {
-            background-color: rgb(255, 255, 255);
+            background-color: #f0f2f5;
             color: rgb(34, 159, 255);
             box-sizing: border-box;
             padding-top: 10px;
@@ -77,9 +78,12 @@
             text-align: center;
             border-bottom: 1px solid rgb(188, 186, 186);
             width: 100%;
+            padding-top: 10px;
+            padding-bottom: 1rem;
         }
     }
     & .type-wrapper {
+        padding-top: 1rem;
         display: flex;
         flex-direction: row;
         justify-content: center;
