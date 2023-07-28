@@ -223,7 +223,7 @@ const Header = () => {
                         </Menu>
                         {walletAddress ? <div className='balance'>
                             <div >Balance:</div>
-                            <div className='balance-active'> {balance} </div>
+                            <div className='balance-active'> {balance/(10**18)} </div>
                             <img className='token' src={DCToken}></img>
                         </div> : null}
                         
