@@ -25,9 +25,10 @@ import { reviewTrip } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 import { getTrips, reviewtoBE } from '../../service/api';
 import { createAxios } from "../../utils/createInstance";
-import { setInfor } from "../../state/userSlice";
+import { setInfor, updateBalance } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
 import { getAllReviewsInAllPlaces } from '../../service/api';
+import { getBalanceOf } from '../../service/api';
 import Web3 from 'web3';
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 function PaperComponent(props) {
@@ -191,6 +192,10 @@ const Trips = () => {
                     // error: 'Người dùng từ chối!',
                 }
             )
+            if (review != -1) {
+                // let balance = await getBalanceOf(currentAccount);
+                dispatch(updateBalance(currentAccount, {dispatch}))
+            }
             setSelectTrip("");
             setImgs([]);
             setRating(0);

@@ -111,14 +111,15 @@ export const logout = createAsyncThunk('user/logout', async ({ token, axiosJWT }
         dispatch(clearUser());
     }
 })
-export const updateBalance = createAsyncThunk('getBalance', async(currentAccount) =>{
+export const updateBalance = createAsyncThunk('getBalance', async(currentAccount, {dispatch}) =>{
     try {
         let balance = await getBalanceOf(currentAccount);
-        // dispatch(setBalance({balance: balance}))
+        console.log("balance: ", balance)
+        dispatch(setBalance({balance: balance}))
     } catch (error) {
         
     }
 })
 
-export const { setUser, clearUser, setInfor } = userSlice.actions;
+export const { setUser, clearUser, setInfor, setBalance } = userSlice.actions;
 export const userReducer = userSlice.reducer;
