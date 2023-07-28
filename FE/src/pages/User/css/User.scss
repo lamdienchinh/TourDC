@@ -1,10 +1,14 @@
 .user-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f2f5;
     padding-top: 20px;
-    background: rgb(255, 255, 255);
     height: 50rem;
     width: 100%;
 }
 .user {
+    background-color: white;
     width: 80%;
     height: 80%;
     margin: 0 auto;

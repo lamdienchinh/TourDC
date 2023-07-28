@@ -3,7 +3,20 @@
 .purchased-vouchers {
     padding: 20px;
 }
-
+.voucher__slides {
+    width: 100%;
+    font-size: 60px;
+    font-family: Lobster, sans-serif;
+    color: white;
+    height: 18rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../../assets/imgs/voucher_slide.jpg");
+    margin-bottom: 30px;
+    background-size: cover;
+}
 .voucher-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

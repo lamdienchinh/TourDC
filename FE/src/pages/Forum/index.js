@@ -258,18 +258,24 @@ const Forum = () => {
                                 </Dialog>
                             </div>
                         </div>
-                        <h1>Danh sách bài viết</h1>
-                        <LazyLoad>
-                            {poststoview.map((post, index) => (
-                                <FBPost
-                                    key={index}
-                                    data={post}
-                                />
-                            ))}
-                        </LazyLoad>
-                        <div className="forum__pagination">
-                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
-                        </div>
+                        {
+                            poststoview && poststoview.length > 0 ? <div>
+                                <h1>Danh sách bài viết</h1>
+                                <LazyLoad>
+                                    {poststoview.map((post, index) => (
+                                        <FBPost
+                                            key={index}
+                                            data={post}
+                                        />
+                                    ))}
+                                </LazyLoad>
+                            </div> : ""
+                        }
+                        {
+                            isLoading === false ? <div className="forum__pagination">
+                                <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
+                            </div> : ""
+                        }
                     </div>
                     <div className="forum__sidebar">
                         <div className="forum-categories-item">

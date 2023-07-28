@@ -391,16 +391,16 @@ const FBPost = (props) => {
                                     {
                                         reaction !== "like" ? <AiOutlineLike style={{ fontSize: `1.5rem` }} /> : <AiFillLike className="reaction-icon-active" style={{ fontSize: `1.5rem` }} />
                                     }
+                                    {likes}
                                 </button>
-                                {likes}
                             </div>
                             <div className="dislikes" style={{ marginLeft: "25px" }}>
                                 <button className='likebtns' onClick={() => handleReaction("dislike")}>
                                     {
                                         reaction !== "dislike" ? <AiOutlineDislike style={{ fontSize: `1.5rem` }} /> : <AiFillDislike className="reaction-icon-active" style={{ fontSize: `1.5rem` }} />
                                     }
+                                    {dislikes}
                                 </button>
-                                {dislikes}
                             </div>
                             <div className="comment" style={{ marginLeft: "25px" }}>
                                 <button className='likebtns' onClick={handleFormOpen}> <AiOutlineComment style={{ fontSize: `20px` }} /></button>

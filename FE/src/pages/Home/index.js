@@ -163,9 +163,7 @@ const Home = () => {
         });
         console.log(typeof (type))
         if (type === "2") {
-            console.log("Run")
             arr.reverse();
-            console.log("Run")
         }
         console.log(arr)
         setPlaces(arr);
@@ -196,7 +194,7 @@ const Home = () => {
             <Container maxWidth="lg">
                 <div className="places-wrapper">
                     <div className="home__options">
-                        <h1>Tìm kiếm địa điểm du lịch</h1>
+                        <h1>Tìm kiếm địa điểm</h1>
                         <div className="home__slides--searchbar" >
                             <TextField
                                 label="Tìm kiếm"
@@ -207,7 +205,7 @@ const Home = () => {
                             />
                             <FaSearch className="search-icon" onClick={() => search()}></FaSearch>
                         </div>
-                        <h1>Loại địa điểm du lịch</h1>
+                        <h1>Loại địa điểm</h1>
                         <div className="type-wrapper">
                             <div className={`home-btn home__options--danhlam ${getplaces === 1 ? 'home__options--selected' : ''}`} onClick={() => filter(1)}>
                                 Danh lam
@@ -257,9 +255,11 @@ const Home = () => {
                                     <PlaceThumbnail key={itemIndex} place={item}></PlaceThumbnail>
                                 ))}
                             </div>}
-                        <div className="home__results--pagination">
-                            <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
-                        </div>
+                        {
+                            places && places.length > 0 ? <div className="home__results--pagination">
+                                <Pagination count={totalPages} onChange={handlePageChange} showFirstButton showLastButton color="primary" />
+                            </div> : ""
+                        }
                     </div>
                 </div>
             </Container>

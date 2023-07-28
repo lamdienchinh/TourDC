@@ -28,7 +28,7 @@ const Trip = (props) => {
         }
     }
     return (
-        <div className="trip-wrapper">
+        <div className="tripinfor-wrapper">
             <div className="trip__img">
                 <img src={trip.list_imgs ? trip.list_imgs[0] : img} alt="Ảnh Chuyến Đi"></img>
             </div>

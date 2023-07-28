@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
+    default: ""
   },
   lastName: {
     type: String,
+    default: ""
   },
   email: {
     type: String
@@ -15,6 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
+    default: "https://haycafe.vn/wp-content/uploads/2022/02/Avatar-trang-den.png"
   },
   walletAddress: {
     type: String

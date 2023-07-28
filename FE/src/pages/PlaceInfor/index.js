@@ -9,8 +9,14 @@ import Container from '@mui/material/Container';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getPlace } from "../../service/api";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const PlaceInfor = () => {
+    const [open, setOpen] = useState(true);
+    const handleClose = () => {
+        setOpen(false);
+    };
     const [place, setPlace] = useState();
     const [average, setAverage] = useState(0);
     const [rates, setRates] = useState([]);
@@ -21,10 +27,6 @@ const PlaceInfor = () => {
     const handleChangeFilter = (event) => {
         setSelectedFilter(event.target.value);
     };
-    // const { place1, average1, rates1, reviewCount1 } = information.state;
-    // setAverage(average1);
-    // setRates(rates1);
-    // setReviewCount(reviewCount1);
     const calculateAverageRate = (list) => {
         if (!Array.isArray(list) || list.length === 0) {
             return 0; // Trả về 0 nếu danh sách trống hoặc không hợp lệ
@@ -60,6 +62,7 @@ const PlaceInfor = () => {
                 <img src={placeinfor?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
                 <img src={placeinfor?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
             ]);
+            setOpen(false)
         }
         fetchPlaceInfor()
     }, [window.location.href]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -68,6 +71,7 @@ const PlaceInfor = () => {
     const handleClicks = async (newplace) => {
         console.log("NEW", newplace);
         navigate(`/placeinfor?placeid=${newplace.placeid}`)
+        window.location.reload();
     };
     const filterReviews = (reviews, filterValue) => {
         switch (filterValue) {
@@ -83,68 +87,79 @@ const PlaceInfor = () => {
     };
     return (
         <div className="placeinfor">
-            <div className="placeinfor__slide">
-                <img src={place?.thumbnail} alt="Ảnh nền"></img>
-                <div className="placeinfor__content">
-                    <div className="placeinfor__title">
-                        {place?.name}
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={open}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            {
+                open === false ?
+                    <div className="placeinfor__slide">
+                        <img src={place?.thumbnail} alt="Ảnh nền"></img>
+                        <div className="placeinfor__content">
+                            <div className="placeinfor__title">
+                                {place?.name}
+                            </div>
+                        </div>
+                        <div className="placeinfor__suggest">
+                            <div className="placeinfor__suggest--1">
+                                <div>
+                                    <img src={place?.referPlaces[0].thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[0])}></img>
+                                </div>
+                                <div className="placeinfor__suggest--infor">
+                                    <div className="placeinfor__suggest--row1">
+                                        ĐI ĐẾN ĐỊA ĐIỂM
+                                    </div>
+                                    <div className="placeinfor__suggest--row2">
+                                        {place?.referPlaces[0].name}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="placeinfor__suggest--2">
+                                <div>
+                                    <img src={place?.referPlaces[1]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[1])}></img>
+                                </div>
+                                <div className="placeinfor__suggest--infor">
+                                    <div>
+                                        ĐI ĐẾN ĐỊA ĐIỂM
+                                    </div>
+                                    <div >
+                                        {place?.referPlaces[1].name}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="placeinfor__suggest--3">
+                                <div>
+                                    <img src={place?.referPlaces[2]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[2])}></img>
+                                </div>
+                                <div className="placeinfor__suggest--infor">
+                                    <div>
+                                        ĐI ĐẾN ĐỊA ĐIỂM
+                                    </div>
+                                    <div >
+                                        {place?.referPlaces[2].name}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="placeinfor__suggest--4">
+                                <div>
+                                    <img src={place?.referPlaces[3]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[3])}></img>
+                                </div>
+                                <div className="placeinfor__suggest--infor">
+                                    <div>
+                                        ĐI ĐẾN ĐỊA ĐIỂM
+                                    </div>
+                                    <div >
+                                        {place?.referPlaces[3].name}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className="placeinfor__suggest">
-                    <div className="placeinfor__suggest--1">
-                        <div>
-                            <img src={place?.referPlaces[0].thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[0])}></img>
-                        </div>
-                        <div className="placeinfor__suggest--infor">
-                            <div className="placeinfor__suggest--row1">
-                                ĐI ĐẾN ĐỊA ĐIỂM
-                            </div>
-                            <div className="placeinfor__suggest--row2">
-                                {place?.referPlaces[0].name}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="placeinfor__suggest--2">
-                        <div>
-                            <img src={place?.referPlaces[1]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[1])}></img>
-                        </div>
-                        <div className="placeinfor__suggest--infor">
-                            <div>
-                                ĐI ĐẾN ĐỊA ĐIỂM
-                            </div>
-                            <div >
-                                {place?.referPlaces[1].name}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="placeinfor__suggest--3">
-                        <div>
-                            <img src={place?.referPlaces[2]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[2])}></img>
-                        </div>
-                        <div className="placeinfor__suggest--infor">
-                            <div>
-                                ĐI ĐẾN ĐỊA ĐIỂM
-                            </div>
-                            <div >
-                                {place?.referPlaces[2].name}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="placeinfor__suggest--4">
-                        <div>
-                            <img src={place?.referPlaces[3]?.thumbnail} alt="Ảnh đề xuất" onClick={() => handleClicks(place?.referPlaces[3])}></img>
-                        </div>
-                        <div className="placeinfor__suggest--infor">
-                            <div>
-                                ĐI ĐẾN ĐỊA ĐIỂM
-                            </div>
-                            <div >
-                                {place?.referPlaces[3].name}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    : ""
+            }
             <Container maxWidth="lg">
                 <div className="placeinfor__intro">
                     <div className="placeinfor__imgs">

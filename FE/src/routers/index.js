@@ -15,7 +15,7 @@ import Trips from "../pages/Trips";
 import Code from "../pages/Code";
 import Forum from "../pages/Forum";
 import { useSelector } from "react-redux";
-import { getUserData } from "../state/selectors";
+import { getInfor, getUserData } from "../state/selectors";
 import Error from "../pages/Error";
 import QrCode from "../pages/QRcode/qrCode";
 import Login from "../pages/login";
@@ -23,20 +23,47 @@ import Register from "../pages/register/register";
 import MyPosts from "../pages/MyPosts";
 import VoucherShop from "../pages/Shop";
 import PurchasedVouchers from "../pages/PurchasedVouchers";
+
 const RouterList = () => {
   const walletAddress = useSelector(getUserData);
+  const userinfor = useSelector(getInfor)
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      <Route element={<GeneralLayout />}>
-        <Route path="/" element={<Intro />} />
-        <Route path="/travel" element={<Home />} />
-        <Route path="/placeinfor" element={<PlaceInfor />} />
-        <Route path="*" element={<Error />} />
-      </Route>
       {
+        !walletAddress ? <Route element={<GeneralLayout />}>
+          <Route path="/" element={<Intro />} />
+          <Route path="/travel" element={<Home />} />
+          <Route path="/placeinfor" element={<PlaceInfor />} />
+          <Route path="*" element={<Error />} />
+        </Route> : ""
+      }
+      {
+        walletAddress && (userinfor?.lastName === "" && userinfor?.firstName === "") ?
+          <Route element={<UserLayout />}>
+            <Route path="*" element={<User />} />
+          </Route> :
+          <Route element={<UserLayout />}>
+            <Route path="/" element={<Intro />} />
+            <Route path="/travel" element={<Home />} />
+            <Route path="/placeinfor" element={<PlaceInfor />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/album" element={<Album />} />
+            <Route path="/viewalbum" element={<ViewAlbum />} />
+            <Route path="/createalbum" element={<CreateAlbum />} />
+            <Route path="/trips" element={<Trips />} />
+            <Route path="/code" element={<Code />} />
+            <Route path="/forum" element={<Forum />}></Route>
+            <Route path="/qrcode" element={<QrCode />} />
+            <Route path="/myposts" element={<MyPosts />} />
+            <Route path="/shop" element={<VoucherShop />} />
+            <Route path="/vouchers" element={<PurchasedVouchers />} />
+            <Route path="*" element={<Error />} />
+          </Route>
+      }
+      {/* {
         walletAddress ?
           <Route element={<UserLayout />}>
             <Route path="/user" element={<User />} />
@@ -50,10 +77,9 @@ const RouterList = () => {
             <Route path="/myposts" element={<MyPosts />} />
             <Route path="/shop" element={<VoucherShop />} />
             <Route path="/vouchers" element={<PurchasedVouchers />} />
-          </Route>
-          :
-          <Route path="*" element={<Error />} />
-      }
+            <Route path="*" element={<Error />} />
+          </Route> : ""
+      } */}
     </Routes>
   );
 };
