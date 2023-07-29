@@ -42,12 +42,17 @@ const PlaceThumbnail = (props) => {
                 <div className="placethumbnail__image">
                     <img src={props.place.thumbnail} alt="Ảnh"></img>
                 </div>
+                <div className="average">
                 <div className="placethumbnail__rate">
-                    <Rating name="size-large" value={average} precision={0.5} size="large" readOnly />
-                    <div>
-                        {average}
-                    </div>
+                        <Rating className="star" name="size-large" value={average} precision={0.5} size="large" readOnly />
+                        </div>
+                        <div className="box">
+                        <div className="average_index">{average}</div>
+                        <div className="average_text">trên 5</div>
+                        </div>
+                        
                 </div>
+                
                 <div className="placethumbnail__title">
                     {props.place.name}
                 </div>

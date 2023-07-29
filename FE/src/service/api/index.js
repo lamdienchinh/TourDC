@@ -225,21 +225,19 @@ const autoCheckIn = async (user, ticketId, placeId) => {
     const publicKey = user.walletAddress;
     const privateKey = user.privateKey;
     try {
-        console.log("heelooo")
         let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autocheckin`, {
             publicKey: publicKey,
             privateKey: privateKey,
             ticketId: ticketId,
             placeId: placeId
         })
-        console.log("check: ", check)
-        if(check != -1) {
+        console.log("check: ", check.data.txHash)
+        if(check.data.txHash) {
             toast.success("Check in thành công!")
-            return check;
+            return check.data.txHash;
         } else {
-            toast.success("Check in thất bại!")
+            toast.error("Check in thất bại!")
         }
-        console("Check-in Hash: ", check)
     } catch (error) {
         console.log("error: ", error)
     }
@@ -375,6 +373,54 @@ const getTrustRate = async (id) => {
         return 0;
     }
 }
+
+const autoReview = async (user, placeId, tripId, comment, rate, title,
+    _signer, _to, _amount, _message, _nonce, signature) => {
+        const walletAddress = user.walletAddress;
+        const privateKey = user.privateKey;
+        console.log("walletAddress: ", walletAddress)
+        console.log("user: ", user)
+        console.log("placeId: ", placeId)
+        console.log("tripId: ", tripId)
+        console.log("comment: ", comment)
+        console.log("rate: ", rate)
+        console.log("title: ", title)
+        console.log("_signer: ", _signer)
+        console.log("_to: ", _to)
+        console.log("_amount: ", _amount)
+        console.log("_to: ", _to)
+        console.log("_message: ", _message)
+        console.log("_nonce: ", _nonce)
+        console.log("signature: ", signature)
+        try {
+            let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autoreview`, {
+                walletAddress: walletAddress,
+                privateKey: privateKey,
+                placeId: Number(placeId),
+                tripId: Number(tripId),
+                comment: comment,
+                rate: rate,
+                title: title,
+                _signer: _signer,
+                _to: _to, 
+                _amount: _amount,
+                _message: _message, 
+                _nonce: _nonce, 
+                signature: signature
+            })
+            console.log("check: ", check.data.txHash)
+            if(check.data.txHash) {
+                toast.success("Lưu trữ kỉ niệm thành công!")
+                return check.data.txHash;
+            } else {
+                toast.error("Lưu trữ kỉ niệm thất bại!")
+                return -1;
+            }
+        } catch (error) {
+            console.log("error: ", error)
+            return -1;
+        }
+}
 export {
     getAllPlace,
     reviewtoBE,
@@ -399,5 +445,6 @@ export {
     purchaseVoucher,
     reviewTrip,
     getMyVouchers,
-    getTrustRate
+    getTrustRate,
+    autoReview
 }

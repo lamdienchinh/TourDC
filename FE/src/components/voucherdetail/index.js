@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardActionArea, CardContent, CardMedia, Typography, Box, Button } from '@mui/material';
 import './css/VoucherDetail.scss'; // Import CSS mới
 import { useSelector } from "react-redux"
@@ -8,8 +8,12 @@ import { createAxios } from "../../utils/createInstance"
 import { setInfor } from "../../state/userSlice"
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { updateBalance } from '../../state/userSlice';
 import Web3 from 'web3';
 import { purchaseVoucher } from '../../service/api';
+import { getBalance } from '../../state/selectors';
+import DCToken from '../../assets/imgs/DCToken.svg'
+
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 
 const VoucherDetail = ({ product }) => {
@@ -17,6 +21,9 @@ const VoucherDetail = ({ product }) => {
     const dispatch = useDispatch();
     const axiosJWT = createAxios(user, dispatch, setInfor);
     const currentAccount = useSelector(getUserData);
+    const balance = useSelector(getBalance);
+    const [price, setPrice] = useState(0);
+    console.log(balance)
     const salevoucher = async () => {
         //Kiểm tra số dư của User:
         const balanceWei = await getBalanceOf(currentAccount);
@@ -66,7 +73,10 @@ const VoucherDetail = ({ product }) => {
                     let token = user.accessToken;
                     let sale = await saleVoucher(data, token, axiosJWT);
                     console.log("Kết quả bán", sale)
-                    
+                    if(trHash !== -1 ) {
+                        let type = product.price;
+                        dispatch(updateBalance({type, balance}, dispatch));
+                    }
                 } catch (error) {
                     console.log(error)
                 }
@@ -88,7 +98,9 @@ const VoucherDetail = ({ product }) => {
                     </Button>
                     <CardContent>
                         <Typography variant="h5">{product.name}</Typography>
-                        <Typography variant="subtitle1">Price: {product.price}</Typography>
+                        <Typography variant="subtitle1">Price: {product.price}
+                        <img id='token' src={DCToken}></img>
+                        </Typography>
                         <Typography variant="body1">{product.description}</Typography>
                     </CardContent>
                 </CardActionArea>

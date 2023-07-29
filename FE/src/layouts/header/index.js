@@ -50,7 +50,7 @@ const Header = () => {
     const [clogout, setClogout] = useState(false);
     const user = useSelector(getInfor)
     const balance = useSelector(getBalance)
-    // console.log("balance: ", balance)
+    console.log("balance: ", balance)
     let axiosJWT = createAxios(user, dispatch, setInfor);
     const login = async () => {
         // if (walletAddress === "" || walletAddress === undefined) {

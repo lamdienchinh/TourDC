@@ -44,8 +44,8 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
             console.log(infor)
             console.log(infor.data)
             let balance = await getBalanceOf(accounts[0]);
-            console.log(balance);
-            dispatch(setUser({ address: accounts[0], infor: infor.data, balance: Number(balance) }));
+            console.log("balance: ", balance);
+            dispatch(setUser({ address: accounts[0], infor: infor.data, balance: Number(balance)/(10**18) }));
             toast.success("Kết nối ví Metamask thành công")
         } catch (err) {
             console.log(err.message);
@@ -112,14 +112,17 @@ export const logout = createAsyncThunk('user/logout', async ({ token, axiosJWT }
     }
 })
 export const updateBalance = createAsyncThunk('getBalance', async({type,balance}, {dispatch}) =>{
-    if (type === 1) {
+    if (type === -1) {
         console.log(typeof balance)
         console.log("balance: ", balance)
         console.log("balance:", balance + 10)
-        dispatch(setBalance({balance: (balance + 10)*(10**18)}))
+        dispatch(setBalance({balance: (balance + 10)}))
     } else {
         console.log("type!=1")
-        dispatch(setBalance({balance: (balance - 10)*(10**18)}))
+        console.log("balance", balance)
+        console.log("type", type)
+        console.log("balanceSlice", (balance - type))
+        dispatch(setBalance({balance: (balance - type)}))
     }
 })
 

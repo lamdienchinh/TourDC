@@ -14,5 +14,5 @@ export const getInfor = createSelector(
 
 export const getBalance = createSelector(
     userSelector,
-    (user) => user.balance / (10 ** 18)
+    (user) => user.balance
 )

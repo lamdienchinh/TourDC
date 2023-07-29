@@ -24,7 +24,7 @@ const transactionController = {
     console.log("nonce:", nonce)
     let data = contract.methods.checkIn(req.body.ticketId, req.body.placeId).encodeABI();
     console.log("data", data)
-    let gas = web3.utils.toHex(web3.utils.toWei('1', 'gwei'));
+    // let gas = web3.utils.toHex(web3.utils.toWei('1', 'gwei'));
     let estimateGas = await contract.methods.checkIn(req.body.ticketId, req.body.placeId).estimateGas({gas: 1000000000});
     
       const txObject = {
@@ -56,13 +56,64 @@ const transactionController = {
       // } catch (error) {
       //   console.log(error)
       // } 
-      web3.eth.sendSignedTransaction( raw ).on('receipt', (receipt) => {
-        console.log("TxHash from Receipt: ", receipt.transactionHash )
-        
-        return txHash;
-      })
-      return -1;
-    }
+      web3.eth.sendSignedTransaction( raw );
+      res.status(200).json({ txHash });
+    },
+    autoReview: async (req, res) => {
+      const walletAddress = req.body.walletAddress;
+      const privateKey = req.body.privateKey.slice(2);
+      const privateKeyBuffer = Buffer.from(privateKey, 'hex')
+      console.log("privateKey:", privateKey);
+      console.log("publicKey:", walletAddress)
+      // console.log("walletAddress: ", walletAddress)
+      // console.log("user: ", user)
+      console.log("placeId: ", req.body.placeId)
+      console.log("tripId: ", req.body.tripId)
+      console.log("comment: ", req.body.comment)
+      console.log("rate: ", req.body.rate)
+      console.log("title: ", req.body.title)
+      console.log("_signer: ", req.body._signer)
+      console.log("_to: ", req.body._to)
+      console.log("_amount: ", req.body._amount)
+      console.log("_to: ", req.body._to)
+      console.log("_message: ", req.body._message)
+      console.log("_nonce: ", req.body._nonce)
+      console.log("signature: ", req.body.signature)
+      let nonce = await web3.eth.getTransactionCount(walletAddress,'latest');
+      let data = contract.methods.review(req.body.placeId, req.body.tripId, req.body.comment, req.body.rate, req.body.title,
+        req.body._signer,req.body._to, req.body._amount, req.body._message,  req.body._nonce, req.body.signature).encodeABI();
+      let gas = web3.utils.toHex(web3.utils.toWei('1', 'gwei'));
+      let estimateGas = await contract.methods.review(req.body.placeId, req.body.tripId, req.body.comment, req.body.rate, req.body.title,
+        req.body._signer,req.body._to, req.body._amount, req.body._message,  req.body._nonce, req.body.signature).estimateGas({gas: 2000000000});
+        console.log(estimateGas)
+      // function review(uint placeId, uint idTrip, string memory comment, uint rate, string memory title,
+      // address _signer, address _to, uint8 _amount, string memory _message, uint256 _nonce, bytes memory signature)
+      console.log("placeId", req.body.placeId)
+      const txObject = {
+        nonce: web3.utils.toHex(nonce),
+        from: walletAddress,
+        gasLimit: web3.utils.toHex(estimateGas), // Raise the gas limit to a much higher amount
+        // gasPrice: web3.eth.getGasPrice(),
+        // gasPrice: '0x09184e72a000',
+        // gasLimit: '0x2710',
+        gasPrice: 1000000000,
+        to: contractAddress.Token,
+        data: data,
+      }  
+      console.log("txObj", txObject)
+    
+      const tx = new Tx(txObject)
+      console.log("newtxObj", tx)
+      tx.sign(privateKeyBuffer)
+    
+      const serializedTx = tx.serialize()
+      const raw = '0x' + serializedTx.toString('hex')	
+      const txHash = await web3.utils.sha3(serializedTx);
+      console.log("txHash", txHash)
+
+      web3.eth.sendSignedTransaction( raw );
+      res.status(200).json({ txHash });
+    } 
 }
 
 module.exports = transactionController;

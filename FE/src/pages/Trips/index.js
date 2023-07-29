@@ -21,7 +21,7 @@ import { Gallery, Item } from 'react-photoswipe-gallery'
 import { useSelector } from 'react-redux'
 import { getInfor, getUserData } from '../../state/selectors';
 import { getAllTrips } from '../../components/dapp/getAllTrips';
-import { reviewTrip } from '../../service/api';
+import { autoReview, reviewTrip } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 import { getTrips, reviewtoBE } from '../../service/api';
 import { createAxios } from "../../utils/createInstance";
@@ -184,21 +184,37 @@ const Trips = () => {
             const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
             console.log("signature: ", signatureObj.signature);
             const signature = signatureObj.signature
-            
-            let review = await toast.promise(
-                reviewTrip(currentAccount, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
-                    "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature),
-                {
-                    pending: 'Đang đợi xử lí',
-                    // success: 'Lưu cảm nghĩ thành công !',
-                    // error: 'Người dùng từ chối!',
+            let review;
+            if(!user.privateKey) {
+                review = await toast.promise(
+                    reviewTrip(currentAccount, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
+                        "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature),
+                    {
+                        pending: 'Đang đợi xử lí',
+                        // success: 'Lưu cảm nghĩ thành công !',
+                        // error: 'Người dùng từ chối!',
+                    }
+                )
+                if (review != -1) {
+                    let type = -1
+                    dispatch(updateBalance({type, balance}, dispatch));
                 }
-            )
-            if (review != -1) {
-                console.log("heelo");
-                let type = 1
-                dispatch(updateBalance({type, balance}, dispatch));
+            } else {
+                console.log("here")
+                try {
+                    review = await autoReview(user, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
+                    "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature)
+                    console.log("autoreview:" ,review);
+                    if (review != -1) {
+                        let type = 1
+                        dispatch(updateBalance({type, balance}, dispatch));
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+                
             }
+           
             setSelectTrip("");
             setImgs([]);
             setRating(0);

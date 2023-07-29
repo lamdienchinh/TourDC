@@ -9,6 +9,8 @@ import metamask from '../../assets/imgs/MetaMask_Fox.svg.png'
 // import { login } from '../../redux/apiRequest';
 import { login } from '../../service/api';
 import { setUser } from '../../state/userSlice';
+import { getBalanceOf } from '../../service/api';
+
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -49,7 +51,8 @@ function Login() {
                 let user = await login(username, password);
                 console.log("datauser:", user.data);
                 if (user) {
-                    dispatch(setUser({ address: user.data.walletAddress, infor: user.data }));
+                    let balance = await getBalanceOf(user.data.walletAddress)
+                    dispatch(setUser({ address: user.data.walletAddress, infor: user.data, balance: Number(balance)}));
                     navigate('/');
                 }
                 else {
