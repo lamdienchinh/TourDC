@@ -11,7 +11,8 @@ import Container from '@mui/material/Container';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./css/Header.scss";
-import logo from "../../assets/imgs/logo1.png"
+// import logo from "../../assets/imgs/logo1.png"
+import logo from "../../assets/imgs/logoNew2.png"
 import avatar from "../../assets/imgs/avatar.png";
 import { FaCamera } from 'react-icons/fa';
 import Button from '@mui/material/Button';
@@ -136,7 +137,7 @@ const Header = () => {
                     theme="light" /> */}
                 <div className="header__col1">
                     <NavLink className="header__link" to='/'>
-                        <img src={logo} alt="App Logo" />
+                        <img id='logo' src={logo} alt="App Logo" />
                         <div>TourDC</div>
                     </NavLink>
                 </div>

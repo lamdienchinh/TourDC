@@ -8,7 +8,8 @@ import avt from "../../assets/imgs/avatar.png"
 import Slider from 'react-slick';
 import { Avatar } from "@mui/material";
 import Container from "@mui/material/Container";
-import DCToken from '../../assets/imgs/DCToken-home.svg'
+// import DCToken from '../../assets/imgs/DCToken-home.svg'
+import DCToken from '../../assets/imgs/logoNew2.png'
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
