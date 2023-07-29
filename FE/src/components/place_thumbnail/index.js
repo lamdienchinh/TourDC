@@ -44,6 +44,9 @@ const PlaceThumbnail = (props) => {
                 </div>
                 <div className="placethumbnail__rate">
                     <Rating name="size-large" value={average} precision={0.5} size="large" readOnly />
+                    <div>
+                        {average}
+                    </div>
                 </div>
                 <div className="placethumbnail__title">
                     {props.place.name}

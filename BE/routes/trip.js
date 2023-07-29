@@ -18,4 +18,7 @@ router.post("/", tripController.getTripsofPlace)
 
 // Reaction
 router.post("/reaction", middlewareController.verifyToken, tripController.controlReaction)
+
+// Get Four
+router.get("/getfour", tripController.getFourTrips)
 module.exports = router;

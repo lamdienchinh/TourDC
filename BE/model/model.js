@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
   vouchers: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Voucher"
+  },
+  trips: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Trip"
   }
 })
 
@@ -84,6 +88,10 @@ const placeSchema = new mongoose.Schema({
   },
   type: {
     type: String,
+  },
+  trips: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Trip'
   }
 })
 const tripSchema = new mongoose.Schema({
@@ -105,14 +113,29 @@ const tripSchema = new mongoose.Schema({
   },
   like: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'User'
+    ref: 'User',
+    default: []
   },
   dislike: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'User'
+    ref: 'User',
+    default: []
   },
   tripid: {
     type: String,
+  },
+  reviewtime: {
+    type: Date,
+    default: Date.now()
+  },
+  title: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  rate: {
+    type: Number,
   }
 })
 const postSchema = new mongoose.Schema({
