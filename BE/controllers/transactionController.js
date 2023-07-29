@@ -47,7 +47,8 @@ const transactionController = {
     
       const serializedTx = tx.serialize()
       const raw = '0x' + serializedTx.toString('hex')	
-      
+      const txHash = await web3.utils.sha3(serializedTx);
+      console.log("txHash", txHash)
       // try {
       //   let txHash = await web3.eth.sendSignedTransaction(raw)
       //   console.log("txHash: ", txHash);
@@ -58,7 +59,7 @@ const transactionController = {
       web3.eth.sendSignedTransaction( raw ).on('receipt', (receipt) => {
         console.log("TxHash from Receipt: ", receipt.transactionHash )
         
-        return receipt.transactionHash
+        return txHash;
       })
       return -1;
     }
