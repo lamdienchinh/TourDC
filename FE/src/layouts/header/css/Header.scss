@@ -27,6 +27,7 @@
         width: 10%;
         font-size: 18px;
         font-weight: 500;
+        max-height: 60px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -42,6 +43,7 @@
             width: 100%;
             height: 100%;
             max-height: 60px;
+            margin-right: 10px;
         }
     }
     & .header__col2 {
@@ -123,7 +125,7 @@
     display: flex;
     flex-direction: row;
 }
-.token{
+.token {
     width: 25px;
     height: 25px;
     text-align: center;
@@ -136,13 +138,13 @@
     flex-wrap: wrap;
     align-items: center;
 }
-.balance-active{
+.balance-active {
     margin-left: 5px;
 }
-#logo {
-    width: auto;
-    height: auto;
-}
+// #logo {
+//     width: auto;
+//     height: auto;
+// }
 // .camera-button:hover {
 //     background-color: #ffffff;
 //     color: #57b5fa;
