@@ -5,20 +5,19 @@ import "./css/Place_Thumbnail.scss";
 import { useEffect, useState } from "react";
 
 const PlaceThumbnail = (props) => {
-    const [rates, setRates] = useState(props.place.reviews);
+    const [rates, setRates] = useState(props.place.trips?.length ? props.place.trips : []);
     const navigate = useNavigate();
     const [average, setAverage] = useState(0);
 
     useEffect(() => {
         const getAverage = async () => {
             let temp = 0;
-            setRates(props.place.reviews)
-            console.log("Rates", props.place.reviews)
-            if (props.place.reviews.length > 0) {
-                for (let i = 0; i < props.place.reviews.length; i++) {
-                    temp += Number(props.place.reviews[i].rate);
+            console.log("Rates", props.place.trips)
+            if (rates.length > 0) {
+                for (let i = 0; i < props.place.trips.length; i++) {
+                    temp += Number(props.place.trips[i].rate);
                 }
-                temp = temp / props.place.reviews.length;
+                temp = temp / props.place.trips.length;
                 temp = Math.round(temp * 2) / 2;
                 console.log("average: ", temp)
                 setAverage(temp);
@@ -59,7 +58,7 @@ const PlaceThumbnail = (props) => {
                     </div>
                     <div className="placethumbnail__sth--comment">
                         <FaComments className="place-icon"></FaComments>
-                        <div className="place-review">{rates.length}</div>
+                        <div className="place-review">{rates?.length}</div>
                     </div>
                 </div>
             </div>

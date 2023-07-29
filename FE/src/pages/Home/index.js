@@ -47,15 +47,15 @@ const Home = () => {
     useEffect(() => {
         const fetchdata = async () => {
             let fetch1 = await getAllPlace();
-            console.log("Check1", fetch)
-            let fetch2 = await getAllReviewsInAllPlaces();
-            console.log("Check2 ", fetch2)
-            const mergedArray = fetch1.map((item, index) => {
-                return { ...item, reviews: fetch2[index] };
-            });
-            console.log("Merged Array", mergedArray)
-            setAllPlaces(mergedArray);
-            setPlaces(mergedArray);
+            console.log("Check1", fetch1)
+            // let fetch2 = await getAllReviewsInAllPlaces();
+            // console.log("Check2 ", fetch2)
+            // const mergedArray = fetch1.map((item, index) => {
+            //     return { ...item, reviews: fetch2[index] };
+            // });
+            // console.log("Merged Array", mergedArray)
+            setAllPlaces(fetch1);
+            setPlaces(fetch1);
             handleClose();
         }
         // let temp = types.types;
@@ -68,7 +68,7 @@ const Home = () => {
         fetchdata();
         // setAllPlaces(array);
         // setPlaces(array);
-        console.log("allplace: ", allplaces)
+        // console.log("allplace: ", allplaces)
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {

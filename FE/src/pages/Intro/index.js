@@ -9,8 +9,10 @@ import Slider from 'react-slick';
 import { Avatar } from "@mui/material";
 import Container from "@mui/material/Container";
 import DCToken from '../../assets/imgs/DCToken-home.svg'
-
-const Review = () => {
+import axios from "axios"
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+const Review = ({ review }) => {
     return (
         <div className="review-wrapper">
             <div className="review-content">Đây là chuyến đi vô cùng thú vị ở An Giang, nếu có cơ hội tôi sẽ đến đây một lần nữa</div>
@@ -35,6 +37,24 @@ const Intro = () => {
         autoplaySpeed: 2000,
         cssEase: "linear"
     };
+    const navigate = useNavigate()
+    const [places, setPlaces] = useState([])
+    const [reviews, setReviews] = useState([])
+    const handleClick = (placeid) => {
+        console.log(placeid)
+        navigate(`./placeinfor?placeid=${placeid}`)
+    }
+    useEffect(() => {
+        const fetchPlaces = async () => {
+            let places = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/place/getfour`)
+            console.log(places)
+            setPlaces(places.data)
+            let reviews = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/trip/getfour`)
+            console.log(reviews)
+            setReviews(reviews.data)
+        }
+        fetchPlaces()
+    }, [])
     return (
         <div className="intro-wrapper" >
             <section className="intro-section intro-first">
@@ -47,18 +67,18 @@ const Intro = () => {
                                 <h1 className="intro-name">TOURDC</h1>
                                 {/* </div> */}
                                 <h6>Ứng dụng du lịch áp dụng công nghệ Blockchain</h6>
-                               {/* <button className="intro-tohome btn-home" onClick={() => window.location.replace('/home')}>Khám phá ngay</button> */}
-                               <a href="/travel" class="animated-button1 ">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                 <div className="button-text">Khám phá ngay</div>
-                               </a>
+                                {/* <button className="intro-tohome btn-home" onClick={() => window.location.replace('/home')}>Khám phá ngay</button> */}
+                                <a href="/travel" class="animated-button1 ">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <div className="button-text">Khám phá ngay</div>
+                                </a>
                             </div>
-                            <div ><img className='token-home' src={DCToken}></img></div> 
+                            <div ><img className='token-home' src={DCToken}></img></div>
                         </div>
-                        
+
                         {/* <div className="intro-img1">
                             <img src={place1} alt="Ảnh"></img>
                         </div>
@@ -93,32 +113,34 @@ const Intro = () => {
                             <h1>Những điểm đến phổ biến</h1>
                             <h4>Đây là những địa điểm được nhiều người yêu thích nhất trong tháng này</h4>
                         </div>
-                        <div className="intro-two-places">
-                            <div className="popular-place pp1">
-                                <div className="pp-text-overlay">
-                                    <h1>Địa điểm 1</h1>
-                                    <span>Mô tả về địa điểm</span>
+                        {
+                            places && places.length === 4 ? <div className="intro-two-places">
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[0]?.thumbnail})` }} onClick={() => handleClick(places[0].placeid)}>
+                                    <div className="pp-text-overlay">
+                                        <h1>{places[0]?.name}</h1>
+                                        <span>{places[0]?.intro}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="popular-place pp2">
-                                <div className="pp-text-overlay">
-                                    <h1>Địa điểm 2</h1>
-                                    <span>Mô tả về địa điểm</span>
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[1]?.thumbnail})` }} onClick={() => handleClick(places[1].placeid)}>
+                                    <div className="pp-text-overlay">
+                                        <h1>{places[1]?.name}</h1>
+                                        <span>{places[1]?.intro}</span>
+                                    </div>
                                 </div>
-                            </div >
-                            <div className="popular-place pp3">
-                                <div className="pp-text-overlay">
-                                    <h1>Địa điểm 3</h1>
-                                    <span>Mô tả về địa điểm</span>
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[2]?.thumbnail})` }} onClick={() => handleClick(places[2].placeid)}>
+                                    <div className="pp-text-overlay">
+                                        <h1>{places[2]?.name}</h1>
+                                        <span>{places[2]?.intro}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="popular-place pp4">
-                                <div className="pp-text-overlay">
-                                    <h1>Địa điểm 4</h1>
-                                    <span>Mô tả về địa điểm</span>
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[3]?.thumbnail})` }} onClick={() => handleClick(places[3].placeid)}>
+                                    <div className="pp-text-overlay">
+                                        <h1>{places[3]?.name}</h1>
+                                        <span>{places[3]?.intro}</span>
+                                    </div>
                                 </div>
-                            </div >
-                        </div>
+                            </div> : ""
+                        }
                     </Container>
                 </div>
             </section >
@@ -134,20 +156,23 @@ const Intro = () => {
                             </p>
                         </div>
                         <div className="intro-three-slides">
-                            <Slider {...settings}>
-                                <div>
-                                    <Review></Review>
-                                </div>
-                                <div>
-                                    <Review></Review>
-                                </div>
-                                <div>
-                                    <Review></Review>
-                                </div>
-                                <div>
-                                    <Review></Review>
-                                </div>
-                            </Slider>
+                            {
+                                reviews? <Slider {...settings}>
+                                    <div>
+                                        <Review ></Review>
+                                    </div>
+                                    <div>
+                                        <Review></Review>
+                                    </div>
+                                    <div>
+                                        <Review ></Review>
+                                    </div>
+                                    <div>
+                                        <Review ></Review>
+                                    </div>
+                                </Slider> : ""
+
+                            }
                         </div>
                     </Container>
                 </div>

@@ -3,7 +3,6 @@ import Web3 from 'web3'
 import TokenArtifact from "../../contracts/TouristConTract.json"
 import contractAddress from "../../contracts/contract-address.json";
 import { toast } from "react-toastify";
-import { PopoverPaper } from "@mui/material";
 
 
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
@@ -12,6 +11,7 @@ const contract = new web3.eth.Contract(TokenArtifact.abi, contractAddress.Token)
 const getAllPlace = async () => {
     try {
         let allplace = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/place/getallplaces`)
+        console.log("AllPlaces", allplace)
         return allplace.data;
     }
     catch (err) {
@@ -191,7 +191,7 @@ const editPost = async (token, data, axiosJWT) => {
     }
     catch (err) {
         console.log(err);
-        return 0;
+        return false;
     }
 }
 
@@ -290,46 +290,46 @@ const purchaseVoucher = async (voucherID,
     _message,
     _nonce,
     signature) => {
-        try {
-            let txHash = await window.ethereum
-                .request({
-                    method: 'eth_sendTransaction',
-                    params: [
-                        {
-                            from: currentAccount,
-                            to: contractAddress.Token,
-                            gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
-                            maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
-                            maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
-                            data: contract.methods.exchangeVoucher(voucherID, _signer, currentAccount, _amount, _message, _nonce, signature).encodeABI()
-                        },
-                    ],
-                });
-    
-            console.log("txHash: ", txHash);
-            return txHash; // Trả về giá trị txHash
-        } catch (error) {
-            console.error("error: ", error)
-            return -1;
-        }
-}
-const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title,
-    _signer, _to, _amount, _message,_nonce, signature) => {
     try {
         let txHash = await window.ethereum
-        .request({
-            method: 'eth_sendTransaction',
-            params: [
-                {
-                    from: currentAccount,
-                    to: contractAddress.Token,
-                    gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
-                    maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
-                    maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
-                    data: contract.methods.review(placeID, tripId, comment, rate, title, _signer, _to, _amount, _message, _nonce, signature).encodeABI()
-                },
-            ],
-        });
+            .request({
+                method: 'eth_sendTransaction',
+                params: [
+                    {
+                        from: currentAccount,
+                        to: contractAddress.Token,
+                        gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
+                        maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
+                        maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
+                        data: contract.methods.exchangeVoucher(voucherID, _signer, currentAccount, _amount, _message, _nonce, signature).encodeABI()
+                    },
+                ],
+            });
+
+        console.log("txHash: ", txHash);
+        return txHash; // Trả về giá trị txHash
+    } catch (error) {
+        console.error("error: ", error)
+        return -1;
+    }
+}
+const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title,
+    _signer, _to, _amount, _message, _nonce, signature) => {
+    try {
+        let txHash = await window.ethereum
+            .request({
+                method: 'eth_sendTransaction',
+                params: [
+                    {
+                        from: currentAccount,
+                        to: contractAddress.Token,
+                        gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
+                        maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
+                        maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
+                        data: contract.methods.review(placeID, tripId, comment, rate, title, _signer, _to, _amount, _message, _nonce, signature).encodeABI()
+                    },
+                ],
+            });
         console.log("txHash: ", txHash);
         toast.success("Lưu cảm nghĩ thành công! Bạn nhận được 10 Xu.")
         return txHash;
@@ -339,6 +339,34 @@ const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title,
     }
 }
 
+const getMyVouchers = async (token, axiosJWT) => {
+    try {
+        let voucher = await axiosJWT.get(`${process.env.REACT_APP_ENDPOINT}/v1/user/getvouchers`, {
+            headers: {
+                token: `Bearer ${token}`
+            },
+        });
+        console.log(voucher)
+        return voucher.data;
+    }
+    catch (error) {
+        console.log("error: ", error)
+        return []
+    }
+}
+const getTrustRate = async (id) => {
+    try {
+        let rate = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/gettrustrate`, {
+            id: id
+        });
+        console.log(rate)
+        return rate.data;
+    }
+    catch (error) {
+        console.log("error: ", error);
+        return 0;
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
@@ -361,5 +389,7 @@ export {
     checkVoucher,
     getBalanceOf,
     purchaseVoucher,
-    reviewTrip
+    reviewTrip,
+    getMyVouchers,
+    getTrustRate
 }

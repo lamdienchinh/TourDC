@@ -57,7 +57,7 @@ const VoucherShop = () => {
         <div className="shop-wrapper">
             <div className="shop__slides">
                 <div className="shop__slides__content">
-                    Mua sắm vouchers
+                    Đổi vouchers
                 </div>
                 <div className="shop__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">

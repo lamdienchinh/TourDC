@@ -82,19 +82,17 @@ const Album = () => {
     }, [isLoading])
 
     function sortArrayByDate(value) {
-        setValue(value);
-        let arr = [...albums]
-        arr.sort(function (a, b) {
-            var dateA = new Date(a.dateCreated).getTime();
-            var dateB = new Date(b.dateCreated).getTime();
+        let arr = [...albums];
 
-            return dateA - dateB;
-        });
-
-        if (value === "2") {
-            arr.reverse();
+        if (value === "1") {
+            // Sắp xếp cũ đến mới
+            arr.sort((a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf());
+        } else if (value === "2") {
+            // Sắp xếp mới đến cũ
+            arr.sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
         }
 
+        // Cập nhật mảng albums đã sắp xếp vào state
         setAlbums(arr);
     }
 
@@ -114,12 +112,24 @@ const Album = () => {
     }
 
     function filterDate(date) {
-        let arr = [...allalbums]
-        let filteredArray = arr.filter(function (item) {
+        if (!date) {
+            // Nếu date không tồn tại (undefined hoặc null), hiển thị tất cả các albums
+            setAlbums(allalbums);
+            return;
+        }
+
+        // Lấy thông tin ngày, tháng và năm từ date
+        const selectedDay = date.day();
+        const selectedMonth = date.month() + 1; // Month trong Dayjs bắt đầu từ 0 nên cần cộng thêm 1
+        const selectedYear = date.year();
+
+        // Lọc các albums có trường createdAt tương ứng với ngày đã chọn
+        const filteredArray = allalbums.filter((item) => {
+            const itemDate = dayjs(item.createdAt);
             return (
-                item.time.getDate() === date.getDate() &&
-                item.time.getMonth() - 1 === date.getMonth() &&
-                item.time.getFullYear() === date.getFullYear()
+                itemDate.day() === selectedDay &&
+                itemDate.month() + 1 === selectedMonth &&
+                itemDate.year() === selectedYear
             );
         });
 
@@ -183,7 +193,7 @@ const Album = () => {
                                     <DateTimePicker
                                         label="Chọn ngày"
                                         value={value}
-                                        onChange={(event) => filterDate(event.$d)}
+                                        onChange={(event) => filterDate(dayjs(event.$d))}
                                         views={['year', 'month', 'day']}
                                     />
                                 </DemoContainer>

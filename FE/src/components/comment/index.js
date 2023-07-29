@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import "./css/Comment.scss"
 import defaultAvtar from '../../assets/imgs/default-avatar.jpg';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+// import Menu from '@mui/material/Menu';
+// import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 
 const Comment = (props) => {
@@ -61,7 +61,7 @@ const Comment = (props) => {
                 <div className="comment__content">
                     {props?.data?.content}
                 </div>
-                <div className="post__dots">
+                {/* <div className="post__dots">
                     <MoreHorizIcon onClick={handleMenuOpen} />
                     <Menu
                         anchorEl={anchorEl}
@@ -72,7 +72,7 @@ const Comment = (props) => {
                         <MenuItem onClick={handleEdit}>Chỉnh sửa</MenuItem>
                         <MenuItem onClick={handleDelete}>Xoá</MenuItem>
                     </Menu>
-                </div>
+                </div> */}
             </div>
         </div>
     )

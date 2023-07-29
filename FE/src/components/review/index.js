@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { createAxios } from '../../utils/createInstance';
 import { setInfor } from '../../state/userSlice';
 import { useDispatch } from 'react-redux';
+import { getTrustRate } from "../../service/api";
 
 const Review = (props) => {
     // let listimg = [img1, img1, img1, img1];
@@ -37,15 +38,6 @@ const Review = (props) => {
     const [dislike, setDislike] = useState(0)
     const [trustrate, setTrustRate] = useState(0)
     const [allReviews, setAllReviews] = useState([])
-    const calculateTrustRate = (like, dislike) => {
-        // Chỉ tính trust rate nếu cả like và dislike đều khác 0
-        if (like !== 0 && like + dislike !== 0) {
-            return like * 100 / (like + dislike);
-        }
-
-        // Trường hợp like và dislike đều bằng 0 hoặc chia 0, trust rate sẽ là 0
-        return 0;
-    };
     const handleReaction = async (action) => {
         if (walletAddress === "") {
             toast.error("Bạn chưa đăng nhập")
@@ -57,10 +49,7 @@ const Review = (props) => {
             if (find) {
                 if (action === "dislike" && reaction !== "dislike") {
                     setReaction(action)
-                    await new Promise((resolve) => setTimeout(resolve, 0));
-                    setTrustRate(calculateTrustRate(like, dislike + 1))
                     if (reaction === "like") {
-                        setTrustRate(calculateTrustRate(like - 1, dislike + 1))
                         setLike(like - 1);
                     }
                     setDislike(dislike + 1)
@@ -77,10 +66,7 @@ const Review = (props) => {
                 }
                 else if (action === "like" && reaction !== "like") {
                     setReaction(action)
-                    await new Promise((resolve) => setTimeout(resolve, 0));
-                    setTrustRate(calculateTrustRate(like + 1, dislike))
                     if (reaction === "dislike") {
-                        setTrustRate(calculateTrustRate(like + 1, dislike - 1))
                         setDislike(dislike - 1);
                     }
                     setLike(like + 1)
@@ -98,11 +84,9 @@ const Review = (props) => {
                 else {
                     setReaction("")
                     if (action === "like") {
-                        setTrustRate(calculateTrustRate(like - 1, dislike))
                         setLike(like - 1);
                     }
                     else if (action === "dislike") {
-                        setTrustRate(calculateTrustRate(like, dislike - 1))
                         setDislike(dislike - 1);
                     }
                     let token = currentuser.accessToken;
@@ -117,6 +101,9 @@ const Review = (props) => {
                     console.log(check)
                     setReaction("")
                 }
+                let gettrustrate = await getTrustRate(user._id)
+                console.log(gettrustrate)
+                setTrustRate(gettrustrate)
             }
             else {
                 toast.error("Bạn chưa checkin nơi này")
@@ -127,20 +114,20 @@ const Review = (props) => {
         console.log("Check", props)
         setAllReviews(props.place)
         // Check xem đã like hay dislike chưa
-        let total = 0;
+        const fetchTrustRate = async () => {
+            let gettrustrate = await getTrustRate(user._id)
+            console.log(gettrustrate)
+            setTrustRate(gettrustrate)
+        }
+        fetchTrustRate()
         if (props.review?.like && props.review?.like.length > 0) {
             setLike(props.review.like.length)
             if (props.review.like.includes(currentuser._id)) setReaction("like")
-            total += props.review.like.length
         }
 
         if (props.review?.dislike && props.review?.dislike.length > 0) {
             setDislike(props.review.dislike.length)
             if (props.review.dislike.includes(currentuser._id)) setReaction("dislike")
-            total += props.review.dislike.length
-        }
-        if (total > 0) {
-            setTrustRate(props.review?.like.length * 100 / total);
         }
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
     return (

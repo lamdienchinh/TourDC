@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PurchasedVoucherItem from '../../components/purchasedvoucher';
 // import list from "../../constants";
 import "./css/PurchasedVouchers.scss";
@@ -17,14 +17,19 @@ import {
     Breadcrumbs,
     Link
 } from '@mui/material';
+import { getMyVouchers } from '../../service/api';
+import { createAxios } from "../../utils/createInstance"
+import { setInfor } from '../../state/userSlice';
+import { useDispatch } from 'react-redux';
 
 const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
 
 const PurchasedVouchers = () => {
     const user = useSelector(getInfor)
     const [currentPage, setCurrentPage] = useState(1);
-    const [purchasedVouchers, setPurchasedVouchers] = useState(user?.vouchers ? user.vouchers : []);
-
+    const [purchasedVouchers, setPurchasedVouchers] = useState([]);
+    const dispatch = useDispatch();
+    const axiosJWT = createAxios(user, dispatch, setInfor)
     const totalPages = Math.ceil(purchasedVouchers.length / itemsPerPage);
 
     const handleUseVoucher = (voucher) => {
@@ -65,39 +70,15 @@ const PurchasedVouchers = () => {
     const handleFilterEndDateChange = (event) => {
         setFilterEndDate(event.target.value);
     };
-
-    const displayedVouchers = purchasedVouchers
-        .filter((voucher) => {
-            const lowerCaseName = voucher.name.toLowerCase();
-            return lowerCaseName.includes(searchTerm);
-        })
-        .filter((voucher) => {
-            if (filterUsed === 'all') {
-                return true;
-            } else if (filterUsed === 'used') {
-                return voucher.used;
-            } else {
-                return !voucher.used;
-            }
-        })
-        .filter((voucher) => {
-            if (filterPrice === 'all') {
-                return true;
-            } else if (filterPrice === 'above') {
-                return parseFloat(voucher.price.slice(1)) > 100; // Thay 100 bằng giá muốn filter
-            } else {
-                return parseFloat(voucher.price.slice(1)) <= 100; // Thay 100 bằng giá muốn filter
-            }
-        })
-        .filter((voucher) => {
-            if (filterStartDate === '' || filterEndDate === '') {
-                return true;
-            }
-            const startDate = new Date(filterStartDate);
-            const endDate = new Date(filterEndDate);
-            const purchaseDate = new Date(voucher.purchaseDate);
-            return purchaseDate >= startDate && purchaseDate <= endDate;
-        });
+    const [displayedVouchers, setDisplayedVouchers] = useState([])
+    useEffect(() => {
+        const fetchVouchers = async () => {
+            let token = user.accessToken
+            const vouchers = await getMyVouchers(token, axiosJWT)
+            setPurchasedVouchers(vouchers)
+        }
+        fetchVouchers();
+    }, [])
 
     return (
         <div className="voucher__wrapper">
@@ -161,9 +142,9 @@ const PurchasedVouchers = () => {
                     />
                 </div>
                 <Box className="purchased-vouchers">
-                    <Typography variant="h2">Voucher đã mua</Typography>
+                    <Typography variant="h2">Voucher của tôi</Typography>
                     <Box className="voucher-list">
-                        {displayedVouchers.map((voucher) => (
+                        {purchasedVouchers.map((voucher) => (
                             <PurchasedVoucherItem key={voucher.id} voucher={voucher} onUseVoucher={handleUseVoucher} />
                         ))}
                     </Box>

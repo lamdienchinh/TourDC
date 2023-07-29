@@ -59,6 +59,7 @@ const Code = () => {
             console.log("hello")
             autoCheckIn(user, input, placeId)
           }
+          
         } else {
           toast.error('Ticket not avaiable or used!', {
             position: "bottom-right",
