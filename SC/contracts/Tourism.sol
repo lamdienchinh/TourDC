@@ -50,6 +50,37 @@ contract TouristConTract is ERC20WithAutoMinerReward {
         tickets.push(Ticket(18, false));
         tickets.push(Ticket(19, false));
         tickets.push(Ticket(20, false));
+        tickets.push(Ticket(21, false));
+        tickets.push(Ticket(22, false));
+        tickets.push(Ticket(23, false));
+        tickets.push(Ticket(24, false));
+        tickets.push(Ticket(25, false));
+        tickets.push(Ticket(26, false));
+        tickets.push(Ticket(27, false));
+        tickets.push(Ticket(28, false));
+        tickets.push(Ticket(29, false));
+        tickets.push(Ticket(30, false));
+        tickets.push(Ticket(31, false));
+        tickets.push(Ticket(32, false));
+        tickets.push(Ticket(33, false));
+        tickets.push(Ticket(34, false));
+        tickets.push(Ticket(35, false));
+        tickets.push(Ticket(36, false));
+        tickets.push(Ticket(37, false));
+        tickets.push(Ticket(38, false));
+        tickets.push(Ticket(39, false));
+        tickets.push(Ticket(40, false));
+        tickets.push(Ticket(41, false));
+        tickets.push(Ticket(42, false));
+        tickets.push(Ticket(43, false));
+        tickets.push(Ticket(44, false));
+        tickets.push(Ticket(45, false));
+        tickets.push(Ticket(46, false));
+        tickets.push(Ticket(47, false));
+        tickets.push(Ticket(48, false));
+        tickets.push(Ticket(49, false));
+        tickets.push(Ticket(50, false));
+
         
         admin.push(msg.sender);
         owner = msg.sender;

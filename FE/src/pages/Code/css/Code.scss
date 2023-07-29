@@ -1,11 +1,13 @@
 // @import url("https://fonts.googleapis.com/css?family=Poppins: 100, 200, 300, 400, 500, 600, 700, 800, 900");
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 .code-page {
-    background-image: url("../../../assets/imgs/bg-code.jpg");
+    background-image: url("../../../assets/imgs/code.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     width: 100%;
-    height: 50rem;
+    height: 48rem;
     display: flex;
     justify-content: center;
     align-items: center;

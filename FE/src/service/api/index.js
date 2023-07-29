@@ -225,12 +225,20 @@ const autoCheckIn = async (user, ticketId, placeId) => {
     const publicKey = user.walletAddress;
     const privateKey = user.privateKey;
     try {
+        console.log("heelooo")
         let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autocheckin`, {
             publicKey: publicKey,
             privateKey: privateKey,
             ticketId: ticketId,
             placeId: placeId
         })
+        console.log("check: ", check)
+        if(check != -1) {
+            toast.success("Check in thành công!")
+            return check;
+        } else {
+            toast.success("Check in thất bại!")
+        }
         console("Check-in Hash: ", check)
     } catch (error) {
         console.log("error: ", error)
