@@ -25,7 +25,7 @@ import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime
 import { Gallery, Item } from "react-photoswipe-gallery"
 import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
-
+import place from "../../constants"
 function PaperComponent(props) {
     return (
         <Draggable
@@ -137,6 +137,9 @@ const CreateAlbum = () => {
         )
         console.log(create.data);
         toast.success('Tạo album mới thành công !')
+        setSelectedTrips([])
+        setTitle("")
+        setContent("")
     };
     return (
         <div className="createalbum">
@@ -244,8 +247,8 @@ const CreateAlbum = () => {
                                                     pointerEvents: "none"
                                                 }}
                                             >
-                                                <Typography sx={{ width: '33%', flexShrink: 0 }}>{currentTrip.title ? currentTrip.title : "Không có tiêu đề"}</Typography>
-                                                <Typography sx={{ width: '53%', color: 'text.secondary' }}>Thời gian: {convertTimestampToVietnamTime(Number(currentTrip.arrivalDate))}, Địa điểm: </Typography>
+                                                <Typography sx={{ width: '13%', flexShrink: 0 }}>{currentTrip.title ? currentTrip.title : "Không có tiêu đề"}</Typography>
+                                                <Typography sx={{ width: '73%', color: 'text.secondary' }}>Thời gian: {convertTimestampToVietnamTime(Number(currentTrip.arrivalDate))}, Địa điểm: {place.placenames[currentTrip.placeid]}</Typography>
                                                 <Button sx={{ width: '13%', flexShrink: 0, pointerEvents: "auto" }} className={`trip-select-btn`} onClick={(event) => handleAdd(event, currentTrip.tripId)} variant="outlined">
                                                     Thêm
                                                 </Button>

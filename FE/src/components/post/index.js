@@ -190,12 +190,15 @@ const FBPost = (props) => {
         let check = await editPost(token, newdata, axiosJWT)
         console.log("Edit", check)
         if (check) {
+            setContent(contentedit);
+            setAlbums(selectedAlbums)
             toast.success("Đổi thông tin post thành công")
         }
-        else toast.error("Đổi thông tin post thất bại")
-        setType("")
-        setAlbums([])
-        setContentEdit("")
+        else {
+            setContentEdit("")
+            setSelectedAlbums([])
+            toast.error("Đổi thông tin post thất bại")
+        }
         handleMenuClose();
         setOpenConfirmDialog(false);
         setEdit(false);

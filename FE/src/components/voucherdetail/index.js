@@ -66,6 +66,7 @@ const VoucherDetail = ({ product }) => {
                     let token = user.accessToken;
                     let sale = await saleVoucher(data, token, axiosJWT);
                     console.log("Kết quả bán", sale)
+                    
                 } catch (error) {
                     console.log(error)
                 }

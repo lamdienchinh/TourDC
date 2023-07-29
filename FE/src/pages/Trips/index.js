@@ -217,6 +217,9 @@ const Trips = () => {
                 formData.append("trHash", review)
                 formData.append("placeid", (selectTrip.placeId).toString())
                 formData.append("tripid", (selectTrip.tripId).toString())
+                formData.append("title", result.title)
+                formData.append("description",result.description)
+                formData.append("rate", result.rate)
                 console.log(selectedFiles)
                 await reviewtoBE(formData, userinfor.accessToken, axiosJWT)
                 if (update) {

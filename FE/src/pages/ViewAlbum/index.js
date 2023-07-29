@@ -75,6 +75,7 @@ const ViewAlbum = () => {
                 ...trips[index]
             }));
             setTrips(mergedTrips);
+            setSelectedLocation(mergedTrips[0])
             setIsLoading(false);
         }
         fetchAlbum()
@@ -126,7 +127,7 @@ const ViewAlbum = () => {
                         </ul>
                     </div>
                     <div className="viewalbum__content">
-                        {selectedLocation ? (
+                        {selectedLocation &&
                             <div className="form-container">
                                 <div className="album__header__wrapper">
                                     <h2 className="viewalbum__album-title">{album?.title}</h2>
@@ -192,9 +193,7 @@ const ViewAlbum = () => {
                                     </label>
                                 </div>
                             </div>
-                        ) : (
-                            <p className="viewalbum__empty-message">Chọn một chuyến đi để xem thông tin chi tiết</p>
-                        )}
+                        }
                     </div>
                 </div>
             </Container>
