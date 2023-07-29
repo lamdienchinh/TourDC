@@ -184,6 +184,62 @@ const userController = {
       return res.status(403).json({ error: "Invalid refresh token" });
     }
   },
+  getVouchers: async (req, res) => {
+    try {
+      // Tìm user dựa trên req.user.id và populate trường 'voucher'
+      const user = await User.findById(req.user.id).populate({
+        path: 'vouchers',
+        populate: {
+          path: 'detail',
+        }
+      });
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      let vouchers = user.vouchers
+      // Trả về thông tin user kèm theo trường 'voucher'
+      res.status(200).json(vouchers);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+  getTrustRate: async (req, res) => {
+    try {
+      // Tìm user dựa trên req.user.id và populate trường 'trips'
+      const user = await User.findById(req.body.id).populate('trips');
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Kiểm tra nếu user.trips là mảng có giá trị
+      if (!Array.isArray(user.trips)) {
+        return res.status(400).json({ error: 'User trips data is invalid' });
+      }
+
+      // Tính toán trustrate từ thông tin trong trips của user
+      let totalLikes = 0;
+      let totalDislikes = 0;
+
+      user.trips.forEach(trip => {
+        if (trip.like && Array.isArray(trip.like)) {
+          totalLikes += trip.like.length;
+        }
+        if (trip.dislike && Array.isArray(trip.dislike)) {
+          totalDislikes += trip.dislike.length;
+        }
+      });
+      // Kiểm tra nếu tổng số lượng likes và dislikes bằng 0 thì đặt trustrate là 0
+      const trustRate = (totalLikes + totalDislikes) === 0 ? 0 : totalLikes * 100 / (totalLikes + totalDislikes);
+
+      res.status(200).json(trustRate);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 };
 
 

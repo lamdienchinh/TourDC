@@ -50,8 +50,13 @@
     border-radius: 20px 20px 0 0;
 }
 .placethumbnail__rate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     // position: relative;
     // top: -30px;
+    font-weight: 500;
     height: 10%;
     display: flex;
     justify-content: center;

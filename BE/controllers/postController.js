@@ -142,7 +142,10 @@ const postController = {
         try {
             let data = req.body;
             const savePost = await Post.findOneAndUpdate({ user: req.user.id, _id: req.body.postid }, data);
-            return res.status(200).json(savePost);
+            if (savePost)
+                return res.status(200).json(savePost);
+            else
+                return res.status(500).json("Failed");
         } catch (error) {
             return res.status(500).json(error);
         }

@@ -13,4 +13,5 @@ router.post("/sale", middlewareController.verifyToken, voucherController.saleVou
 router.get("/", voucherController.getAllVoucherSale)
 
 router.post("/check", voucherController.checkVoucher)
+
 module.exports = router;

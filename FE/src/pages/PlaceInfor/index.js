@@ -193,6 +193,11 @@ const PlaceInfor = () => {
                                 Địa chỉ: {place?.address}
                             </div>
                         </div> */}
+                        <div>
+                            <div className="placeinfor__rate--address">
+                                Địa chỉ: {place?.address}
+                            </div>
+                        </div>
                         <div className="placeinfor__rate--content">
                             <div style={{ fontSize: '40px', fontWeight: '500' }}>
                                 {place?.intro}

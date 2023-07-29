@@ -30,4 +30,11 @@ router.post("/changeavatar", middlewareController.verifyToken, upload.single('av
 // RefreshToken
 router.post("/refresh", userController.requestRefreshToken)
 
+// Get Vouchers
+
+router.get("/getvouchers", middlewareController.verifyToken, userController.getVouchers)
+
+// Get TrustRate
+
+router.post("/gettrustrate", userController.getTrustRate)
 module.exports = router;

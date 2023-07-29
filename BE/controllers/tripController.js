@@ -1,5 +1,5 @@
 const { cloudinary } = require('../utils/index.js')
-const { Trip } = require('../model/model')
+const { Trip, User, Place } = require('../model/model')
 
 const tripController = {
     upload: async (req, res) => {
@@ -31,10 +31,20 @@ const tripController = {
                 trHash: req.body.trHash,
                 tripid: req.body.tripid,
                 placeid: req.body.placeid,
+                rate: req.body.rate,
+                title: req.body.title,
+                description: req.body.description
             });
             let result = await newTrip.save();
             console.log(files);
-            // uploadedUrls chứa các liên kết ảnh đã tải lên từ Cloudinary
+            const place = await Place.findOneAndUpdate(
+                { placeid: req.body.placeid },
+                { $push: { trips: newTrip._id } }, // Sử dụng $push để thêm id của trip mới vào mảng trips
+                { new: true } // Tùy chọn new: true để nhận kết quả đã được cập nhật trở lại
+            );
+            const user = await User.findById(req.user.id);
+            user.trips.push(newTrip);
+            await user.save();
             res.status(200).json(result);
         } catch (error) {
             console.error(error);
@@ -116,6 +126,16 @@ const tripController = {
         } catch (error) {
             console.error(error);
             res.status(500).json(error);
+        }
+    },
+    getFourTrips: async (req, res) => {
+        try {
+            const randomTrips = await Trip.find().populate('user').limit(4);
+
+            res.status(200).json(randomTrips);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Fail' });
         }
     }
 };
