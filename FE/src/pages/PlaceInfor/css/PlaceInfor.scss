@@ -28,7 +28,7 @@
         color: white;
         top: 30px;
         font-size: 5em;
-        font-family: "Rokkitt", serif;
+        // font-family: "Rokkitt", serif;
     }
     & .placeinfor__suggest {
         width: 100%;
@@ -167,4 +167,12 @@
     font-weight: 400;
     font-size: 20px;
     padding-bottom: 30px;
+}
+
+.placeinfor__title {
+    text-shadow:
+        3px 3px 0 #3a8cc2,
+        6px 6px 0 #3278a6,
+        -2px -2px 4px rgba(255, 255, 255, 0.5);
+    font-weight: bold;
 }

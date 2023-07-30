@@ -11,21 +11,25 @@ import { useNavigate } from "react-router-dom";
 import { getPlace } from "../../service/api";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-
 const PlaceInfor = () => {
     const [open, setOpen] = useState(true);
     const handleClose = () => {
         setOpen(false);
     };
+    const [selectedFilter, setSelectedFilter] = useState(1)
     const [place, setPlace] = useState();
     const [average, setAverage] = useState(0);
     const [rates, setRates] = useState([]);
     const [reviewCount, setReviewCount] = useState(0);
     const [items, setItems] = useState([]);
     const handleDragStart = (e) => e.preventDefault();
-    const [selectedFilter, setSelectedFilter] = useState(1);
+    const [filteredReviews, setFilteredReviews] = useState([]);
+
     const handleChangeFilter = (event) => {
-        setSelectedFilter(event.target.value);
+        let filter = event.target.value;
+        let newrates = filterReviews(rates, filter)
+        setSelectedFilter(event.target.value)
+        setRates(newrates)
     };
     const calculateAverageRate = (list) => {
         if (!Array.isArray(list) || list.length === 0) {
@@ -38,9 +42,6 @@ const PlaceInfor = () => {
         // Làm tròn kết quả đến 0.5 gần nhất
         const roundedAverage = Math.round(average * 2) / 2;
         return roundedAverage;
-    };
-    const getFilteredReviews = () => {
-        return filterReviews(rates, selectedFilter);
     };
     useEffect(() => {
         const fetchPlaceInfor = async () => {
@@ -62,6 +63,8 @@ const PlaceInfor = () => {
                 <img src={placeinfor?.list_imgs[1]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
                 <img src={placeinfor?.list_imgs[2]} onDragStart={handleDragStart} role="presentation" alt="temp" />,
             ]);
+            const filteredReviews = filterReviews(reviews, "1");
+            setFilteredReviews(filteredReviews);
             setOpen(false)
         }
         fetchPlaceInfor()
@@ -74,6 +77,7 @@ const PlaceInfor = () => {
         window.location.reload();
     };
     const filterReviews = (reviews, filterValue) => {
+        console.log("Reviews", reviews)
         switch (filterValue) {
             case "1":
                 // Số sao tăng dần
@@ -84,6 +88,18 @@ const PlaceInfor = () => {
             default:
                 return reviews;
         }
+    };
+
+    // Hàm callback để xử lý khi điều kiện trong component con Review thỏa mãn
+    const handleReviewConditionMet = async () => {
+        // Thực hiện các hành động cần thiết khi điều kiện trong Review thỏa mãn
+        const currentUrl = new URL(window.location.href);
+        const placeid = currentUrl.searchParams.get('placeid');
+        let fetch = await getPlace(placeid);
+        const reviews = fetch.reviews;
+        setRates(reviews);
+        const filteredReviews = filterReviews(reviews, selectedFilter);
+        setFilteredReviews(filteredReviews);
     };
     return (
         <div className="placeinfor">
@@ -206,6 +222,9 @@ const PlaceInfor = () => {
                                 {place?.description}
                             </div>
                         </div>
+                        <div className="place__map">
+
+                        </div>
                     </div>
                 </div>
                 <div className="placeinfor__review">
@@ -238,8 +257,8 @@ const PlaceInfor = () => {
                     </div>
                     <div className="placeinfor__reviewlist">
                         <div className="placeinfor__review">
-                            {getFilteredReviews().map((review, index) => (
-                                <Review key={index} review={review} place={rates}></Review>
+                            {filteredReviews.map((review, index) => (
+                                <Review key={index} review={review} place={rates} onReviewConditionMet={handleReviewConditionMet}></Review>
                             ))}
                         </div>
                     </div>

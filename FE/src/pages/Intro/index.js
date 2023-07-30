@@ -13,16 +13,17 @@ import DCToken from '../../assets/imgs/logoNew3.png'
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import place from "../../constants"
 const Review = ({ review }) => {
     return (
         <div className="review-wrapper">
-            <div className="review-content">Đây là chuyến đi vô cùng thú vị ở An Giang, nếu có cơ hội tôi sẽ đến đây một lần nữa</div>
+            <div className="review-content">{review.description}</div>
             <div className="review-avatar">
-                <Avatar sx={{ width: 56, height: 56 }} src={avt}></Avatar>
+                <Avatar sx={{ width: 56, height: 56 }} src={review.user.avatar}></Avatar>
             </div>
-            <div className="review-name">Lâm Điền Chinh</div>
-            <div className="review-place">Rừng Tràm Trà Sư</div>
-            <div className="review-time">12:00 28/4/2023</div>
+            <div className="review-name">{`${review.user.firstName} ${review.user.lastName}`} </div>
+            <div className="review-place">{place.placenames[review.placeid]}</div>
+            <div className="review-time">{review.reviewtime}</div>
         </div >
     );
 }
@@ -158,26 +159,19 @@ const Intro = () => {
                         </div>
                         <div className="intro-three-slides">
                             {
-                                reviews? <Slider {...settings}>
-                                    <div>
-                                        <Review ></Review>
-                                    </div>
-                                    <div>
-                                        <Review></Review>
-                                    </div>
-                                    <div>
-                                        <Review ></Review>
-                                    </div>
-                                    <div>
-                                        <Review ></Review>
-                                    </div>
-                                </Slider> : ""
-
+                                reviews && < Slider {...settings}>
+                                    {
+                                        reviews.map((review, index) =>
+                                            <div key={index}>
+                                                <Review review={review}></Review>
+                                            </div>
+                                        )}
+                                </Slider>
                             }
                         </div>
                     </Container>
                 </div>
-            </section>
+            </section >
         </div >
     );
 }

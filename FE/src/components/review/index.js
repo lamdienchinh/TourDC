@@ -38,6 +38,7 @@ const Review = (props) => {
     const [dislike, setDislike] = useState(0)
     const [trustrate, setTrustRate] = useState(0)
     const [allReviews, setAllReviews] = useState([])
+    const [rate, setRate] = useState(Number(props.review.rate))
     const handleReaction = async (action) => {
         if (walletAddress === "") {
             toast.error("Bạn chưa đăng nhập")
@@ -101,9 +102,10 @@ const Review = (props) => {
                     console.log(check)
                     setReaction("")
                 }
-                let gettrustrate = await getTrustRate(user._id)
-                console.log(gettrustrate)
-                setTrustRate(gettrustrate)
+                // let gettrustrate = await getTrustRate(user._id)
+                // console.log(gettrustrate)
+                // setTrustRate(gettrustrate)
+                props.onReviewConditionMet()
             }
             else {
                 toast.error("Bạn chưa checkin nơi này")
@@ -129,7 +131,8 @@ const Review = (props) => {
             setDislike(props.review.dislike.length)
             if (props.review.dislike.includes(currentuser._id)) setReaction("dislike")
         }
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        setRate(props.review.rate)
+    }, [props]) // eslint-disable-line react-hooks/exhaustive-deps
     return (
         <div className="review">
             <div className="review__row1">
@@ -146,14 +149,14 @@ const Review = (props) => {
                         <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực cảm nghĩ</a>
                     </div>
                     <div className="review__verify">
-                        {`Độ tin cậy: ${trustrate}`}
+                        {`Độ tin cậy: ${trustrate.toFixed(2)}`}
                     </div>
                     <div className="review__time">
                         {`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}
                     </div>
                 </div>
                 <div className="review__column2">
-                    <Rating name="size-large" defaultValue={Number(props.review.rate)} precision={0.5} size="large" readOnly />
+                    <Rating name="size-large" value={rate} precision={0.5} size="large" readOnly />
                 </div>
             </div>
             <div className="review__row2">

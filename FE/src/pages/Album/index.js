@@ -145,7 +145,9 @@ const Album = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             <div className="album-slide">
-                Tạo Album, Chia sẻ khoảnh khắc
+                <div className="album__slides__content">
+                    Tạo Album, Chia sẻ khoảnh khắc
+                </div>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link underline="hover" color="inherit" href="/">
                         Home
