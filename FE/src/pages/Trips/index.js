@@ -30,8 +30,10 @@ import { useDispatch } from "react-redux";
 import { getAllReviewsInAllPlaces } from '../../service/api';
 import { getBalanceOf } from '../../service/api';
 import Web3 from 'web3';
+import Modal from 'react-bootstrap/Modal';
 import { getBalance } from '../../state/selectors';
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
+
 function PaperComponent(props) {
     return (
         <Draggable
@@ -48,6 +50,7 @@ const Trips = () => {
     const handleClose = () => {
         setIsLoading(false);
     };
+    const [show, setShow] = useState(false);
     const [allTrips, setAllTrips] = useState([]);
     const [select, setSelect] = useState(1);
     const dispatch = useDispatch();
@@ -201,17 +204,19 @@ const Trips = () => {
                 }
             } else {
                 console.log("here")
-                try {
-                    review = await autoReview(user, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
-                    "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature)
-                    console.log("autoreview:" ,review);
-                    if (review != -1) {
-                        let type = 1
-                        dispatch(updateBalance({type, balance}, dispatch));
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
+                setShow(true)
+                // try {
+                //     review = await autoReview(user, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
+                //     "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature)
+                //     console.log("autoreview:" ,review);
+                //     if (review != -1) {
+                //         let type = 1
+                //         dispatch(updateBalance({type, balance}, dispatch));
+                //     }
+                // } catch (error) {
+                //     console.log(error);
+                // }
+
                 
             }
            
@@ -251,8 +256,34 @@ const Trips = () => {
         }
         return action;
     }
+    const handleClose3 = () => setShow(false);
     return (
         <div className="trip-wrapper">
+        <Modal
+            show={show}
+            onHide={handleClose3}
+            backdrop="static"
+            keyboard={false}
+            size="lg"
+            > 
+                <Modal.Header closeButton>
+                <Modal.Title>Tính năng đang cập nhật ...</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <div style={{fontWeight: "bold",margin:"10px"}}>
+                Tính năng này đang được phát triên, vui lòng đăng nhập bằng ví Metamask để có trải nghiệm đầy đủ! 
+                </div>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose3}>
+                    Close
+                </Button>
+                <Button>
+                <Link underline="hover" color="inherit" href="/login">
+                Đi đến đăng nhập
+                </Link></Button>
+                </Modal.Footer>
+            </Modal>
             <Backdrop
                 sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={isLoading}
