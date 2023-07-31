@@ -44,6 +44,9 @@ const PurchasedVoucherItem = ({ voucher, onUseVoucher }) => {
             <Typography variant="subtitle1">Ngày mua: {formatDateTime(purchaseDate)}</Typography>
             <Typography variant="h5">{voucher.detail.name}</Typography>
             <Typography variant="subtitle1">Price: {voucher.detail.price}</Typography>
+            <div className="voucher__verify">
+                <a href={`https://sepolia.etherscan.io/tx/${voucher.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực trao đổi</a>
+            </div>
             <Typography variant="body1">{voucher.detail.description}</Typography>
             <Button variant="contained" color="primary" onClick={handleUseVoucher} disabled={voucher.used}>
                 {voucher.used ? 'Đã sử dụng' : 'Sử dụng'}

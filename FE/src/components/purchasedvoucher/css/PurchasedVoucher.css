@@ -71,3 +71,9 @@
 .dialog-actions {
   padding: 10px 20px;
 }
+
+.voucher__verify a{
+  text-decoration: none;
+  color: rgb(28, 223, 28);
+  font-weight: 500;
+}
