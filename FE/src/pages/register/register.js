@@ -115,24 +115,24 @@ function Register() {
                 <div className="form-box">
                     <div className="form-value">
                         <form onSubmit={handleSubmit}>
-                            <h2>Sign up</h2>
+                            <h2>Đăng ký</h2>
                             <div className="box-name">
                                 <div className="inputbox">
                                     <input type="text" onChange={(event) => setFirstname(event.target.value)} />
-                                    <label >First Name</label>
+                                    <label >Tên</label>
                                     
                                 </div>
                                 
                                 <div className="inputbox">
                                     <input type="text" onChange={(event) => setLastname(event.target.value)} />
-                                    <label >Lastname</label>
+                                    <label >Họ và tên lót</label>
                                 </div>
                             </div>
                             {errors.firstname ? <div className='error'>{errors.firstname}</div> : null}
                             {errors.lastname ? <div className='error'>{errors.lastname}</div> : null}   
                             <div className="inputbox">
                                 <input type="text" placeholder="Optional" onChange={(event) => setPhonenumber(event.target.value)} />
-                                <label>Phonenumber</label>
+                                <label>Số điện thoại</label>
                             </div>
                             {errors.phone ? <div className='error'>{errors.phone}</div> : null}
                             <div className="inputbox">
@@ -142,19 +142,19 @@ function Register() {
                             {errors.email ? <div className='error'>{errors.email}</div> : null}
                             <div className="inputbox">
                                 <input type="password" onChange={(event) => setPassword(event.target.value)} />
-                                <label >Password</label>
+                                <label >Mật khẩu</label>
                             </div>
                             {errors.password ? <div className='error'>{errors.password}</div> : null}
                             <div className="inputbox">
                                 <input type="" placeholder="Optional" onChange={(event) => setAddress(event.target.value)} />
-                                <label >Metamask address</label>
+                                <label > địa chỉ Metamask </label>
                             </div>
                             {valid ? <div className='error'>{valid}</div> : null}
                             {errors.address ? <div className='error'>{errors.address}</div> : null}
                             <div className="register-btn-wrap">
-                                <button className="sign-up">Sign up</button>
+                                <button className="sign-up">Đăng ký</button>
                                 <div>
-                                    <Link className ="register-link" to="/login">Had an account</Link>
+                                    <Link className ="register-link" to="/login">Đã có tài khoản</Link>
                                 </div>
                             </div>
                         </form>

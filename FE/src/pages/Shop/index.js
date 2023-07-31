@@ -62,9 +62,9 @@ const VoucherShop = () => {
                 <div className="shop__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="black" href="/">
-                            Home
+                           Trang chủ
                         </Link>
-                        <Typography color="text.primary">Shop</Typography>
+                        <Typography color="text.primary">Quà tặng</Typography>
                     </Breadcrumbs>
                 </div>
             </div>

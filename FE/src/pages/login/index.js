@@ -82,7 +82,7 @@ function Login() {
                 <div className="form-loginbox">
                     <div className="form-value">
                         <form onSubmit={handleSubmit}>
-                            <h2>Login</h2>
+                            <h2>Đăng nhập</h2>
                             <div className="inputbox">
                                 <input id='email' type="text" onChange={(event) => setUsername(event.target.value)} />
                                 <label>Email</label>
@@ -91,18 +91,18 @@ function Login() {
                             {errors.email ? <div className='error'>{errors.email}</div> : null}
                             <div className="inputbox">
                                 <input id='password' type="password" onChange={(event) => setPassword(event.target.value)} />
-                                <label>Password</label>
+                                <label>Mật khẩu</label>
                             </div>
                             {errors.password ? <div className='error'>{errors.password}</div> : null}
                             {errors.invalid ? <div className='error'>{errors.invalid}</div> : null}
-                            <button type="submit" value='normal' className='login-btn'>Log in</button>
+                            <button type="submit" value='normal' className='login-btn'>Đăng nhập</button>
 
                             <button type="submit" value='metamask' className='login-btn1'>
-                                Connect MetaMask Account
+                                Kết nối bằng tài khoản MetaMask
                                 <img src={metamask} alt="Ảnh" className='metamask' ></img>
                             </button>
                             <div className="register-block">
-                                <p>Don't have an account <a href="/register">Register</a></p>
+                                <p>Không có tài khoản <a href="/register">Đăng ký</a></p>
                             </div>
                         </form>
                     </div>

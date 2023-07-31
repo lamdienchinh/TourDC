@@ -5,14 +5,16 @@ import "./css/Place_Thumbnail.scss";
 import { useEffect, useState } from "react";
 
 const PlaceThumbnail = (props) => {
-    const [rates, setRates] = useState(props.place.trips?.length ? props.place.trips : []);
+    const [rates, setRates] = useState([]);
     const navigate = useNavigate();
     const [average, setAverage] = useState(0);
 
     useEffect(() => {
         const getAverage = async () => {
+            setRates(props.place.trips)
             let temp = 0;
             console.log("Rates", props.place.trips)
+            let rates = props.place.trips
             if (rates.length > 0) {
                 for (let i = 0; i < props.place.trips.length; i++) {
                     temp += Number(props.place.trips[i].rate);

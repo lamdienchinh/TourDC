@@ -150,9 +150,9 @@ const Album = () => {
                 </div>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link underline="hover" color="inherit" href="/">
-                        Home
+                        Trang chủ
                     </Link>
-                    <Typography color="text.primary">Album</Typography>
+                    <Typography color="text.primary">Albums</Typography>
                 </Breadcrumbs>
             </div>
             <Container maxWidth="lg">

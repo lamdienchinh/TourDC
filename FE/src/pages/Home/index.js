@@ -187,9 +187,9 @@ const Home = () => {
                 <div className="home__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
-                            Home
+                            Trang chủ
                         </Link>
-                        <Typography color="text.primary">Travel</Typography>
+                        <Typography color="text.primary">Du lịch</Typography>
                     </Breadcrumbs>
                 </div>
             </div>

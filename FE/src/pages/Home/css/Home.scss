@@ -128,7 +128,7 @@
             // justify-content: flex-start;
             width: 100%;
             display: grid;
-            height: 40rem;
+            min-height: 40rem;
             // min-height: 25rem;
             margin-bottom: 40px;
             grid-template-columns: repeat(2, 1fr); /* Tạo 4 cột có kích thước bằng nhau */
