@@ -19,6 +19,8 @@ const userSlice = createSlice({
         },
         clearUser: (state) => {
             state.address = "";
+            state.balance = 0;
+            state.infor = {};
         },
         setInfor: (state, action) => {
             state.infor = action.payload.infor;
@@ -37,7 +39,7 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
                 method: "eth_requestAccounts",
             });
             console.log(accounts[0]);
-            axios.defaults.withCredentials=true;
+            axios.defaults.withCredentials = true;
             let infor = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/user/loginByMetamask`, {
                 walletAddress: accounts[0]
             });
@@ -45,7 +47,7 @@ export const connectWallet = createAsyncThunk('user/connectWallet', async (_, { 
             console.log(infor.data)
             let balance = await getBalanceOf(accounts[0]);
             console.log("balance: ", balance);
-            dispatch(setUser({ address: accounts[0], infor: infor.data, balance: Number(balance)/(10**18) }));
+            dispatch(setUser({ address: accounts[0], infor: infor.data, balance: Number(balance) / (10 ** 18) }));
             toast.success("Kết nối ví Metamask thành công")
         } catch (err) {
             console.log(err.message);
@@ -111,18 +113,18 @@ export const logout = createAsyncThunk('user/logout', async ({ token, axiosJWT }
         dispatch(clearUser());
     }
 })
-export const updateBalance = createAsyncThunk('getBalance', async({type,balance}, {dispatch}) =>{
+export const updateBalance = createAsyncThunk('getBalance', async ({ type, balance }, { dispatch }) => {
     if (type === -1) {
         console.log(typeof balance)
         console.log("balance: ", balance)
         console.log("balance:", balance + 10)
-        dispatch(setBalance({balance: (balance + 10)}))
+        dispatch(setBalance({ balance: (balance + 10) }))
     } else {
         console.log("type!=1")
         console.log("balance", balance)
         console.log("type", type)
         console.log("balanceSlice", (balance - type))
-        dispatch(setBalance({balance: (balance - type)}))
+        dispatch(setBalance({ balance: (balance - type) }))
     }
 })
 
