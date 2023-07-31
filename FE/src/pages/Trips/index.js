@@ -295,12 +295,12 @@ const Trips = () => {
                 Khám phá những chuyến đi của bạn
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link underline="hover" color="inherit" href="/">
-                        Home
+                        Trang chủ
                     </Link>
                     <Link underline="hover" color="inherit" href="/album">
-                        Album
+                        Albums
                     </Link>
-                    <Typography color="text.primary">Trips</Typography>
+                    <Typography color="text.primary">Chuyến đi</Typography>
                 </Breadcrumbs>
             </div>
             <Container maxWidth="lg">

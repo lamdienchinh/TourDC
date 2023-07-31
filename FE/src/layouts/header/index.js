@@ -145,12 +145,12 @@ const Header = () => {
 
                     <div className="header__ele header__ele--aboutus">
                         <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/'>
-                            HOME
+                            TRANG CHỦ
                         </NavLink>
                     </div>
                     <div className="header__ele header__ele--home">
                         <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/travel'>
-                            TRAVEL
+                            DU LỊCH
                         </NavLink>
                     </div>
                     {
@@ -158,12 +158,12 @@ const Header = () => {
                             <>
                                 <div className="header__ele header__ele--forum">
                                     <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/forum'>
-                                        FORUM
+                                        DIỄN ĐÀN
                                     </NavLink>
                                 </div>
                                 <div className="header__ele header__ele--shop">
                                     <NavLink className={({ isActive, isPending }) => isPending ? "header__link" : isActive ? "header__link--selected" : "header__link"} to='/shop'>
-                                        SHOP
+                                        QUÀ TẶNG
                                     </NavLink>
                                 </div>
                             </> : ""
@@ -185,7 +185,7 @@ const Header = () => {
                             ? <Avatar className="header__avatar" src={userInfor?.avatar ? userInfor.avatar : image} alt="Avatar" aria-controls={open ? 'fade-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick} /> : "LOGIN"}
+                                onClick={handleClick} /> : "ĐĂNG NHẬP"}
                         <Menu
                             id="fade-menu"
                             MenuListProps={{
@@ -200,30 +200,30 @@ const Header = () => {
                             <MenuItem onClick={(event) => handleClose(event, "profile")}>
                                 <div className="menu-wrapper">
                                     <AccountBoxIcon />
-                                    Profile
+                                    Thông tin cá nhân
                                 </div>
                             </MenuItem>
                             <MenuItem onClick={(event) => handleClose(event, "album")}>
                                 <div className="menu-wrapper">
                                     <CollectionsIcon />
-                                    Album
+                                    Albums và chuyến đi
                                 </div>
                             </MenuItem>
                             <MenuItem onClick={(event) => handleClose(event, "vouchers")}>
                                 <div className="menu-wrapper">
                                     <BackpackIcon />
-                                    Vouchers
+                                    Quà đã đổi
                                 </div>
                             </MenuItem>
                             <MenuItem onClick={(event) => handleClose(event, "logout")}>
                                 <div className="menu-wrapper">
                                     <LogoutIcon />
-                                    Logout
+                                    Đăng xuát
                                 </div>
                             </MenuItem>
                         </Menu>
                         {walletAddress ? <div className='balance'>
-                            <div >Balance:</div>
+                            <div >Số dư:</div>
                             <div className='balance-active'> {balance} </div>
                             <img className='token' src={DCToken}></img>
                         </div> : null}

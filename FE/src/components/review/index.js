@@ -117,6 +117,7 @@ const Review = (props) => {
         setAllReviews(props.place)
         // Check xem đã like hay dislike chưa
         const fetchTrustRate = async () => {
+            console.log("User ", user)
             let gettrustrate = await getTrustRate(user._id)
             console.log(gettrustrate)
             setTrustRate(gettrustrate)

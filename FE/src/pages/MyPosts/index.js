@@ -70,12 +70,12 @@ const MyPosts = () => {
                 <div className="myposts__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/">
-                            Home
+                            Trang chủ
                         </Link>
                         <Link underline="hover" color="inherit" href="/forum">
-                            Forum
+                            Diễn đàn
                         </Link>
-                        <Typography color="text.primary">My Posts</Typography>
+                        <Typography color="text.primary">Bài posts cá nhân</Typography>
                     </Breadcrumbs>
                 </div>
             </div>

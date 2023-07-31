@@ -229,10 +229,10 @@ const PlaceInfor = () => {
                 </div>
                 <div className="placeinfor__review">
                     <div className="placeinfor__rv--1">
-                        Ratings & Reviews ({reviewCount})
+                        Đánh giá của người dùng({reviewCount})
                     </div>
                     <div className="placeinfor__rv--2">
-                        Summary
+                        Tóm tắt
                     </div>
                     <div className="placeinfor__chart">
                         <ReviewChart reviews={rates} average={average} />

@@ -72,14 +72,15 @@ const getPlace = async (placeid) => {
             if (matchingElement) {
                 return { ...item1, ...matchingElement };
             } else {
-                return item1;
+                return null;
             }
         });
+        const filteredMergedArray = mergedArray.filter(item => item !== null);
         let result = {
             placeinfor: place.data,
-            reviews: mergedArray
+            reviews: filteredMergedArray
         }
-        console.log("MergeArray", mergedArray);
+        console.log("MergeArray", filteredMergedArray);
         return result;
     }
     catch (err) {
@@ -232,7 +233,7 @@ const autoCheckIn = async (user, ticketId, placeId) => {
             placeId: placeId
         })
         console.log("check: ", check.data.txHash)
-        if(check.data.txHash) {
+        if (check.data.txHash) {
             toast.success("Check in thành công!")
             return check.data.txHash;
         } else {
@@ -376,50 +377,50 @@ const getTrustRate = async (id) => {
 
 const autoReview = async (user, placeId, tripId, comment, rate, title,
     _signer, _to, _amount, _message, _nonce, signature) => {
-        const walletAddress = user.walletAddress;
-        const privateKey = user.privateKey;
-        console.log("walletAddress: ", walletAddress)
-        console.log("user: ", user)
-        console.log("placeId: ", placeId)
-        console.log("tripId: ", tripId)
-        console.log("comment: ", comment)
-        console.log("rate: ", rate)
-        console.log("title: ", title)
-        console.log("_signer: ", _signer)
-        console.log("_to: ", _to)
-        console.log("_amount: ", _amount)
-        console.log("_to: ", _to)
-        console.log("_message: ", _message)
-        console.log("_nonce: ", _nonce)
-        console.log("signature: ", signature)
-        try {
-            let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autoreview`, {
-                walletAddress: walletAddress,
-                privateKey: privateKey,
-                placeId: Number(placeId),
-                tripId: Number(tripId),
-                comment: comment,
-                rate: rate,
-                title: title,
-                _signer: _signer,
-                _to: _to, 
-                _amount: _amount,
-                _message: _message, 
-                _nonce: _nonce, 
-                signature: signature
-            })
-            console.log("check: ", check.data.txHash)
-            if(check.data.txHash) {
-                toast.success("Lưu trữ kỉ niệm thành công!")
-                return check.data.txHash;
-            } else {
-                toast.error("Lưu trữ kỉ niệm thất bại!")
-                return -1;
-            }
-        } catch (error) {
-            console.log("error: ", error)
+    const walletAddress = user.walletAddress;
+    const privateKey = user.privateKey;
+    console.log("walletAddress: ", walletAddress)
+    console.log("user: ", user)
+    console.log("placeId: ", placeId)
+    console.log("tripId: ", tripId)
+    console.log("comment: ", comment)
+    console.log("rate: ", rate)
+    console.log("title: ", title)
+    console.log("_signer: ", _signer)
+    console.log("_to: ", _to)
+    console.log("_amount: ", _amount)
+    console.log("_to: ", _to)
+    console.log("_message: ", _message)
+    console.log("_nonce: ", _nonce)
+    console.log("signature: ", signature)
+    try {
+        let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autoreview`, {
+            walletAddress: walletAddress,
+            privateKey: privateKey,
+            placeId: Number(placeId),
+            tripId: Number(tripId),
+            comment: comment,
+            rate: rate,
+            title: title,
+            _signer: _signer,
+            _to: _to,
+            _amount: _amount,
+            _message: _message,
+            _nonce: _nonce,
+            signature: signature
+        })
+        console.log("check: ", check.data.txHash)
+        if (check.data.txHash) {
+            toast.success("Lưu trữ kỉ niệm thành công!")
+            return check.data.txHash;
+        } else {
+            toast.error("Lưu trữ kỉ niệm thất bại!")
             return -1;
         }
+    } catch (error) {
+        console.log("error: ", error)
+        return -1;
+    }
 }
 export {
     getAllPlace,

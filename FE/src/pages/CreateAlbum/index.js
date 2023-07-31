@@ -154,12 +154,12 @@ const CreateAlbum = () => {
                 Tạo Album của riêng bạn
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link underline="hover" color="inherit" href="/">
-                        Home
+                        Trang chủ
                     </Link>
                     <Link underline="hover" color="inherit" href="/album">
-                        Album
+                        Albums
                     </Link>
-                    <Typography color="text.primary">Create Album</Typography>
+                    <Typography color="text.primary">Tạo Albums</Typography>
                 </Breadcrumbs>
             </div>
             <Container maxWidth="lg">

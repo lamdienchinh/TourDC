@@ -24,20 +24,20 @@ const Footer = () => {
                             </ul>
                         </div>
                         <div className="footer-column">
-                            <h3>Site Map</h3>
+                            <h3>Bản đồ trang</h3>
                             <ul>
-                                <li><Link to="/">Home</Link></li>
-                                <li><Link to="/travel">Travel</Link></li>
+                                <li><Link to="/">Trang chủ</Link></li>
+                                <li><Link to="/travel">Du lịch</Link></li>
                                 {/* <li><Link to="/placeinfor">Place Information</Link></li> */}
                                 {/* Add more links here */}
                                 {walletAddress && (
                                     <React.Fragment>
-                                        <li><Link to="/user">User Dashboard</Link></li>
-                                        <li><Link to="/album">Album</Link></li>
-                                        <li><Link to="/trips">Trips</Link></li>
-                                        <li><Link to="/forum">Forum</Link></li>
-                                        <li><Link to="/shop">Voucher Shop</Link></li>
-                                        <li><Link to="/vouchers">Purchased Vouchers</Link></li>
+                                        <li><Link to="/user">Thông tin cá nhân</Link></li>
+                                        <li><Link to="/album">Albums</Link></li>
+                                        <li><Link to="/trips">Chuyến đi</Link></li>
+                                        <li><Link to="/forum">Diễn đàn</Link></li>
+                                        <li><Link to="/shop">Quà tặng</Link></li>
+                                        <li><Link to="/vouchers">Quà đã đổi</Link></li>
                                     </React.Fragment>
                                 )}
                             </ul>

@@ -90,19 +90,19 @@ const Intro = () => {
                         <div className="intro-description">
                             <div>
                                 <div className="intro-description-1">10</div>
-                                <div className="intro-description-2">Years of experiences</div>
+                                <div className="intro-description-2">Năm thành lập</div>
                             </div>
                             <div>
                                 <div className="intro-description-1 intro-des">2K+</div>
-                                <div className="intro-description-2">Best Destinations</div>
+                                <div className="intro-description-2">Địa điểm tuyệt vời</div>
                             </div>
                             <div>
                                 <div className="intro-description-1 intro-des">10K+</div>
-                                <div className="intro-description-2">Happy Customers</div>
+                                <div className="intro-description-2">Khách hàng</div>
                             </div>
                             <div>
                                 <div className="intro-description-1 intro-des">4.7</div>
-                                <div className="intro-description-2">Overall Rating</div>
+                                <div className="intro-description-2">Đánh giá tổng quát</div>
                             </div>
                         </div>
                     </Container>

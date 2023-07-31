@@ -90,9 +90,9 @@ const PurchasedVouchers = () => {
                 <div className="voucher__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="black" href="/">
-                            Home
+                            Trang chủ
                         </Link>
-                        <Typography color="text.primary">Vouchers</Typography>
+                        <Typography color="text.primary">Quà đã đổi</Typography>
                     </Breadcrumbs>
                 </div>
             </div>

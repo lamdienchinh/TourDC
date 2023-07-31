@@ -151,9 +151,9 @@ const Forum = () => {
                 <div className="forum__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="black" href="/">
-                            Home
+                            Trang chủ
                         </Link>
-                        <Typography color="text.primary">Forum</Typography>
+                        <Typography color="text.primary">Diễn đàn</Typography>
                     </Breadcrumbs>
                 </div>
             </div>

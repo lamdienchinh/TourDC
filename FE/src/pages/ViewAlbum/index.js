@@ -102,12 +102,12 @@ const ViewAlbum = () => {
                 Album lưu giữ kỷ niệm
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link underline="hover" color="inherit" href="/">
-                        Home
+                        Trang chủ
                     </Link>
                     <Link underline="hover" color="inherit" href="/album">
-                        Album
+                        Albums
                     </Link>
-                    <Typography color="text.primary">View Album</Typography>
+                    <Typography color="text.primary">Thông tin Album</Typography>
                 </Breadcrumbs>
             </div>
             <Container maxWidth="lg">
