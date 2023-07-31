@@ -52,7 +52,7 @@ function Login() {
                 console.log("datauser:", user.data);
                 if (user) {
                     let balance = await getBalanceOf(user.data.walletAddress)
-                    dispatch(setUser({ address: user.data.walletAddress, infor: user.data, balance: Number(balance)}));
+                    dispatch(setUser({ address: user.data.walletAddress, infor: user.data, balance: Number(balance)/(10**18)}));
                     navigate('/');
                 }
                 else {

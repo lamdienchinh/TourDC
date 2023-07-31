@@ -204,20 +204,22 @@ const Trips = () => {
                 }
             } else {
                 console.log("here")
-                setShow(true)
-                // try {
-                //     review = await autoReview(user, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
-                //     "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature)
-                //     console.log("autoreview:" ,review);
-                //     if (review != -1) {
-                //         let type = 1
-                //         dispatch(updateBalance({type, balance}, dispatch));
-                //     }
-                // } catch (error) {
-                //     console.log(error);
-                // }
-
-                
+                // setShow(true)
+                try {
+                    console.log("userWWallet:", user.walletAddress)
+                    review = await autoReview(user, selectTrip.placeId, selectTrip.tripId, result.description, result.rate, result.title,
+                    "0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount, 10, result.description + result.rate + result.title, 0, signature)
+                    console.log("autoreview:" ,review);
+                    if (review != -1) {
+                        let type = -1
+                        dispatch(updateBalance({type, balance}, dispatch));
+                    }
+                } catch (error) {
+                    console.log(error);
+                    if (error.code == 101) {
+                        
+                    }
+                }
             }
            
             setSelectTrip("");

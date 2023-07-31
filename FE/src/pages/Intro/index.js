@@ -22,7 +22,7 @@ const Review = ({ review }) => {
                 <Avatar sx={{ width: 56, height: 56 }} src={review.user.avatar}></Avatar>
             </div>
             <div className="review-name">{`${review.user.firstName} ${review.user.lastName}`} </div>
-            <div className="review-place">{place.placenames[review.placeid-1]}</div>
+            <div className="review-place">{place.placenames[review.placeid - 1]}</div>
             <div className="review-time">{review.reviewtime}</div>
         </div >
     );

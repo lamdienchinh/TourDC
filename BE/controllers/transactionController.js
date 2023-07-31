@@ -72,31 +72,30 @@ const transactionController = {
       console.log("comment: ", req.body.comment)
       console.log("rate: ", req.body.rate)
       console.log("title: ", req.body.title)
-      console.log("_signer: ", req.body._signer)
-      console.log("_to: ", req.body._to)
-      console.log("_amount: ", req.body._amount)
-      console.log("_to: ", req.body._to)
-      console.log("_message: ", req.body._message)
-      console.log("_nonce: ", req.body._nonce)
+      console.log("signer: ", req.body.signer)
+      console.log("to: ", req.body.to)
+      console.log("amount: ", req.body.amount)
+      console.log("message: ", req.body.message)
+      console.log("nonce: ", req.body.nonce)
       console.log("signature: ", req.body.signature)
       let nonce = await web3.eth.getTransactionCount(walletAddress,'latest');
       let data = contract.methods.review(req.body.placeId, req.body.tripId, req.body.comment, req.body.rate, req.body.title,
-        req.body._signer,req.body._to, req.body._amount, req.body._message,  req.body._nonce, req.body.signature).encodeABI();
+        req.body.signer,req.body.to, req.body.amount, req.body.message,  req.body.nonce, req.body.signature).encodeABI();
       let gas = web3.utils.toHex(web3.utils.toWei('1', 'gwei'));
-      let estimateGas = await contract.methods.review(req.body.placeId, req.body.tripId, req.body.comment, req.body.rate, req.body.title,
-        req.body._signer,req.body._to, req.body._amount, req.body._message,  req.body._nonce, req.body.signature).estimateGas({gas: 2000000000});
-        console.log(estimateGas)
+      // let estimateGas = await contract.methods.review(req.body.placeId, req.body.tripId, req.body.comment, req.body.rate, req.body.title,
+      //   req.body.signer,req.body.to, req.body.amount, req.body.message,  req.body.nonce, req.body.signature).estimateGas({gas: 3000000000});
+      //   console.log(estimateGas)
       // function review(uint placeId, uint idTrip, string memory comment, uint rate, string memory title,
-      // address _signer, address _to, uint8 _amount, string memory _message, uint256 _nonce, bytes memory signature)
+      // address signer, address to, uint8 amount, string memory message, uint256 nonce, bytes memory signature)
       console.log("placeId", req.body.placeId)
       const txObject = {
         nonce: web3.utils.toHex(nonce),
         from: walletAddress,
-        gasLimit: web3.utils.toHex(estimateGas), // Raise the gas limit to a much higher amount
+        gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
         // gasPrice: web3.eth.getGasPrice(),
         // gasPrice: '0x09184e72a000',
         // gasLimit: '0x2710',
-        gasPrice: 1000000000,
+        gasPrice: web3.utils.toHex(100000000),
         to: contractAddress.Token,
         data: data,
       }  

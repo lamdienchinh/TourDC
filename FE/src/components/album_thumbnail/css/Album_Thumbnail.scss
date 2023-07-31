@@ -7,7 +7,7 @@
     // margin: 10px 20px 10px 20px;
     width: 100%;
     border-radius: 20px;
-    height: 100%;
+    height: auto;
     & > .albumthumbnail__img {
         height: 60%;
         padding: 0px 0px 10px 0px;
@@ -16,6 +16,10 @@
     }
     & .albumthumbnail__intro {
         height: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
     & > .albumthumbnail__img > img {
         width: 100%;
@@ -30,18 +34,20 @@
         padding: 10px 0px 10px 0px;
     }
     & .albumthumbnail__title {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 26px;
-        font-weight: 700;
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+        text-align: left;
+        font-size: 22px;
+        margin-left: 21px;
+        font-weight: 500;
         height: 60%;
     }
     & .albumthumbnail__time {
         display: flex;
         justify-content: center;
         padding-left: 10px;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 400;
         padding-bottom: 10px;
         height: 40%;

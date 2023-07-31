@@ -76,6 +76,7 @@ const PurchasedVouchers = () => {
         const fetchVouchers = async () => {
             let token = user.accessToken
             const vouchers = await getMyVouchers(token, axiosJWT)
+            console.log(vouchers)
             setPurchasedVouchers(vouchers)
         }
         fetchVouchers();

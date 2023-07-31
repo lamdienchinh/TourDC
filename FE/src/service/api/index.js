@@ -291,11 +291,11 @@ const getBalanceOf = async (currentAccount) => {
     }
 }
 const purchaseVoucher = async (voucherID,
-    _signer,
+    signer,
     currentAccount,
-    _amount,
-    _message,
-    _nonce,
+    amount,
+    message,
+    nonce,
     signature) => {
     try {
         let txHash = await window.ethereum
@@ -308,7 +308,7 @@ const purchaseVoucher = async (voucherID,
                         gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
                         maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
                         maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
-                        data: contract.methods.exchangeVoucher(voucherID, _signer, currentAccount, _amount, _message, _nonce, signature).encodeABI()
+                        data: contract.methods.exchangeVoucher(voucherID, signer, currentAccount, amount, message, nonce, signature).encodeABI()
                     },
                 ],
             });
@@ -321,7 +321,7 @@ const purchaseVoucher = async (voucherID,
     }
 }
 const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title,
-    _signer, _to, _amount, _message, _nonce, signature) => {
+    signer, to, amount, message, nonce, signature) => {
     try {
         let txHash = await window.ethereum
             .request({
@@ -333,7 +333,7 @@ const reviewTrip = async (currentAccount, placeID, tripId, comment, rate, title,
                         gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
                         maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
                         maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
-                        data: contract.methods.review(placeID, tripId, comment, rate, title, _signer, _to, _amount, _message, _nonce, signature).encodeABI()
+                        data: contract.methods.review(placeID, tripId, comment, rate, title, signer, to, amount, message, nonce, signature).encodeABI()
                     },
                 ],
             });
@@ -376,7 +376,7 @@ const getTrustRate = async (id) => {
 }
 
 const autoReview = async (user, placeId, tripId, comment, rate, title,
-    _signer, _to, _amount, _message, _nonce, signature) => {
+    signer, to, amount, message, nonce, signature) => {
     const walletAddress = user.walletAddress;
     const privateKey = user.privateKey;
     console.log("walletAddress: ", walletAddress)
@@ -386,12 +386,11 @@ const autoReview = async (user, placeId, tripId, comment, rate, title,
     console.log("comment: ", comment)
     console.log("rate: ", rate)
     console.log("title: ", title)
-    console.log("_signer: ", _signer)
-    console.log("_to: ", _to)
-    console.log("_amount: ", _amount)
-    console.log("_to: ", _to)
-    console.log("_message: ", _message)
-    console.log("_nonce: ", _nonce)
+    console.log("signer: ", signer)
+    console.log("to: ", to)
+    console.log("amount: ", amount)
+    console.log("message: ", message)
+    console.log("nonce: ", nonce)
     console.log("signature: ", signature)
     try {
         let check = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autoreview`, {
@@ -402,11 +401,11 @@ const autoReview = async (user, placeId, tripId, comment, rate, title,
             comment: comment,
             rate: rate,
             title: title,
-            _signer: _signer,
-            _to: _to,
-            _amount: _amount,
-            _message: _message,
-            _nonce: _nonce,
+            signer: signer,
+            to: to,
+            amount: amount,
+            message: message,
+            nonce: nonce,
             signature: signature
         })
         console.log("check: ", check.data.txHash)
