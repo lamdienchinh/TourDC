@@ -139,6 +139,9 @@
     & .placeinfor__filter {
         display: flex;
         justify-content: flex-start;
+        margin: 0 0 1rem 5px;
+        // border: 1px solid black;
+        
         & > div {
             width: 14%;
             height: 20px;
