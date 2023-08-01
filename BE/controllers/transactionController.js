@@ -99,10 +99,10 @@ const transactionController = {
         to: contractAddress.Token,
         data: data,
       }  
-      console.log("txObj", txObject)
+      // console.log("txObj", txObject)
     
       const tx = new Tx(txObject)
-      console.log("newtxObj", tx)
+      // console.log("newtxObj", tx)
       tx.sign(privateKeyBuffer)
     
       const serializedTx = tx.serialize()
@@ -112,7 +112,50 @@ const transactionController = {
 
       web3.eth.sendSignedTransaction( raw );
       res.status(200).json({ txHash });
-    } 
+    },
+  autoPurchase: async (req, res) => {
+    const walletAddress = req.body.walletAddress;
+    const privateKey = req.body.privateKey.slice(2);
+    const privateKeyBuffer = Buffer.from(privateKey, 'hex');
+    let nonce = await web3.eth.getTransactionCount(walletAddress,'latest');
+    
+    let data = contract.methods.exchangeVoucher(req.body.voucherID, req.body.signer, walletAddress, req.body.amount, req.body.message, req.body.nonce, req.body.signature).encodeABI();
+    const txObject = {
+      nonce: web3.utils.toHex(nonce),
+      from: walletAddress,
+      gasLimit: web3.utils.toHex(8000000), // Raise the gas limit to a much higher amount
+      // gasPrice: web3.eth.getGasPrice(),
+      // gasPrice: '0x09184e72a000',
+      // gasLimit: '0x2710',
+      gasPrice: web3.utils.toHex(100000000),
+      to: contractAddress.Token,
+      data: data,
+    }
+    const tx = new Tx(txObject)
+    tx.sign(privateKeyBuffer)
+    const serializedTx = tx.serialize()
+    const raw = '0x' + serializedTx.toString('hex')	
+    const txHash = web3.utils.sha3(serializedTx);
+    web3.eth.sendSignedTransaction(raw)
+    .on('transactionHash', (hash) => {
+      console.log('Transaction hash:', hash);
+      // Mã hash của giao dịch đã được gửi lên blockchain
+      // Bạn có thể thông báo cho người dùng ở đây hoặc thực hiện các hành động khác liên quan đến giao dịch
+      // res.status(200).json({ txHash: hash });
+    })
+    .on('receipt', (receipt) => {
+      console.log('Transaction receipt:', receipt);
+      // Giao dịch đã được chấp nhận và được kết thúc
+      // Bạn có thể xác nhận rằng giao dịch đã thành công ở đây
+      res.status(200).json({ receipt: txHash });
+
+    })
+    .on('error', (error) => {
+      console.error('Error while sending transaction:', error);
+      res.status(500).json({ error: 'Failed to send transaction.' });
+    });
+    // res.status(200).json({ txHash });
+  }
 }
 
 module.exports = transactionController;

@@ -10,12 +10,11 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { updateBalance } from '../../state/userSlice';
 import Web3 from 'web3';
-import { purchaseVoucher } from '../../service/api';
+import { purchaseVoucher, autoPurchase } from '../../service/api';
 import { getBalance } from '../../state/selectors';
 import DCToken from '../../assets/imgs/DCToken.svg'
-// import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Link } from "react-router-dom";
+
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 
 const VoucherDetail = ({ product }) => {
@@ -49,9 +48,7 @@ const VoucherDetail = ({ product }) => {
              //Gọi hàm tới BE
             // Check còn voucher không ?
             setShow(true);
-            
         }
-       
     }
     const handlePurchase = async () => {
         let check = await checkVoucher(product._id);
@@ -66,25 +63,47 @@ const VoucherDetail = ({ product }) => {
                 const signatureObj = web3.eth.accounts.sign(hashedMessage, '0x93856d655b8ecd9ebff0f2c3c5d614834ecf76b66b6fca8ad6fc37381c1989b4')
                 console.log("signature: ", signatureObj.signature);
                 const signature = signatureObj.signature
-
-                try {
-                    let trHash = await purchaseVoucher(product._id,"0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount,product.price,product.name,0,signature);
-                    console.log("trHash: ", trHash);
-                    //Success Lưu bên BE 
-                    let data = {
-                        voucherDetail: product._id,
-                        trHash: trHash,
+                if(!user.privateKey) {
+                    try {
+                        let trHash = await purchaseVoucher(product._id,"0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount,product.price,product.name,0,signature);
+                        console.log("trHash: ", trHash);
+                        //Success Lưu bên BE 
+                        let data = {
+                            voucherDetail: product._id,
+                            trHash: trHash,
+                        }
+                        let token = user.accessToken;
+                        let sale = await saleVoucher(data, token, axiosJWT);
+                        console.log("Kết quả bán", sale)
+                        if(trHash !== -1 ) {
+                            let type = product.price;
+                            dispatch(updateBalance({type, balance}, dispatch));
+                        }
+                    } catch (error) {
+                        console.log(error)
                     }
-                    let token = user.accessToken;
-                    let sale = await saleVoucher(data, token, axiosJWT);
-                    console.log("Kết quả bán", sale)
-                    if(trHash !== -1 ) {
-                        let type = product.price;
-                        dispatch(updateBalance({type, balance}, dispatch));
+                } else {
+                    try {
+                        let trHash = await autoPurchase(user, product._id,"0xcbffe3fa9226a7cD7CfFC770103299B83518F538", product.price,product.name,0,signature);
+                        console.log("trHash: ", trHash);
+                        //Success Lưu bên BE 
+                        // console.log("receipt", receipt)cl
+                        let data = {
+                            voucherDetail: product._id,
+                            trHash: trHash,
+                        }
+                        let token = user.accessToken;
+                        let sale = await saleVoucher(data, token, axiosJWT);
+                        console.log("Kết quả bán", sale)
+                        if(trHash !== -1 ) {
+                            let type = product.price;
+                            dispatch(updateBalance({type, balance}, dispatch));
+                        }
+                    } catch (error) {
+                        console.log(error)
                     }
-                } catch (error) {
-                    console.log(error)
                 }
+                
             }
             else {
                 // Hết Vouchers
@@ -92,6 +111,7 @@ const VoucherDetail = ({ product }) => {
         setShow(false)
     }
     const handleClose = () => setShow(false);
+    
     return (
         <Box className="product-detail">
             <Modal

@@ -421,6 +421,34 @@ const autoReview = async (user, placeId, tripId, comment, rate, title,
         return -1;
     }
 }
+const autoPurchase = async (user, voucherID, signer, amount, message, nonce, signature) => {
+    const walletAddress = user.walletAddress;
+    const privateKey = user.privateKey;
+    try {
+        let purchase = await axios.post(`${process.env.REACT_APP_ENDPOINT}/v1/transaction/autopurchase`, {
+            walletAddress: walletAddress,
+            privateKey: privateKey,
+            voucherID: voucherID,
+            signer: signer,
+            amount: amount,
+            message: message,
+            nonce: nonce,
+            signature: signature
+        })
+        console.log("check: ", purchase.data.txHash)
+        if (purchase.data.receipt) {
+            toast.success("Mua voucher thành công!")
+            return purchase.data.receipt;
+        } else {
+            toast.error("Mua voucher thất bại!")
+            return -1;
+        }
+    } catch (error) {
+        console.log("error: ", error)
+        toast.error("Mua voucher thất bại!")
+        return -1;
+    }
+}
 export {
     getAllPlace,
     reviewtoBE,
@@ -446,5 +474,6 @@ export {
     reviewTrip,
     getMyVouchers,
     getTrustRate,
-    autoReview
+    autoReview,
+    autoPurchase
 }
