@@ -164,7 +164,7 @@ const Album = () => {
                                 Thêm Album
                             </button>
                             <button className="album__button" onClick={handleTrip}>
-                                Xem Trips
+                                Xem chuyến đi
                             </button>
                         </div>
                         <h1>Sắp xếp</h1>
