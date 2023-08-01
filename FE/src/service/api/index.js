@@ -314,6 +314,7 @@ const purchaseVoucher = async (voucherID,
             });
 
         console.log("txHash: ", txHash);
+        toast.success("Mua voucher thành công")
         return txHash; // Trả về giá trị txHash
     } catch (error) {
         console.error("error: ", error)

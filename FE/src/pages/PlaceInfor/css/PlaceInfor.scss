@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Rokkitt&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Roboto:wght@700&display=swap');
 
 .placeinfor {
     padding-top: 0px;
@@ -110,6 +110,7 @@
     }
     & .placeinfor__rate--content {
         padding-left: 30px;
+        font-family: 'Roboto', sans-serif;
     }
 }
 
@@ -163,10 +164,12 @@
     }
 }
 .placeinfor__rate--address {
-    padding-left: 30px;
+    // padding-left: 30px;
+    padding-top: 10px;
     font-weight: 400;
     font-size: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 15px;
+    padding-left: 5px;
 }
 
 .placeinfor__title {
@@ -177,7 +180,9 @@
     font-weight: bold;
 }
 .placeinfor__checkinbtn {
-    background-color: rgb(23, 150, 229) !important;
+    // justify-content: space-between;
+    margin: 20px 50px 0 5px ;
+    background-color: #0d6efd !important;
     border: none;
     z-index: 1;
     width: 130px;
@@ -230,3 +235,68 @@
     margin-left: 30px;
     margin-bottom: 20px;
 }
+
+.wrapper1{
+    // position: fixed;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    position: relative;
+    width: fit-content;
+    margin: 40px 50px 0 2rem ;
+    cursor: pointer;
+  }
+  
+  .link_wrapper{
+    position: relative;
+  }
+  
+  #checkIn{
+    display: block;
+    width: 250px;
+    height: 50px;
+    line-height: 50px;
+    font-weight: bold;
+    text-decoration: none;
+    background: #333;
+    text-align: center;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 3px solid #333;
+    transition: all .35s;
+  }
+  
+  .icon{
+    width: 50px;
+    height: 50px;
+    border: 3px solid transparent;
+    position: absolute;
+    transform: rotate(45deg);
+    right: 0;
+    top: 0;
+    z-index: -1;
+    transition: all .35s;
+  }
+  
+  .icon svg{
+    width: 30px;
+    position: absolute;
+    top: calc(50% - 15px);
+    left: calc(50% - 15px);
+    transform: rotate(-45deg);
+    fill: #29aae2;
+    transition: all .35s;
+  }
+  
+  #checkIn:hover{
+    width: 200px;
+    border: 3px solid #29aae2;
+    background: transparent;
+    color: #29aae2;
+  }
+  
+  #checkIn:hover + .icon{
+    border: 3px solid #29aae2;
+    right: -25%;
+  }
