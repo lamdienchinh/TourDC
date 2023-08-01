@@ -3,7 +3,9 @@
     padding: 20px !important;
     margin: 10px 0px 10px 0;
     border-radius: 10px;
+    font-family: 'Roboto', sans-serif;
 }
+
 .review {
     // border: 2px solid black;
     display: flex;
@@ -11,7 +13,7 @@
     & .review__row1 {
         display: flex;
         flex-direction: row;
-        width: 20%;
+        width: 30%;
         & .review__column1 {
             width: 80%;
             & .review__owner {
@@ -35,6 +37,7 @@
                 color: #62b966;
                 font-weight: 500;
                 padding-bottom: 5px;
+                padding-left: 10px;
                 & > a {
                     text-decoration: none;
                 }
@@ -52,6 +55,7 @@
         }
         & .review__title {
             font-size: 32px;
+            font-weight: 500;   
         }
     }
 }
@@ -83,15 +87,13 @@
     align-items: flex-start;
 }
 
-.like-button,
-.dislike-button {
+.like-button, .dislike-button {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 15px;
     cursor: pointer;
     color: #333;
-    font-size: 14px;
+    font-size: 18px;
     border: none;
     background-color: transparent;
 }

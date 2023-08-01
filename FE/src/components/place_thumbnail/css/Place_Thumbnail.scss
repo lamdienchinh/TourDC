@@ -38,6 +38,7 @@
 
 .placethumbnail__intro {
     height: 100%;
+    
 }
 .placethumbnail__image {
     width: 100%;
@@ -87,7 +88,8 @@
     margin: 0px 20px 0px 20px;
     color: #6e6e6e;
     font-size: 1rem;
-    // font-family: "Poppins", Sans-serif;
+    font-weight: 400;
+    font-family: "Poppins", Sans-serif;
 }
 .placethumbnail__sth {
     margin: 0px 20px 0px 20px;
@@ -121,6 +123,8 @@
     width: 80%;
     font-size: 0.8rem;
     padding: 0px 5px 0px 5px;
+    font-weight: 400;
+    font-family: "Poppins", Sans-serif;
 }
 .place-icon {
     margin-top: 2px;

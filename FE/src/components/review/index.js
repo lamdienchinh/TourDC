@@ -143,18 +143,20 @@ const Review = (props) => {
                             <div>
                                 <img src={user?.avatar} alt="Ảnh avatar"></img>
                             </div>
-                            <div className="review__name">
-                                {`${user?.firstName} ${user?.lastName}`}
+                            <div>
+                                <div className="review__name">
+                                    {`${user?.firstName} ${user?.lastName}`}
+                                </div>
+                                <div className="review__verify">
+                                    {`Độ tin cậy: ${trustrate.toFixed(0)}`}
+                                </div>
                             </div>
-                        </div>
-                        <div className="review__verify">
-                            {`Độ tin cậy: ${trustrate.toFixed(0)}`}
-                        </div>
-                        <div className="review__verify">
-                            <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực cảm nghĩ</a>
                         </div>
                         <div className="review__time">
                             {`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}
+                        </div>
+                        <div className="review__verify" style={{paddingLeft: "0px", bottom: "0"}}>
+                            <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực cảm nghĩ</a>
                         </div>
                     </div>
                 </div>
@@ -189,30 +191,32 @@ const Review = (props) => {
                                 </Gallery>
                             </div>
                         </div>
+                        <div className="review__reaction">
+                        <div className="review__reaction">
+                            <button
+                                className={`like-button ${reaction === "like" ? "active" : ""}`}
+                                onClick={() => handleReaction("like")}
+                            >
+                                <ThumbUpIcon />
+                                <span>{like}</span>
+                            </button>
+                            <button
+                                className={`dislike-button ${reaction === "dislike" ? "active" : ""}`}
+                                onClick={() => handleReaction("dislike")}
+                            >
+                                <ThumbDownIcon />
+                                <span>{dislike}</span>
+                            </button>
+                        </div>
+                        </div>
                     </div>
                     <div className="review__column2">
                         <Rating name="size-large" value={rate} precision={0.5} size="large" readOnly />
+
                     </div>
+                    
                 </div>
             </div >
-            <div className="review__reaction">
-                <div className="review__reaction">
-                    <button
-                        className={`like-button ${reaction === "like" ? "active" : ""}`}
-                        onClick={() => handleReaction("like")}
-                    >
-                        <ThumbUpIcon />
-                        <span>{like}</span>
-                    </button>
-                    <button
-                        className={`dislike-button ${reaction === "dislike" ? "active" : ""}`}
-                        onClick={() => handleReaction("dislike")}
-                    >
-                        <ThumbDownIcon />
-                        <span>{dislike}</span>
-                    </button>
-                </div>
-            </div>
         </div>
     );
 }
