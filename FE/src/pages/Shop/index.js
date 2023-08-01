@@ -5,7 +5,7 @@ import list from "../../constants";
 import './css/Shop.scss';
 import { Container } from '@mui/material';
 import { getAllVouchers } from '../../service/api';
-
+import { HashLoader } from 'react-spinners';
 const VoucherShop = () => {
     const [allVouchers, setAllVouchers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);

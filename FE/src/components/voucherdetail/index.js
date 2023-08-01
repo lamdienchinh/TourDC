@@ -14,7 +14,7 @@ import { purchaseVoucher, autoPurchase } from '../../service/api';
 import { getBalance } from '../../state/selectors';
 import DCToken from '../../assets/imgs/DCToken.svg'
 import Modal from 'react-bootstrap/Modal';
-
+import { HashLoader } from 'react-spinners';
 const web3 = new Web3('https://sepolia.infura.io/v3/c6b95d3b003e40cda8dcf76f7ba58be8');
 
 const VoucherDetail = ({ product }) => {
@@ -25,6 +25,8 @@ const VoucherDetail = ({ product }) => {
     const balance = useSelector(getBalance);
     const [price, setPrice] = useState(0);
     const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
+    // const [confirm, setConfirm] = useState(false);
     console.log(balance)
     const salevoucher = async () => {
         //Kiểm tra số dư của User:
@@ -32,10 +34,10 @@ const VoucherDetail = ({ product }) => {
         const balanceWei = await getBalanceOf(currentAccount);
         const balanceEther = Number(balanceWei)/(10 ** 18)
         console.log("Balance: ", balanceEther);
-        if (balanceEther < product.price) {
-            toast.error('Unable to buy, please check your balance !', {
+        if (balance < product.price) {
+            toast.error('Không thể mua, kiểm tra token của bạn!', {
                 position: "bottom-center",
-                autoClose: 1000,
+                autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -51,6 +53,7 @@ const VoucherDetail = ({ product }) => {
         }
     }
     const handlePurchase = async () => {
+        setLoading(true)
         let check = await checkVoucher(product._id);
             if (check === 1) {
                 console.log("id", product._id)
@@ -67,7 +70,9 @@ const VoucherDetail = ({ product }) => {
                     try {
                         let trHash = await purchaseVoucher(product._id,"0xcbffe3fa9226a7cD7CfFC770103299B83518F538", currentAccount,product.price,product.name,0,signature);
                         console.log("trHash: ", trHash);
-                        //Success Lưu bên BE 
+                        // await web3.eth.getTransactionReceipt(trHash).then(
+                        //     console.log
+                        // )
                         let data = {
                             voucherDetail: product._id,
                             trHash: trHash,
@@ -84,7 +89,11 @@ const VoucherDetail = ({ product }) => {
                     }
                 } else {
                     try {
-                        let trHash = await autoPurchase(user, product._id,"0xcbffe3fa9226a7cD7CfFC770103299B83518F538", product.price,product.name,0,signature);
+                        setLoading(true)
+                        let trHash = await autoPurchase(user, product._id,"0xcbffe3fa9226a7cD7CfFC770103299B83518F538", product.price,product.name,0,signature)
+                        .then(()=> {
+                            setLoading(false);
+                        });
                         console.log("trHash: ", trHash);
                         //Success Lưu bên BE 
                         // console.log("receipt", receipt)cl
@@ -109,9 +118,9 @@ const VoucherDetail = ({ product }) => {
                 // Hết Vouchers
         }
         setShow(false)
+        setLoading(false)
     }
     const handleClose = () => setShow(false);
-    
     return (
         <Box className="product-detail">
             <Modal
@@ -128,6 +137,17 @@ const VoucherDetail = ({ product }) => {
                 <div style={{fontWeight: "bold",margin:"10px", justifyContent: "center"}}>
                     Bạn có chắc chắn sẽ mua voucher này chứ?  
                 </div>
+                {loading?  <div style={{fontWeight: "bold",margin:"10px", justifyContent: "center"}}>
+                    Vui lòng đợi xác thực giao dịch.  
+                </div> : null}
+                <HashLoader 
+                        loading={loading}
+                        color="#36d7b7"
+                        speedMultiplier="1"
+                        cssOverride = {{
+                            marginLeft: "13rem"
+                        }}
+                        />
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
@@ -137,7 +157,7 @@ const VoucherDetail = ({ product }) => {
                 </Modal.Footer>
             </Modal>
             <Card>
-                <CardActionArea>
+                <CardActionArea>                  
                     <CardMedia className="product-image" component="img" height="400" image={product.img} alt={product.name} >
                     </CardMedia>
                     <Button className="buy-button" variant="contained" color="primary" onClick={salevoucher}>

@@ -317,6 +317,16 @@ const purchaseVoucher = async (voucherID,
         return txHash; // Trả về giá trị txHash
     } catch (error) {
         console.error("error: ", error)
+        if (error.code === 4001) toast.error('Người dùng từ chối', {
+            position: "bottom-center",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
         return -1;
     }
 }
