@@ -98,13 +98,18 @@
     flex-direction: row;
     justify-content: center;
     & > div {
-        width: 50%;
         display: flex;
         font-size: 0.8rem;
         justify-content: center;
         & > div {
             padding-left: 10px;
         }
+    }
+    & .placethumbnail__sth--address {
+        width: 70%;
+    }
+    & .placethumbnail__sth--comment {
+        width: 30%;
     }
     & svg {
         color: #57b5fa;

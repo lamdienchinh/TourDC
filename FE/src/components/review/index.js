@@ -135,81 +135,85 @@ const Review = (props) => {
         setRate(props.review.rate)
     }, [props]) // eslint-disable-line react-hooks/exhaustive-deps
     return (
-        <div className="review">
-            <div className="review__row1">
-                <div className="review__column1">
-                    <div className="review__owner">
-                        <div>
-                            <img src={user?.avatar} alt="Ảnh avatar"></img>
+        <div className="review__wrapper">
+            <div className="review">
+                <div className="review__row1">
+                    <div className="review__column1">
+                        <div className="review__owner">
+                            <div>
+                                <img src={user?.avatar} alt="Ảnh avatar"></img>
+                            </div>
+                            <div className="review__name">
+                                {`${user?.firstName} ${user?.lastName}`}
+                            </div>
                         </div>
-                        <div className="review__name">
-                            {`${user?.firstName} ${user?.lastName}`}
+                        <div className="review__verify">
+                            {`Độ tin cậy: ${trustrate.toFixed(0)}`}
                         </div>
-                    </div>
-                    <div className="review__verify">
-                        <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực cảm nghĩ</a>
-                    </div>
-                    <div className="review__verify">
-                        {`Độ tin cậy: ${trustrate.toFixed(2)}`}
-                    </div>
-                    <div className="review__time">
-                        {`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}
+                        <div className="review__verify">
+                            <a href={`https://sepolia.etherscan.io/tx/${props.review.trHash}`} rel="noopener noreferrer" target="_blank">Xác thực cảm nghĩ</a>
+                        </div>
+                        <div className="review__time">
+                            {`${day}/${month}/${year} ${hours}:${minutes}:${seconds}`}
+                        </div>
                     </div>
                 </div>
-                <div className="review__column2">
-                    <Rating name="size-large" value={rate} precision={0.5} size="large" readOnly />
+                <div className="review__row2">
+                    <div className="review__detail">
+                        <div className="review__title">
+                            {props.review.title}
+                        </div>
+                        <div className="review__content">
+                            {props.review.review}
+                        </div>
+                        <div className="review__listimgs">
+                            <div className="review-img-wrapper">
+                                <Gallery>
+                                    {
+                                        props.review?.list_imgs && props.review.list_imgs.map((item, index) => (
+                                            <div className="review-img">
+                                                <Item
+                                                    original={item}
+                                                    thumbnail={item}
+                                                    width="1024"
+                                                    height="768"
+                                                    key={index}
+                                                >
+                                                    {({ ref, open }) => (
+                                                        <img className="review-img-inside" ref={ref} onClick={open} src={item} alt="ảnh" />
+                                                    )}
+                                                </Item>
+                                            </div>
+                                        ))
+                                    }
+                                </Gallery>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="review__column2">
+                        <Rating name="size-large" value={rate} precision={0.5} size="large" readOnly />
+                    </div>
+                </div>
+            </div >
+            <div className="review__reaction">
+                <div className="review__reaction">
+                    <button
+                        className={`like-button ${reaction === "like" ? "active" : ""}`}
+                        onClick={() => handleReaction("like")}
+                    >
+                        <ThumbUpIcon />
+                        <span>{like}</span>
+                    </button>
+                    <button
+                        className={`dislike-button ${reaction === "dislike" ? "active" : ""}`}
+                        onClick={() => handleReaction("dislike")}
+                    >
+                        <ThumbDownIcon />
+                        <span>{dislike}</span>
+                    </button>
                 </div>
             </div>
-            <div className="review__row2">
-                <div className="review__title">
-                    {props.review.title}
-                </div>
-                <div className="review__content">
-                    {props.review.review}
-                </div>
-                <div className="review__listimgs">
-                    <div className="review-img-wrapper">
-                        <Gallery>
-                            {
-                                props.review?.list_imgs && props.review.list_imgs.map((item, index) => (
-                                    <div className="review-img">
-                                        <Item
-                                            original={item}
-                                            thumbnail={item}
-                                            width="1024"
-                                            height="768"
-                                            key={index}
-                                        >
-                                            {({ ref, open }) => (
-                                                <img className="review-img-inside" ref={ref} onClick={open} src={item} alt="ảnh" />
-                                            )}
-                                        </Item>
-                                    </div>
-                                ))
-                            }
-                        </Gallery>
-                    </div>
-                    <div className="review__reaction">
-                        <div className="review__reaction">
-                            <button
-                                className={`like-button ${reaction === "like" ? "active" : ""}`}
-                                onClick={() => handleReaction("like")}
-                            >
-                                <ThumbUpIcon />
-                                <span>{like}</span>
-                            </button>
-                            <button
-                                className={`dislike-button ${reaction === "dislike" ? "active" : ""}`}
-                                onClick={() => handleReaction("dislike")}
-                            >
-                                <ThumbDownIcon />
-                                <span>{dislike}</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div >
+        </div>
     );
 }
 export default Review;

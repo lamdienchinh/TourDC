@@ -11,7 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { getPlace } from "../../service/api";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useSelector } from "react-redux";
+import { getUserData } from "../../state/selectors";
+import { toast } from "react-toastify";
 const PlaceInfor = () => {
+    const user = useSelector(getUserData)
     const [open, setOpen] = useState(true);
     const handleClose = () => {
         setOpen(false);
@@ -101,6 +105,15 @@ const PlaceInfor = () => {
         const filteredReviews = filterReviews(reviews, selectedFilter);
         setFilteredReviews(filteredReviews);
     };
+
+    const checkin = () => {
+        if (user !== "") {
+            navigate(`/code?id=${place?.placeid}`)
+        }
+        else {
+            toast.error("Bạn chưa đăng nhập")
+        }
+    }
     return (
         <div className="placeinfor">
             <Backdrop
@@ -198,33 +211,26 @@ const PlaceInfor = () => {
                             }} />
                     </div>
                     <div className="placeinfor__rate">
-                        {/* <div>
-                            <div className="placeinfor__rate--title">
-                                Đánh giá
-                            </div>
-                            <div className="placeinfor__rate--star">
-                                <Rating name="size-large" defaultValue={average} precision={0.5} size="large" readOnly />
-                            </div>
-                            <div className="placeinfor__rate--address">
-                                Địa chỉ: {place?.address}
-                            </div>
-                        </div> */}
-                        <div>
-                            <div className="placeinfor__rate--address">
-                                Địa chỉ: {place?.address}
-                            </div>
-                        </div>
-                        <div className="placeinfor__rate--content">
-                            <div style={{ fontSize: '40px', fontWeight: '500' }}>
-                                {place?.intro}
-                            </div>
-                            <div>
-                                {place?.description}
-                            </div>
-                        </div>
-                        <div className="place__map">
-
-                        </div>
+                        {
+                            place && <>
+                                <div className="place__button">
+                                    <button class="placeinfor__checkinbtn" onClick={checkin}>Checkin</button>
+                                </div>
+                                <div>
+                                    <div className="placeinfor__rate--address">
+                                        Địa chỉ: {place?.address}
+                                    </div>
+                                </div>
+                                <div className="placeinfor__rate--content">
+                                    <div style={{ fontSize: '40px', fontWeight: '500' }}>
+                                        {place?.intro}
+                                    </div>
+                                    <div>
+                                        {place?.description}
+                                    </div>
+                                </div>
+                            </>
+                        }
                     </div>
                 </div>
                 <div className="placeinfor__review">
