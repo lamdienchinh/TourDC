@@ -23,8 +23,8 @@ import { Chip } from '@mui/material';
 import { addPost, getAlbums, getPosts } from "../../service/api";
 import { toast } from "react-toastify";
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-
+// import CircularProgress from '@mui/material/CircularProgress';
+import Loading from "../../components/loading"
 const Forum = () => {
     const [isLoading, setIsLoading] = useState(true);
     const handleClose = () => {
@@ -142,7 +142,8 @@ const Forum = () => {
                 open={isLoading}
                 onClick={handleClose}
             >
-                <CircularProgress color="inherit" />
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
             </Backdrop>
             <div className="forum__slides">
                 <div className="forum__slides__content">

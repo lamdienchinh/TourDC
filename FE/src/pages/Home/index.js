@@ -10,7 +10,8 @@ import Link from '@mui/material/Link';
 import Typography from "@mui/material/Typography";
 import { getAllPlace, getAllReviewsInAllPlaces } from "../../service/api";
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
+import Loading from "../../components/loading"
 // import { getUserData } from '../../state/selectors';
 // import { useSelector } from 'react-redux';
 //import scss
@@ -178,7 +179,8 @@ const Home = () => {
                 open={open}
                 onClick={handleClose}
             >
-                <CircularProgress color="inherit" />
+                <Loading></Loading>
+                {/* <CircularProgress color="inherit" /> */}
             </Backdrop>
             <div className="home__slides">
                 <div className="home__slides__content">

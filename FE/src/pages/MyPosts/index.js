@@ -10,7 +10,8 @@ import { getInfor } from '../../state/selectors';
 import { useSelector } from 'react-redux'
 import FBPost from "../../components/post";
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Loading from "../../components/loading"
+// import CircularProgress from '@mui/material/CircularProgress';
 import { getMyPosts } from "../../service/api";
 const MyPosts = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +62,8 @@ const MyPosts = () => {
                 open={isLoading}
                 onClick={handleClose}
             >
-                <CircularProgress color="inherit" />
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
             </Backdrop>
             <div className="myposts__slides">
                 <div className="myposts__slides__content">

@@ -5,8 +5,15 @@ import list from "../../constants";
 import './css/Shop.scss';
 import { Container } from '@mui/material';
 import { getAllVouchers } from '../../service/api';
+import Backdrop from '@mui/material/Backdrop';
+import Loading from "../../components/loading"
+
 // import { HashLoader } from 'react-spinners';
 const VoucherShop = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const [allVouchers, setAllVouchers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [products, setProducts] = useState(list.products);
@@ -50,11 +57,20 @@ const VoucherShop = () => {
         const fetchVouchers = async () => {
             let data = await getAllVouchers();
             setAllVouchers(data);
+            setIsLoading(false)
         }
         fetchVouchers();
     }, [])
     return (
         <div className="shop-wrapper">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
+            </Backdrop>
             <div className="shop__slides">
                 <div className="shop__slides__content">
                     Đổi vouchers
@@ -62,7 +78,7 @@ const VoucherShop = () => {
                 <div className="shop__slides_breadcumb">
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="black" href="/">
-                           Trang chủ
+                            Trang chủ
                         </Link>
                         <Typography color="text.primary">Quà tặng</Typography>
                     </Breadcrumbs>

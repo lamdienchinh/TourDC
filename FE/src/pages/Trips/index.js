@@ -28,7 +28,8 @@ import { createAxios } from "../../utils/createInstance";
 import { setBalance, setInfor, updateBalance } from "../../state/userSlice";
 import { useDispatch } from "react-redux";
 import { getAllReviewsInAllPlaces } from '../../service/api';
-import { getBalanceOf } from '../../service/api';
+// import { getBalanceOf } from '../../service/api';
+import Loading from "../../components/loading"
 import Web3 from 'web3';
 import Modal from 'react-bootstrap/Modal';
 import { getBalance } from '../../state/selectors';
@@ -291,7 +292,7 @@ const Trips = () => {
                 open={isLoading}
                 onClick={handleClose}
             >
-                <CircularProgress color="inherit" />
+               <Loading></Loading>
             </Backdrop>
             <div className="trip-slide">
                 Khám phá những chuyến đi của bạn

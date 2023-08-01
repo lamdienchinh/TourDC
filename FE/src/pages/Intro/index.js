@@ -2,7 +2,7 @@ import "./css/Intro.scss";
 // import plane from "../../assets/imgs/plane.png"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import avt from "../../assets/imgs/avatar.png"
+// import avt from "../../assets/imgs/avatar.png"
 // import place1 from "../../assets/imgs/place1.png"
 // import place2 from "../../assets/imgs/place2.jpg"
 import Slider from 'react-slick';
@@ -14,6 +14,9 @@ import axios from "axios"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import place from "../../constants"
+import TravelAnimation from "../../components/travel_animation";
+import Backdrop from '@mui/material/Backdrop';
+import Loading from "../../components/loading"
 const Review = ({ review }) => {
     return (
         <div className="review-wrapper">
@@ -28,6 +31,10 @@ const Review = ({ review }) => {
     );
 }
 const Intro = () => {
+    const [isLoading, setIsLoading] = useState(true)
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const settings = {
         dots: false,
         arrows: false,
@@ -54,11 +61,21 @@ const Intro = () => {
             let reviews = await axios.get(`${process.env.REACT_APP_ENDPOINT}/v1/trip/getfour`)
             console.log(reviews)
             setReviews(reviews.data)
+            handleClose()
         }
         fetchPlaces()
+
     }, [])
     return (
         <div className="intro-wrapper" >
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                <Loading></Loading>
+                {/* <CircularProgress color="inherit" /> */}
+            </Backdrop>
             <section className="intro-section intro-first">
                 <div className="bg-img">
                     <Container maxWidth="lg">
@@ -117,28 +134,40 @@ const Intro = () => {
                         </div>
                         {
                             places && places.length === 4 ? <div className="intro-two-places">
-                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[0]?.thumbnail})` }} onClick={() => handleClick(places[0].placeid)}>
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[0]?.thumbnail})` }}>
                                     <div className="pp-text-overlay">
                                         <h1>{places[0]?.name}</h1>
                                         <span>{places[0]?.intro}</span>
                                     </div>
+                                    <div className="place__onhover">
+                                        <button className="place__onhover__btn" onClick={() => handleClick(places[0].placeid)}>Khám phá ngay</button>
+                                    </div>
                                 </div>
-                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[1]?.thumbnail})` }} onClick={() => handleClick(places[1].placeid)}>
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[1]?.thumbnail})` }}>
                                     <div className="pp-text-overlay">
                                         <h1>{places[1]?.name}</h1>
                                         <span>{places[1]?.intro}</span>
                                     </div>
+                                    <div className="place__onhover">
+                                        <button className="place__onhover__btn" onClick={() => handleClick(places[1].placeid)}>Khám phá ngay</button>
+                                    </div>
                                 </div>
-                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[2]?.thumbnail})` }} onClick={() => handleClick(places[2].placeid)}>
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[2]?.thumbnail})` }}>
                                     <div className="pp-text-overlay">
                                         <h1>{places[2]?.name}</h1>
                                         <span>{places[2]?.intro}</span>
                                     </div>
+                                    <div className="place__onhover">
+                                        <button className="place__onhover__btn" onClick={() => handleClick(places[2].placeid)}>Khám phá ngay</button>
+                                    </div>
                                 </div>
-                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[3]?.thumbnail})` }} onClick={() => handleClick(places[3].placeid)}>
+                                <div className="popular-place pp1" style={{ backgroundImage: `url(${places[3]?.thumbnail})` }} >
                                     <div className="pp-text-overlay">
                                         <h1>{places[3]?.name}</h1>
                                         <span>{places[3]?.intro}</span>
+                                    </div>
+                                    <div className="place__onhover">
+                                        <button className="place__onhover__btn" onClick={() => handleClick(places[3].placeid)}>Khám phá ngay</button>
                                     </div>
                                 </div>
                             </div> : ""
@@ -146,6 +175,11 @@ const Intro = () => {
                     </Container>
                 </div>
             </section >
+            <section className="intro">
+                <div className="intro__animation">
+                    <TravelAnimation></TravelAnimation>
+                </div>
+            </section>
             <section className="intro-section intro-three">
                 <div className="intro-three-overlay">
                     <Container maxWidth="lg">

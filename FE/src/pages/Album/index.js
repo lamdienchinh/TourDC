@@ -18,8 +18,8 @@ import { setInfor } from "../../state/userSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { getInfor } from '../../state/selectors';
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-
+// import CircularProgress from '@mui/material/CircularProgress';
+import Loading from "../../components/loading"
 const Album = () => {
     const [isLoading, setIsLoading] = useState(true);
     const handleClose = () => {
@@ -142,7 +142,8 @@ const Album = () => {
                 open={isLoading}
                 onClick={handleClose}
             >
-                <CircularProgress color="inherit" />
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
             </Backdrop>
             <div className="album-slide">
                 <div className="album__slides__content">

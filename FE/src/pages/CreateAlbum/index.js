@@ -23,8 +23,9 @@ import { createAxios } from "../../utils/createInstance";
 import { getTrips } from '../../service/api';
 import { convertTimestampToVietnamTime } from '../../components/dapp/convertTime';
 import { Gallery, Item } from "react-photoswipe-gallery"
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from '@mui/material/Backdrop';
+import Loading from "../../components/loading"
 import place from "../../constants"
 function PaperComponent(props) {
     return (
@@ -148,7 +149,8 @@ const CreateAlbum = () => {
                 open={isLoading}
                 onClick={handleCloseLoading}
             >
-                <CircularProgress color="inherit" />
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
             </Backdrop>
             <div className="createalbum-slide">
                 Tạo Album của riêng bạn

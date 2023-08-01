@@ -10,10 +10,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getPlace } from "../../service/api";
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 import { useSelector } from "react-redux";
 import { getUserData } from "../../state/selectors";
 import { toast } from "react-toastify";
+import Loading from "../../components/loading"
 const PlaceInfor = () => {
     const user = useSelector(getUserData)
     const [open, setOpen] = useState(true);
@@ -121,7 +122,8 @@ const PlaceInfor = () => {
                 open={open}
                 onClick={handleClose}
             >
-                <CircularProgress color="inherit" />
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
             </Backdrop>
             {
                 open === false ?

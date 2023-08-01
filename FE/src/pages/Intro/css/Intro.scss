@@ -257,13 +257,14 @@
     padding: 50px 50px 50px 50px;
     display: grid;
     grid:
-        "content content content content content content"
         "avatar name name name name name"
         "avatar place place place place place"
-        "avatar time time time time time";
+        "avatar time time time time time"
+        "content content content content content content";
 }
 .review-content {
     grid-area: content;
+    padding-left: 20px;
     padding-bottom: 30px;
     font-size: 25px;
     font-style: normal;
@@ -528,5 +529,54 @@
     100% {
         -webkit-transform: translateY(100%);
         transform: translateY(100%);
+    }
+}
+
+.intro {
+    //    display: flex;
+    //    justify-content: flex-start;
+    //    align-items: flex-start;
+    background-image: url("../../../assets/imgs/intro.jpg");
+    background-size: cover;
+}
+.intro__animation {
+    width: 50%;
+    height: 50%;
+}
+
+.place__onhover {
+    visibility: hidden;
+}
+.pp-text-overlay {
+    visibility: hidden;
+}
+.popular-place:hover .pp-text-overlay {
+    visibility: visible;
+}
+.popular-place:hover .place__onhover {
+    visibility: visible;
+    position: relative;
+    top: -50%;
+}
+
+.place__onhover__btn {
+    cursor: pointer;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.65rem;
+    font-weight: bold;
+    letter-spacing: 0.025rem;
+    text-transform: uppercase;
+    color: white;
+    background-color: black;
+    border: none;
+
+    &:hover {
+        background-color: lighten(black, 5%);
+    }
+
+    &:focus {
+        outline: 1px dashed yellow;
+        outline-offset: 3px;
     }
 }

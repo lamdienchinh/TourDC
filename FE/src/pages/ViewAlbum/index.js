@@ -12,7 +12,8 @@ import { getReviewsWithIds } from '../../service/api';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../state/selectors';
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Loading from "../../components/loading"
+// import CircularProgress from '@mui/material/CircularProgress';
 
 const ViewAlbum = () => {
     // const location = useLocation();
@@ -96,7 +97,8 @@ const ViewAlbum = () => {
                 open={isLoading}
                 onClick={handleClose}
             >
-                <CircularProgress color="inherit" />
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
             </Backdrop>
             <div className="viewalbum-slide">
                 Album lưu giữ kỷ niệm

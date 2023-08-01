@@ -22,10 +22,16 @@ import { getMyVouchers } from '../../service/api';
 import { createAxios } from "../../utils/createInstance"
 import { setInfor } from '../../state/userSlice';
 import { useDispatch } from 'react-redux';
+import Backdrop from '@mui/material/Backdrop';
+import Loading from "../../components/loading"
 
 const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
 
 const PurchasedVouchers = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const handleClose = () => {
+        setIsLoading(false);
+    };
     const user = useSelector(getInfor)
     const [currentPage, setCurrentPage] = useState(1);
     const [purchasedVouchers, setPurchasedVouchers] = useState([]);
@@ -78,12 +84,21 @@ const PurchasedVouchers = () => {
             const vouchers = await getMyVouchers(token, axiosJWT)
             console.log(vouchers)
             setPurchasedVouchers(vouchers)
+            setIsLoading(false)
         }
         fetchVouchers();
     }, [])
 
     return (
         <div className="voucher__wrapper">
+            <Backdrop
+                sx={{ color: '#fffff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                onClick={handleClose}
+            >
+                {/* <CircularProgress color="inherit" /> */}
+                <Loading></Loading>
+            </Backdrop>
             <div className="voucher__slides">
                 <div className="voucher__slides__content">
                     Mua sắm vouchers
