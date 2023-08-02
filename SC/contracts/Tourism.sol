@@ -135,7 +135,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
     mapping(uint => uint[]) public destinationRates; // số rate của một địa điểm
     mapping (uint => Journey[]) destinationJourney; 
 
-    event ExchangeVoucher(string indexed voucherID, uint256 indexed amount);
+    event ExchangeVoucher(string voucherID, uint256 amount);
     function exchangeVoucher(string memory voucherID, address _signer,address _to,uint8 _amount,string memory _message,uint256 _nonce,bytes memory signature) public {
         require(balanceOf(msg.sender) >= _amount, 'You not have enough money to purchase');
         _exchangeReward(_signer, _to, _amount, _message, _nonce, signature);
@@ -173,7 +173,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       }
       return true;
     }
-    event CheckIn(uint indexed ticketId, uint indexed placeId);
+    event CheckIn(uint ticketId, uint placeId);
     function checkIn(uint ticketID, uint placeID) public { // Hàm thực hiện việc check-in của du khách
       //check ticketID
       bool validTicket = false;
@@ -189,7 +189,7 @@ contract TouristConTract is ERC20WithAutoMinerReward {
       touristJourneys[msg.sender].push(Journey(tripID,placeID, block.timestamp, "", 0, false, "")); // thêm vào mảng touristJourney
       emit CheckIn(ticketID, placeID);
     }
-  event Review(uint indexed placeId, uint idTrip, string indexed comment, uint indexed rate, string title);
+  event Review(uint placeId, uint idTrip, string comment, uint rate, string title);
   function review(uint placeId, uint idTrip, string memory comment, uint rate, string memory title,
                   address _signer, address _to, uint8 _amount, string memory _message, uint256 _nonce, bytes memory signature) public 
     { // hàm thực hiện cho việc review của du khách
