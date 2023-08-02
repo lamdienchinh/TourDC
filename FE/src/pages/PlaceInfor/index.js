@@ -21,7 +21,7 @@ const PlaceInfor = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const [selectedFilter, setSelectedFilter] = useState(1)
+    const [selectedFilter, setSelectedFilter] = useState("1")
     const [place, setPlace] = useState();
     const [average, setAverage] = useState(0);
     const [rates, setRates] = useState([]);

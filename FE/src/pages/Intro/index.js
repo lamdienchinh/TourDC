@@ -95,7 +95,7 @@ const Intro = () => {
                                     <div className="button-text">Khám phá ngay</div>
                                 </a>
                             </div>
-                            <div ><img className='token-home' src={DCToken}></img></div>
+                            <div ><img className='token-home' src={DCToken} alt="Ảnh"></img></div>
                         </div>
 
                         {/* <div className="intro-img1">
@@ -179,6 +179,19 @@ const Intro = () => {
                 <div className="intro__animation">
                     <TravelAnimation></TravelAnimation>
                 </div>
+                <div className="intro__content">
+                    <div className="intro__content--header">
+                        <div>
+                            Khám phá các địa điểm du lịch
+                        </div>
+                    </div>
+                    <div className="intro__content--detail">
+                        <div className="intro__content__p">
+                            Chúng tôi đã biên soạn một danh sách các điểm đến hàng đầu, những địa điểm tuyệt đẹp và hấp dẫn nhất để ghé thăm.<br></br>
+                            Từ những danh lam thắng cảnh đến những địa điểm ẩm thực, giải trí đầy thu hút, danh sách điểm đến của chúng tôi có điều gì đó dành cho tất cả mọi người.
+                        </div>
+                    </div>
+                </div>
             </section>
             <section className="intro-section intro-three">
                 <div className="intro-three-overlay">
@@ -187,7 +200,7 @@ const Intro = () => {
                             <h1>
                                 Những trải nghiệm khó quên
                             </h1>
-                            <p>
+                            <p className="intro__content__p">
                                 Phản hồi của khách hàng của chúng tôi là điều cần thiết trong việc xây dựng danh tiếng tốt và duy trì dịch vụ xuất sắc. Bằng cách lắng nghe nhu cầu của khách hàng, chúng tôi có thể cải thiện các dịch vụ của mình và mang lại trải nghiệm du lịch đặc biệt.
                             </p>
                         </div>

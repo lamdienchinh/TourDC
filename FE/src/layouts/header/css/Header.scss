@@ -64,11 +64,17 @@
         cursor: pointer;
         color: rgb(0, 0, 0);
     }
-    & .header__link {
+    & .header__link, .camera-button {
         text-decoration: none;
         color: black;
         font-family: Poppins, sans-serif;
+        transition: 0.1s ease-in-out;
+        &:hover {
+            border-bottom: 2px solid #57b5fa;
+            color: #57b5fa;
+        }
     }
+
     & .header__link--selected {
         color: #57b5fa;
         text-decoration: none;

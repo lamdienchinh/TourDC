@@ -232,6 +232,8 @@
         font-size: 50px;
         font-weight: 700;
         line-height: 1.2em;
+        margin-bottom: 40px;
+        font-family: "Poppins", Sans-serif;
     }
     & > div {
         padding: 0;
@@ -239,7 +241,7 @@
     // transition: background-color 0.3s, border-radius 0.3s, opacity 0.3s;
 }
 .intro-three-content {
-    width: 40%;
+    width: 60%;
     padding: 80px 0px 50px 0px;
 }
 
@@ -293,7 +295,7 @@
     padding: 0 15px;
 }
 .intro-name {
-    font-family: Anton, sans-serif;
+    // font-family: Anton, sans-serif;
 
     text-transform: uppercase;
     font-family: verdana;
@@ -533,17 +535,40 @@
 }
 
 .intro {
-    //    display: flex;
-    //    justify-content: flex-start;
-    //    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
     background-image: url("../../../assets/imgs/intro.jpg");
     background-size: cover;
 }
 .intro__animation {
+    width: 35%;
+    height: 35%;
+}
+.intro__content {
     width: 50%;
-    height: 50%;
+    padding: 50px;
+    margin-left: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    & .intro__content--header {
+        font-family: "Poppins", Sans-serif;
+    }
+    // align-items: flex-end;
 }
 
+.intro__content--header {
+    color: white;
+    font-weight: 700;
+    font-size: 50px;
+    margin-bottom: 40px;
+}
+.intro__content__p {
+    color: white;
+    font-size: 20px;
+    font-weight: 200;
+    text-align: justify;
+}
 .place__onhover {
     visibility: hidden;
 }
